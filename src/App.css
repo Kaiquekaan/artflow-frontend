@@ -1,0 +1,217 @@
+header {
+  background-color: var(--primaria); /* Cor de fundo azul escuro */
+  color: #fff; /* Cor do texto */
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.nav {
+  margin-right: 20px;
+  justify-content: space-between;
+  
+}
+.navbar{
+  width: 100%;
+  margin-left: 1rem;
+}
+.navbar-nav{
+  margin-left: auto;
+  margin-right: 2rem;
+}
+
+
+#sidebar{
+  padding: 0;
+  width: 4rem;
+  
+}
+.sidebar-menu {
+  max-height: calc(100vh - 100px); /* Ajuste conforme necessário */
+  overflow-y: auto;
+}
+
+main{
+  margin-left: 0;
+}
+h1{
+  text-align: center;
+}
+h2 {
+  margin-bottom: 10px;
+}
+p{
+  margin: 10px 0;
+}
+
+input{
+  box-sizing: border-box;
+}
+button{
+  background-color: #333974;
+  color: #fff;
+  padding: 5px 10px ;
+  margin-right: 10px;
+  border:none;
+  cursor: pointer;
+  opacity: .8;
+  transition: .3s;
+}
+button:hover{
+  opacity: 1;
+}
+
+.todo-list{
+margin-bottom: 20px;
+padding-bottom: 20px ;
+border-bottom: 1px solid #555;
+}
+.todo{
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  height: auto;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.complete{
+  background-color: #5cb85c;
+}
+.remove{
+  background-color: #d9534f;  
+}
+
+.todo-form{
+padding-bottom: 1.5rem;
+
+}
+input, select{
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  width: 100%;
+}
+/*-------------------------- Tarefas---------------------------- */
+.main-content{
+  margin-left: 0;
+}
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr 1fr 1fr);
+  gap: 2rem;
+  justify-content:flex;
+  padding: 0 1.5rem 0;
+  align-items: center;
+}
+
+.card-tarefa {
+  width: 30rem;
+  height: auto;
+
+}
+
+.card-tarefa .card-body{
+  padding: 0;
+  background-color: #ebebeb;
+
+}
+.card-tarefa-atual {
+  height: 42rem;
+  width: 22.5rem;
+  box-shadow: -23px 2px 197px -78px rgba(0,0,0,0.56);
+  -webkit-box-shadow: -23px 2px 197px -78px rgba(0,0,0,0.56);
+  -moz-box-shadow: -23px 2px 197px -78px rgba(0,0,0,0.56);
+ 
+}
+
+
+.card-title{
+  background-color: #ffffffd5;
+  height: 2rem;
+  box-shadow: -23px 2px 232px -30px rgba(0,0,0,0.56);
+  -webkit-box-shadow: -23px 2px 232px -30px rgba(0,0,0,0.56);
+  -moz-box-shadow: -23px 2px 232px -30px rgba(0,0,0,0.56);
+  border-radius: .5rem 0 0 0;
+  color: var(--text);
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.card-text{
+  background-color: var(--quarinaria);
+  color: var(--text);
+  margin: 1rem;
+  border-radius: .5rem;
+  padding: 1rem;
+}
+.navNext, .navPrev{
+  font-size: 4rem;
+  color: var(--text);
+  background-color: transparent;
+}
+.next{
+  background: linear-gradient(to left, transparent 70%, #051937 100%);
+  position: absolute;
+  z-index: 1;
+}
+.hidden-content{
+  background: linear-gradient(to left, transparent 70%,#542959 80%, #051937 100%);
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  z-index: 2;
+  transition: background 0.3s;
+  color: transparent;
+
+}
+.hidden-text{
+  background: linear-gradient(to left, transparent 70%, #051937  100%);
+  color: transparent;
+}
+.card-hidden .card-body{
+  padding: 0;
+  width: 20rem;
+  height: 35rem;
+  position: relative;
+  transition: background 0.3s;
+  background: linear-gradient(to left, transparent 70%, #282D3B 100%);
+}
+.prev{
+  background: linear-gradient(to right, transparent 70%, #051937 100%);
+  position: absolute;
+  z-index: 1;
+}
+.card-hidden.prev .card-body{
+  background: linear-gradient(to right, transparent 70%, #282D3B 100%);
+  right: 20rem;
+  margin-right: solid;
+}
+.card-hidden.prev .hidden-content{
+  background: linear-gradient(to right, transparent 70%, #d4603f, #d8a313 100%);
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  z-index: 2;
+  transition: background 0.3s;
+  color: transparent;
+
+}
+.card-hidden.prev .hidden-text{
+  background: linear-gradient(to right, transparent 70%, #051937  100%);
+  color: transparent;
+}

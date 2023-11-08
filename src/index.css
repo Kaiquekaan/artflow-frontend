@@ -1,0 +1,398 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+*:root{
+  --primaria: #101728;
+  --primaria-claro: #051937;
+  --secundaria: #19233B;
+  --text: #fff;
+  --terciaria:#d8a313;
+  --quarinaria:#282D3B;
+}
+/*-------------------------- HEADER---------------------------- */
+header {
+  background-color: var(--primaria); /* Cor de fundo azul escuro */
+  color: #fff; /* Cor do texto */
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* Estilo do botão de três tracinhos */
+.menu-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Estilo do menu (inicialmente oculto) */
+.menu {
+  display: none;
+}
+
+/* Estilo dos itens do menu */
+.menu-item {
+  padding: 10px;
+}
+
+/* Estilo do menu quando aberto */
+.menu.active {
+  display: block;
+}
+
+/* Estilo da logo */
+.logo {
+  margin-left: 20px;
+}
+.logo img{
+  height: 60px;
+}
+/* Estilo dos links de navegação */
+.nav {
+  margin-right: 20px;
+}
+
+.nav a {
+  color: #fff; /* Cor dos links */
+  text-decoration: none;
+  margin: 0 15px;
+}
+/*-------------------------- SIDEBAR---------------------------- */
+
+#sidebar{
+  
+  width: 4rem;
+  
+}
+#sidebar button{
+  height: 4rem;
+  width: 4rem;
+  background-color: transparent;
+} 
+#sidebar .active{
+  background-color: var(--text);
+  border-right: solid  var(--terciaria);
+
+}
+
+
+.position-sticky {
+  margin: 0; /* Remove a margem */
+  width: 4rem;
+}
+
+#sidebar li{
+  width: 4rem;
+}
+.dropdown-menu li{
+  margin-left: 0;
+}
+/*-------------------------- MAIN---------------------------- */
+.main-container{
+  margin: 0;
+  padding: 20px 0;
+  height: 90vh;
+  display: grid;
+  
+  justify-content:center;
+  align-items:center;
+  width: 100%;
+       
+}
+
+@keyframes reiniciar-gif {
+  0% {
+      background-position: 0;
+  }
+  100% {
+      background-position: 100%;
+  }
+}
+.row{
+  background-image: url('imagens/HueWhite.gif');
+  background-size: cover; /* Ajusta o tamanho do GIF para cobrir a div */
+  background-repeat: no-repeat;
+animation-name: reiniciar-gif;
+animation-duration: 2s; /* Duração da animação (tempo para reiniciar) */
+  animation-timing-function: steps(1); /* Define como a animação funciona (uma etapa por vez) */
+  animation-iteration-count: infinite; /* Executa a animação infinitamente */
+ 
+ 
+}
+
+.main::before{
+  content: '';
+  position: absolute;
+  top: auto;
+  left: 4rem;
+  width: 96.55%;
+  height:90%;
+  backdrop-filter: blur(5px); /* Ajuste o valor do desfoque conforme necessário */
+  z-index: 0;
+ 
+}
+.main{
+   padding: 0  0 0 0;
+  
+ 
+ 
+}
+
+.container-fluid{
+  background-color: var(--secundaria);
+  
+}
+.container.mt-4{
+  opacity: 0;
+  display: none;
+}
+.container.mt-4.taskgui.active,.container.mt-4.comment.active,.container.mt-4.calendar.active,.container.mt-4.phone.active{
+  display: block;
+  opacity: 1;
+}
+/*-------------------------- Chat---------------------------- */
+
+body {
+  font-family: Arial, sans-serif;
+}
+.chat-container {
+  display: grid;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+  left: 35vw;
+}
+.chat-log {
+  height: 200px;
+  overflow-y: scroll;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+.user-message {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px 0;
+}
+.bot-message {
+  background-color: #ccc;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px 0;
+}
+
+.bot-message-text {
+  background-color: #ccc;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.bot-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+/*-------------------------- Calender---------------------------- */ 
+.calender-task{
+  display: none;
+  left: 500000rem;
+  transition: .3s;
+}
+.calender-task.active{
+  display: block;
+  position: absolute;
+  left: 0;
+
+}
+.event-calender{
+  background-color: rgb(23, 23, 122);
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  padding: .3rem .5rem;
+  margin-bottom: .1rem;
+  width: 100%;
+  border-radius: .1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.calendar-container{
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.calender-add{
+ z-index: 5;
+ position: absolute;
+ background-color: #fff;
+ transition: .5s;
+ border-radius: .5rem;
+ z-index: 3;
+ left: 64vw;
+ height: 50rem;
+  width: 30rem;
+}
+
+.add-header{
+  background-color: var(--primaria-claro);
+  color: var(--text);
+  padding: 1rem;
+  border-radius: .5rem .5rem 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-header h2{
+  margin: 0;
+  padding: 0;
+  margin-left: auto;
+  margin-right: 30%;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.add-body{
+
+  padding: 1rem;
+  border-radius: 0 0 .5rem .5rem;
+  margin-top: 2rem;
+}
+.add-body p{
+font-weight: bold;
+font-size: 1.050rem;
+}
+
+.input-titulo{
+  width: 100%;
+  height: 2rem;
+  border-radius: .5rem;
+  border-left: #007bff solid 5px;
+  padding: .5rem;
+  margin-bottom: 1rem;
+  
+}
+
+.input-desc{
+  width: 100%;
+  height: 10rem;
+  border-radius: .5rem;
+  border-left: #007bff solid 5px;
+  padding: .5rem;
+  margin-bottom: 1rem;
+  
+}
+
+input:focus {
+  outline: none; /* Remove a borda de foco */
+  box-shadow: none; /* Remove a sombra de foco */
+}
+
+textarea:focus {
+  outline: none; /* Remove a borda de foco */
+  box-shadow: none; /* Remove a sombra de foco */
+}
+
+
+.btn-close-add{
+  background-color: transparent;
+  color: var(--text);
+  font-size: 1.5rem;
+  display: flex;
+  left: 50%;
+}
+
+/*-------------------------- Detalhe tarefa---------------------------- */ 
+
+/* Defina um índice z para a classe .event-details maior do que o ::before */
+.page-overlay {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-color: #101728;
+  z-index: 1; /* Defina um índice z menor para que o fundo fique atrás do evento */
+}
+
+.event-details {
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  border-radius: .5rem;
+  top: 5vh;
+  left: 25vw;
+  right: 35vw;
+  z-index: 2; /* Defina um índice z maior para que a janela de detalhes fique sobre o fundo escurecido */
+  height: 50rem;
+  width: 40rem;
+}
+
+.details-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: .5rem .5rem 0 0;
+  background-color: var(--primaria-claro);
+  color: var(--text);
+  height: 10rem;
+}
+
+.details-title{
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  padding: 1rem;
+
+
+}
+
+.details-desc{
+  font-size: 1.050rem;
+  margin: 0;
+  padding: 0;
+  padding: 1rem;
+}
+
+.details-date{
+  font-size: 1.050rem;
+  margin: 0;
+  padding: 0;
+  padding: 1rem;
+}
+
+.page{
+  position: absolute;
+}
+.page-overlay {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-color: #101728;
+  z-index: 1; /* Defina um índice z menor para que o fundo fique atrás do evento */
+}
+
+

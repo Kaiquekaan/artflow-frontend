@@ -1,0 +1,71 @@
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #101728;
+}
+
+
+.login-logo  {
+    width: 150px;
+    height: auto;
+    text-align: center;
+}
+
+.login-form {
+    text-align: left;
+    background-color: #101728;
+    padding: 50px;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgb(7, 7, 7);
+    color :white;
+    width: 30rem;
+}
+
+.label-login {
+    display: block;
+    margin: 0 auto;
+    
+}
+
+.input-login {
+    display: block;
+    margin: 0 auto;
+    background-color: rgba(128, 128, 128, 0.358);
+    border-radius: 10px;
+}
+
+
+
+.botao-com-imagem img {
+    margin-right: auto; /* Espaçamento à esquerda da imagem para separá-la do texto */
+    width: 20px;
+    height: 15px;
+}
+
+.btn-login {
+    background-color: rgba(128, 128, 128, 0.461);
+    border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
