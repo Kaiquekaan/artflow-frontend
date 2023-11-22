@@ -1,16 +1,16 @@
 import React from 'react'
 
-const Doing = ({doin, removeDoing, completeDoing}) => {
+const Doing = ({doing, removeDoing, completeDoing}) => {
     return (
         
-      <div className="todo" style={{textDecoration: doin.isCompleted ? "line-through": ""}}>
+      <div className="todo" style={{textDecoration: doing.isCompleted ? "line-through": ""}}>
       <div className="content">
-        <p>{doin.title}</p>
+        <p>{doing.title}</p>
         <p className="category">
-          ({doin.category})
+          ({doing.category})
         </p>
-        <button className='complete' onClick= {() => completeDoing(doin.id)}>Completar</button>
-        <button className='remove' onClick= {() => removeDoing(doin.id)} >
+        <button className='complete' onClick= {() => completeDoing(doing.id)}>Completar</button>
+        <button className='remove' onClick= {() => removeDoing(doing.id)} >
           x
           </button>
       </div>

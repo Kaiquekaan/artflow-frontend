@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from './firebase';
-
+import { TaskProvider } from './services/TaskContext';
 
 
 import Login from './screens/Login/Login';
@@ -30,10 +30,11 @@ function App() {
 
 
 
-
-  return <div>
+  
+  return <TaskProvider> <div>
     <Home/>
   </div>
+  </TaskProvider>
 }
 
 export default App

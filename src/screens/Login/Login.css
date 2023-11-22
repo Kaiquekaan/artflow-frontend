@@ -1,28 +1,51 @@
 
+*:root{
+    --primaria: #101728;
+    --primaria-claro: #051937;
+    --secundaria: #19233B;
+    --text: #fff;
+    --terciaria:#d8a313;
+    --quarinaria:#282D3B;
+    --text-claro: black;
+  }
+
+
+
 .login-container {
-    display: flex;
+    background-image: url("https://github.com/Kaiquekaan/TaskBot/blob/master/src/imagens/Fundo_Login_Branco.png?raw=true");
+    display: grid;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #101728;
+    background-color: #e6e3e3;
+    top: 50rem;
 }
 
 
 .login-logo  {
-    width: 150px;
+    width: 15rem;
     height: auto;
     text-align: center;
 }
 
 .login-form {
+    display: grid;
     text-align: left;
     background-color: #101728;
-    padding: 50px;
-    border-radius: 40px;
+    padding: 25px;
     box-shadow: 0 0 10px rgb(7, 7, 7);
     color :white;
-    width: 30rem;
+    width: 30vw;
+    height: 75vh;
+    position: relative;
+    border-radius: 1rem;
 }
+
+.titulo-login {
+    text-align: center;
+    font-size: 2rem;
+}
+
 
 .label-login {
     display: block;
@@ -33,21 +56,43 @@
 .input-login {
     display: block;
     margin: 0 auto;
-    background-color: rgba(128, 128, 128, 0.358);
+    background-color: rgb(26, 24, 24);
+    color: white;
     border-radius: 10px;
+    margin-bottom: 1rem;
 }
 
+.botao-com-imagem{
+    height: 50px;
+    background-color: rgba(128, 128, 128, 0.358);
+    border: black 5px solid;
+    border-radius: .5rem;
+}
 
 
 .botao-com-imagem img {
-    margin-right: auto; /* Espaçamento à esquerda da imagem para separá-la do texto */
-    width: 20px;
-    height: 15px;
+    /* Espaçamento à esquerda da imagem para separá-la do texto */
+    width: auto;
+    height: 2rem;
+    margin-right: 0.5rem;
+}
+
+.btn-cadas{
+    height: 50px;
+    margin-bottom: .5rem;
 }
 
 .btn-login {
-    background-color: rgba(128, 128, 128, 0.461);
-    border-radius: 20px;
+    background-color: var(--text);
+    color: var(--primaria);
+    border-radius: .3rem;
+    width: 100%;
+}
+
+.img-logo{
+    display: flex;
+    align-content: center;
+    justify-content: center;
 }
 
 

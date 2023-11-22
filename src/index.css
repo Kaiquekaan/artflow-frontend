@@ -16,6 +16,23 @@ body, html {
   --text: #fff;
   --terciaria:#d8a313;
   --quarinaria:#282D3B;
+  --text-claro: black;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Estilizando o polegar da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Cor de fundo do polegar */
+  border-radius: 5px; /* Borda do polegar */
+}
+
+/* Mudar cor ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Nova cor de fundo ao passar o mouse */
 }
 /*-------------------------- HEADER---------------------------- */
 header {
@@ -70,7 +87,7 @@ header {
 /*-------------------------- SIDEBAR---------------------------- */
 
 #sidebar{
-  
+  margin: 0;
   width: 4rem;
   
 }
@@ -98,17 +115,7 @@ header {
   margin-left: 0;
 }
 /*-------------------------- MAIN---------------------------- */
-.main-container{
-  margin: 0;
-  padding: 20px 0;
-  height: 90vh;
-  display: grid;
-  
-  justify-content:center;
-  align-items:center;
-  width: 100%;
-       
-}
+
 
 @keyframes reiniciar-gif {
   0% {
@@ -119,26 +126,14 @@ header {
   }
 }
 .row{
-  background-image: url('imagens/HueWhite.gif');
-  background-size: cover; /* Ajusta o tamanho do GIF para cobrir a div */
-  background-repeat: no-repeat;
-animation-name: reiniciar-gif;
-animation-duration: 2s; /* Duração da animação (tempo para reiniciar) */
-  animation-timing-function: steps(1); /* Define como a animação funciona (uma etapa por vez) */
-  animation-iteration-count: infinite; /* Executa a animação infinitamente */
- 
+ background-color: var(--text);
+ display:flex ;
+  
  
 }
 
 .main::before{
-  content: '';
-  position: absolute;
-  top: auto;
-  left: 4rem;
-  width: 96.55%;
-  height:90%;
-  backdrop-filter: blur(5px); /* Ajuste o valor do desfoque conforme necessário */
-  z-index: 0;
+
  
 }
 .main{
@@ -152,13 +147,27 @@ animation-duration: 2s; /* Duração da animação (tempo para reiniciar) */
   background-color: var(--secundaria);
   
 }
-.container.mt-4{
+.taskgui,.comment,.calendar,.phone{
   opacity: 0;
   display: none;
+  margin: 0;
 }
-.container.mt-4.taskgui.active,.container.mt-4.comment.active,.container.mt-4.calendar.active,.container.mt-4.phone.active{
+.comment.active,.calendar.active,.phone.active{
   display: block;
   opacity: 1;
+  padding: 0;
+
+  
+}
+.taskgui.active{
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+ max-height: calc(100vh - 4rem);
+  width: 100%;
+  opacity: 1;
+  padding: 0;
+  margin-top: 4rem;
 }
 /*-------------------------- Chat---------------------------- */
 
@@ -238,15 +247,15 @@ body {
   overflow-x: hidden;
 }
 .calender-add{
- z-index: 5;
- position: absolute;
- background-color: #fff;
- transition: .5s;
- border-radius: .5rem;
- z-index: 3;
- left: 64vw;
- height: 50rem;
-  width: 30rem;
+  position: fixed;
+  background-color: #fff;
+  transition: 0.5s;
+  border-radius: 0.5rem;
+  z-index: 3;
+  bottom: 5vh; /* Ajuste conforme necessário */
+  right: 3vw; /* Ajuste conforme necessário */
+  height: 85vh; /* 50% da altura da tela */
+  width: 30vw; /* 30% da largura da tela */
 }
 
 .add-header{
@@ -334,13 +343,14 @@ textarea:focus {
 }
 
 .event-details {
-  position: absolute;
+  position: fixed; /* Mudança para 'fixed' para garantir que o elemento permaneça fixo na tela */
   display: block;
+  color: var(--text-claro);
   background-color: #fff;
   border-radius: .5rem;
-  top: 5vh;
-  left: 25vw;
-  right: 35vw;
+  top: 50%; /* Posiciona o elemento no centro vertical */
+  left: 50%; /* Posiciona o elemento no centro horizontal */
+  transform: translate(-50%, -50%); /* Move o elemento de volta em 50% da sua própria largura e altura */
   z-index: 2; /* Defina um índice z maior para que a janela de detalhes fique sobre o fundo escurecido */
   height: 50rem;
   width: 40rem;

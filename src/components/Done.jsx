@@ -1,17 +1,27 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckDouble} from '@fortawesome/free-solid-svg-icons';
+import { faTrash} from '@fortawesome/free-solid-svg-icons';
 
-const Done = ({todo, removeTodo, completeTodo}) => {
+
+const Done = ({done, removeDone, onClick}) => {
     return (
-      <div className="todo" style={{textDecoration: todo.isCompleted ? "line-through": ""}}>
-      <div className="content">
-        <p>{todo.title}</p>
+      <div className="done" style={{textDecoration: done.isCompleted ? "line-through": ""}} >
+      <div className="content-done">
+        <div className="task-click" onClick={onClick}>
+        <div className='donetask'>
+        <FontAwesomeIcon icon={faCheckDouble} style={{color: "#5cb85c",}} />
+        <p className='donetask-title'>{done.title}</p>
+        </div>
         <p className="category">
-          ({todo.category})
+          ({done.category})
         </p>
-        <button className='complete' onClick= {() => completeTodo(todo.id)}>Completar</button>
-        <button className='remove' onClick= {() => removeTodo(todo.id)} >
-          x
+        </div>
+        <div>
+        <button className='remove' onClick= {() => removeDone(done.id)} >
+        <FontAwesomeIcon icon={faTrash} />
           </button>
+          </div>
       </div>
     </div>
     )

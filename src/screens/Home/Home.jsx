@@ -19,10 +19,21 @@ import MyCalendar from '../../components/Calender';
 function Home() {
 
   const [activeTab, setActiveTab] = useState('taskgui');
+  const [porcentagem, setPorcentagem] = useState(0);
+  const [filtro, setFiltro] = useState('all'); // 'all' para mostrar todas as tarefas, 'day' para mostrar apenas as do dia
+
+  const atualizarPorcentagem = (novaPorcentagem) => {
+    setPorcentagem(novaPorcentagem);
+  };
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
+
+  const handleFiltroChange = (event) => {
+    setFiltro(event.target.value);
+  };
+  
 
     const [user] = useAuthState(auth);
     const refchat = db
@@ -57,10 +68,11 @@ function Home() {
       </div>
     </nav>
   </header>
+  <div className="content-area">
   <div className="container-fluid">
     <div className="row">
       {/* Barra Lateral */}
-      <nav id="sidebar" className="d-flex flex-column flex-shrink-0 bg-light  sidebar">
+      <nav id="sidebar" className="col-3 d-flex flex-column flex-shrink-0 bg-light  sidebar">
       <ul className="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li className="nav-item">
           <button
@@ -101,7 +113,6 @@ function Home() {
             <img src={user?.photoURL} alt="mdo" width={24} height={24} className="rounded-circle" />
           </a>
           <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
-            <li><a className="dropdown-item" href="#">New project...</a></li>
             <li><a className="dropdown-item" href="#">Settings</a></li>
             <li><a className="dropdown-item" href="#">Profile</a></li>
             <li><hr className="dropdown-divider" /></li>
@@ -110,34 +121,46 @@ function Home() {
         </div>
     </nav>
       {/* Conteúdo Principal */}
-      <main className="col-md-9 ms-sm col-lg-10 px-md-4 main">
+      <main className="main">
         <div className="main-container">
-        <div className={`container mt-4 taskgui ${activeTab === 'taskgui' ? 'active' : ''}`}>
+        <div className="col-3 main"> 
+        <div className={` taskgui  ${activeTab === 'taskgui' ? 'active' : ''}`  }>
           <div className="taskheader">
-            <h4>Tarefas do dia</h4>
-            <h4>Concluido</h4>
+            <h4>Tarefas</h4>
+            <h4>Concluído: {porcentagem}%</h4> 
+            </div>
+            <div className="filtrar-task">
+            <select value={filtro} onChange={handleFiltroChange}>
+            <option value="all">Mostrar todas as tarefas</option>
+           <option value="day">Mostrar tarefas do dia</option>
+           <option value="delayed">Mostrar tarefas atrasadas</option>
+           <option value="week">Mostrar tarefas da semana</option>
+           <option value="month">Mostrar tarefas do mês</option>
+          </select>
           </div>
-         <Task/>
+         <Task atualizarPorcentagem={atualizarPorcentagem} filtro={filtro} setFiltro={setFiltro} />
                            
             
           </div>
       
-        <div className={`container mt-4 comment ${activeTab === 'comment' ? 'active' : ''}`}>
+        <div className={`comment ${activeTab === 'comment' ? 'active' : ''}`}>
    
         <Chat/>
         </div>
         {/* Adicione conteúdo para outras guias aqui */}
-        <div className={`container mt-4 phone ${activeTab === 'phone' ? 'active' : ''}`}>
+        <div className={` phone ${activeTab === 'phone' ? 'active' : ''}`}>
 
      
                            
             
           </div>
-          <div className={`container mt-4 calendar ${activeTab === 'calendar' ? 'active' : ''}`}>
+          <div className={` calendar ${activeTab === 'calendar' ? 'active' : ''}`}>
           <MyCalendar/>
+          </div>
           </div>
         </div>
       </main>
+      </div>
 
       </div>
   </div>

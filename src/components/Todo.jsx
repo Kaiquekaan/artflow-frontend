@@ -1,20 +1,24 @@
 import React from 'react'
 
 
-const Todo = ({todo, removeTodo, completeTodo}) => {
+const Todo = ({todo, removeTodo, completeTodo, onClick, isDelayed}) => {
   return (
     
-    <div className="todo" style={{textDecoration: todo.isCompleted ? "line-through": ""}}>
-    <div className="content">
+    <div className={`todo ${isDelayed ? 'task-atrasada' : ''}`} style={{textDecoration: todo.isCompleted ? "line-through": ""}} >
+    <div className="content-todo" key={todo.id}>
+      <div className='task-click' onClick={onClick}>
       <p>{todo.title}</p>
       <p>{todo.desc}</p>
-      <p className="category">
+      <p className="category" >
         ({todo.category})
       </p>
-      <button className='complete' onClick= {() => completeTodo(todo.id)}>Completar</button>
-      <button className='remove' onClick= {() => removeTodo(todo.id)} >
+      </div>
+      <div>
+      <button className='complete-todo' onClick= {() => completeTodo(todo.id)}>Fazer</button>
+      <button className='remove-todo' onClick= {() => removeTodo(todo.id)} >
         x
         </button>
+        </div>
     </div>
   </div>
   )

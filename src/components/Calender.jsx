@@ -6,6 +6,8 @@ import TodoForm from './TodoFrom';
 import { auth, db } from '../firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark} from '@fortawesome/free-solid-svg-icons';
+import { TaskContext } from '../services/TaskContext';
+import { useContext } from 'react';
 
 
 
@@ -15,35 +17,32 @@ const MyCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
-  const [tasks, setTasks] = useState([]);
+  const { tasks, updateTasks } = useContext(TaskContext);
   const [isCalendarActive, setCalendarActive] = useState(false); // Estado para controlar a classe "active"
   const [selectedEvent, setSelectedEvent] = useState(null); // Estado para controlar o evento selecionado
   const user = auth.currentUser;
   const tasksCollectionRef = db.collection('tasks');
   const todosCollectionRef = tasksCollectionRef.doc(user.uid).collection('todos');
 
+  
+
 
   useEffect(() => {
     // Realiza a consulta inicial e atualiza o estado tasks apenas uma vez
-    todosCollectionRef.get()
-      .then((querySnapshot) => {
-        const todos = [];
-        querySnapshot.forEach((doc) => {
-          todos.push({
-            id: doc.id,
-            category: doc.data().category,
-            title: doc.data().title,
-            description: doc.data().description,
-            user: doc.data().user,
-            date: doc.data().date, // Use a data real do documento
-          });
-        });
-        setTasks(todos);
-      })
-      .catch((error) => {
-        console.error('Erro ao obter todos do usuário: ', error);
+    todosCollectionRef.get().then((querySnapshot) => {
+      const tasks = [];
+      querySnapshot.forEach((doc) => {
+        const task = doc.data();
+        task.id = doc.id;
+        tasks.push(task);
       });
+      updateTasks(tasks);
+    });
   }, []); // O array vazio [] garante que isso só seja executado uma vez
+
+
+  
+
 
   const addTodo = (title, category, desc) => {
     if (title && selectedDate) {
@@ -58,7 +57,7 @@ const MyCalendar = () => {
       todosCollectionRef.add(newTask)
         .then((docRef) => {
           console.log('Evento salvo com ID: ', docRef.id);
-          setTasks([...tasks, newTask]); // Atualize o estado aqui
+          updateTasks([...tasks, newTask]); // Atualize o estado aqui
         })
         .catch((error) => {
           console.error('Erro ao salvar evento: ', error);
@@ -128,6 +127,12 @@ const MyCalendar = () => {
       // Adicione outras propriedades relevantes do seu objeto de tarefa
     }));
   };
+
+  useEffect(() => { 
+    // Atualiza o calendário quando o estado tasks for alterado
+    calendarRef.current.getApi().removeAllEvents();
+    calendarRef.current.getApi().addEventSource(transformTasksForCalendar(tasks));
+  }, [tasks]);
 
   const events = transformTasksForCalendar(tasks);
 

@@ -6,6 +6,7 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    height: 4rem;
   }
   .nav {
     margin-right: 20px;
@@ -20,11 +21,13 @@ header {
     margin-left: auto;
     margin-right: 2rem;
   }
+
   
   
   #sidebar{
     padding: 0;
     width: 4rem;
+    height: calc(100vh - 4rem);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   .sidebar-menu {
@@ -63,35 +66,84 @@ header {
   }
   
   .todo-list{
+ 
   margin-bottom: 20px;
   padding-bottom: 20px ;
+  display: grid;
   border-bottom: 1px solid #555;
+  overflow-y: auto;
+  
   }
   .todo{
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 10px;
     height: auto;
     margin-left: 1rem;
     margin-right: 1rem;
-    margin-bottom: 10px;
+    margin-top: 2px;
+    margin-bottom: 2px;
     border-radius: 5px;
+    display: flex;
+    border-left: var(--primaria) solid 5px;
+    cursor: pointer;
+  }
+
+  .todo:hover{
+    background-color: #f5f5f5;
+  }
+
+  .done:hover{
+    background-color: #f5f5f5;
+  }
+
+  .content-todo, .content-done{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+  }
+
+  .done{
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    height: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-radius: 5px;
+    display: flex;
+    border-left: #5cb85c solid 5px;
+    cursor: pointer;
   }
   
-  
+  .complete-todo{
+    background-color: #5cb85c;
+    border-radius: .2rem;
+  }
+ 
+  .remove-todo{
+    border-radius: .2rem;
+  }
+
+
   .complete{
     background-color: #5cb85c;
+
   }
   .remove{
-    background-color: #d9534f;  
+    background-color: #d9534f; 
+    border-radius: .2rem; 
   }
   
   .todo-form{
   padding-bottom: 1.5rem;
   
+  }
+  .todo-form p{
+    color: var(--primaria);
   }
   input, select{
     padding: 5px;
@@ -100,14 +152,38 @@ header {
     border-radius: 3px;
     width: 100%;
   }
+
+.content-area{
+  margin-left: 0;
+  padding: 0;
+  width: 100vw;
+  height: calc(100vh - 4rem);
+  color: var(--text);
+  display: block;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+ overflow: hidden;
+  transition: background 0.3s;
+ 
+}
+
+.main{
+  padding: 0;
+  display: flex;
+  width: calc(100vw - 4rem);
+}
+
+
+
   /*-------------------------- Tarefas---------------------------- */
-  .main-content{
-    margin-left: 0;
-   
+  .main-container{
+    width: 100%;
+    height: 100%;
   }
-  main{
-    padding: 50rem;
-  }
+ 
 
   .taskheader {
     background-color: var(--primaria-claro);
@@ -119,31 +195,114 @@ header {
     justify-content: space-between;
     align-items: center;
     position: absolute;
-    left: 4rem;
-    top: 86px;
+    top: calc(4rem - 4rem); /* 4rem é a altura do header */
+    left: calc(8rem - 4rem); /* 4rem é a largura do sidebar */
+  }
+  
+  .task{
+    width: 100%;
+    height: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .filtrar-task{
+    width: 16rem;
+  }
+  .filtrar-task select{
+    height: 3rem;
   }
   
   
   .card-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr 1fr 1fr);
-    gap: 2rem;
-    justify-content:flex;
+    width: 100%;
+    grid-template-columns: 1fr; /* Define uma única coluna */
+    gap: .5rem;
+    justify-content: center;
+    justify-items: center;
     padding: 0 1.5rem 0;
-    align-items:baseline;
+    align-items: center;
+    align-content: center;
   }
   
   .card-tarefa {
-    width: 30rem;
-    height: auto;
+    margin-top: 3rem;
+    width: calc(100vw - 20vw);
+    border: none;
   
   }
+
+  .card-todo{
+    margin-top: 3rem;
+    width: calc(100vw - 20vw);
+    border: none;
+    
+  }
+
+  .task-atrasada {
+    /* Adicione estilos para destacar tarefas atrasadas */
+    border-left: rgb(228, 84, 84) solid 5px;
+    background-color: #ffcccc; /* Por exemplo, fundo vermelho para indicar atraso */
+   
+  }
+
+  .task-atrasada:hover{
+    background-color: #f89c9c;
+  }
+
+  
+  .card-doing{
+    display: none;
+  }
+  
+.donetask{
+  display: flex;
+  align-items: center;
+}
+
+.donetask-title{
+  margin-left: .5rem;
+}
+
+
+.task-details{
+  position: fixed; /* Mudança para 'fixed' para garantir que o elemento permaneça fixo na tela */
+  display: block;
+  color: var(--text-claro);
+  background-color: #fff;
+  border-radius: .5rem;
+  top: 50%; /* Posiciona o elemento no centro vertical */
+  left: 50%; /* Posiciona o elemento no centro horizontal */
+  transform: translate(-50%, -50%); /* Move o elemento de volta em 50% da sua própria largura e altura */
+  z-index: 2; /* Defina um índice z maior para que a janela de detalhes fique sobre o fundo escurecido */
+  height: 50rem;
+  width: 40rem;
+}
+
+.task-click{
+  display: flex;
+  justify-content: space-between; /* Distribui os itens com espaço entre eles */
+  gap: 1rem;
+  width: 80%;
+}
   
   .card-tarefa .card-body{
     padding: 0;
-    background-color: #ebebeb;
+    background-color: transparent;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
+
+  .card-done{
+    margin-bottom: 5rem;
+  }
+
+
   .card-tarefa-atual {
     height: 42rem;
     width: 22.5rem;
@@ -240,11 +399,9 @@ header {
     position: relative;
     display: grid;
     padding: 1rem;
-    left: -4rem;
-    top: -2.5rem;
   background-color: #fff;
-  width: 90vw;
-  height: 90vh;
+   width: calc(100vw - 4rem);
+    height: calc(100vh - 4rem);
   z-index: 1;
 }
 
