@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import { auth, provider } from '../../firebase';
-import Cadastro from '../Sing in/cadastro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle} from '@fortawesome/free-brands-svg-icons';
+import Cadastro from '../Sing in/Cadastro';
 
 
 function Login(){
