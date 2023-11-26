@@ -22,6 +22,8 @@
     "@popperjs/core": "^2.11.8",
     "better-react-spinkit": "^2.0.4",
     "bootstrap": "^5.3.2",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
     "email-validator": "^2.0.4",
     "firebase": "^10.5.2",
     "google-auth-library": "^9.2.0",

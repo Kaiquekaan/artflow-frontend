@@ -13,6 +13,7 @@ import { useContext } from 'react';
 
 
 
+
 const MyCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [taskTitle, setTaskTitle] = useState('');
@@ -40,7 +41,35 @@ const MyCalendar = () => {
     });
   }, []); // O array vazio [] garante que isso só seja executado uma vez
 
+  const fetchData = () => {
+    const tasksCollectionRef = db.collection('tasks');
+    const todosCollectionRef = tasksCollectionRef.doc(user.uid).collection('todos');
+      // Coloque aqui o código para buscar os dados mais recentes do Firestore
+      // e atualizar os estados locais (setTodos, setDoings, setDones)
+      // Pode ser semelhante ao código que está atualmente no useEffect.
+      // ...
+    
+      // Exemplo (certifique-se de adaptar conforme sua estrutura de dados):
+      todosCollectionRef.get()
+        .then((querySnapshot) => {
+          const todos = [];
+          querySnapshot.forEach((doc) => {
+            todos.push({
+              id: doc.id,
+              category: doc.data().category,
+              title: doc.data().title,
+              description: doc.data().description,
+              user: doc.data().user,
+              date: doc.data().date,
+            });
+          });
+          updateTasks(todos);
+        })
+        .catch((error) => {
+          console.error('Erro ao obter todos do usuário: ', error);
+        });
 
+    };
   
 
 
@@ -57,7 +86,7 @@ const MyCalendar = () => {
       todosCollectionRef.add(newTask)
         .then((docRef) => {
           console.log('Evento salvo com ID: ', docRef.id);
-          updateTasks([...tasks, newTask]); // Atualize o estado aqui
+          fetchData(); // Chama a função para buscar os dados atualizados
         })
         .catch((error) => {
           console.error('Erro ao salvar evento: ', error);
@@ -176,7 +205,8 @@ const MyCalendar = () => {
       {selectedEvent && (
         <div className="page">
           <div className='page-overlay'></div>
-        <div className='event-details ' onClick={closeEventDetails}>
+        <div className='event-details ' >
+        <button className='close-button' onClick={closeEventDetails}><FontAwesomeIcon icon={faXmark} /></button>
           <div className='details-header'>
           <h2>Detalhes da Tarefa</h2>
           </div>

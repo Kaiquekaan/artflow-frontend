@@ -29,3 +29,27 @@
     margin-bottom: .5rem;
     background-color: var(--text);
 }
+
+@media screen and (max-width: 1680px) {
+    .titulo-cadas{
+        display: block;
+        margin: 0 auto;
+        font-size: 1.5rem;
+    }
+
+    
+.input-cadas {
+    height: 1.5rem;
+}
+
+.btn-cadas{
+    height: 2rem;
+    margin-bottom: .5rem;
+
+}
+
+.label-cadas{
+    font-size: .7rem;
+}
+
+}

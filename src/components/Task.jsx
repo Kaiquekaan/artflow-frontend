@@ -3,31 +3,32 @@ import { useState, useEffect } from 'react'
 import { auth, db } from '../firebase'; 
 import Todo from './Todo'
 import TodoForm from './TodoFrom'
-import Doing from './Doing'
 import Done from './Done'
 import { useTaskContext } from '../services/TaskContext';
-import { useContext } from 'react';
-import { filter, set } from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark} from '@fortawesome/free-solid-svg-icons';
+import { startOfDay, isBefore, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isAfter, format, parseISO } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 
 function Task({atualizarPorcentagem, filtro , setFiltro}) {
     const user = auth.currentUser;
     const [selectedTask, setSelectedTask] = useState(null);
     const [tarefasDoDia, setTarefasDoDia] = useState([]);
-
+    const [editingTitle, setEditingTitle] = useState(false);
+    const [editingDescription, setEditingDescription] = useState(false);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
 
     const { tasks, updateTasks } = useTaskContext();
 
     const [todos, setTodos] = useState([])
 
-    const [doings, setDoings] = useState([])
 
     const [dones, setDones] = useState([])
 
    useEffect(() => { 
     const tasksCollectionRef = db.collection('tasks');
     const todosCollectionRef = tasksCollectionRef.doc(user.uid).collection('todos');
-    const doingCollectionRef = tasksCollectionRef.doc(user.uid).collection('doing');
     const donesCollectionRef = tasksCollectionRef.doc(user.uid).collection('dones');
   
     todosCollectionRef.get()
@@ -51,7 +52,6 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     });
 
     const hoje = new Date().toISOString().split('T')[0]; // Obtém a data atual no formato 'YYYY-MM-DD'
-    console.log(hoje);
 
     const tarefasDoDiaFiltradas = todos.filter((todo) => todo.date.split('T')[0] === hoje);
     setTarefasDoDia(tarefasDoDiaFiltradas);
@@ -81,34 +81,6 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
      
 
 
-      const unsubscribeDoing = doingCollectionRef.onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          const docData = {
-            id: change.doc.id,
-            category: change.doc.data().category,
-            title: change.doc.data().title,
-            description: change.doc.data().description,
-            user: change.doc.data().user,
-            date: change.doc.data().date,
-          };
-  
-          if (change.type === "added") {
-            setDoings((prevDoings) => [...prevDoings, docData]);
-          } else if (change.type === "modified") {
-            setDoings((prevDoings) =>
-              prevDoings.map((doing) => (doing.id === docData.id ? docData : doing))
-            );
-          } else if (change.type === "removed") {
-            setDoings((prevDoings) => prevDoings.filter((doing) => doing.id !== docData.id));
-          }
-        });
-      });
-    
-      // Retornar uma função de limpeza para desinscrever o ouvinte quando o componente for desmontado
-      return () => {
-        unsubscribeDoing(); // Limpa o listener da coleção 'doing'
-        // Adicione outras limpezas conforme necessário
-      };
 
    }, []);
   
@@ -231,13 +203,6 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     };
     
     
-    const completeDoing = (id) => {
-      const tasksCollectionRef = db.collection('tasks');
-      const doingCollectionRef = tasksCollectionRef.doc(user.uid).collection('doing');
-      const donesCollectionRef = tasksCollectionRef.doc(user.uid).collection('dones');
-      completeTask(id, doingCollectionRef, donesCollectionRef);
-    };
-    
     
     
     
@@ -255,6 +220,7 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     
       // Remova a tarefa do estado local
       setLocalState((prevState) => prevState.filter((task) => task.id !== id));
+      fetchData();
     };
     
     const removeTodo = (id) => {
@@ -286,53 +252,154 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     };
 
     const closeTaskDetails = () => {
-      // Fechar os detalhes do evento quando o usuário clicar em algum lugar
-      setSelectedTask(null);
+      if (hasChanges) {
+        setShowConfirmation(true); // Mostra a div de confirmação se houver mudanças pendentes
+      } else {
+        setSelectedTask(null); // Fecha os detalhes da tarefa se não houver mudanças pendentes
+      }
     };
-
-    const tarefasExibidas = filtro === 'day' ? tarefasDoDia : todos;
+  
 
 
     const isTaskDelayed = (taskDate) => {
-      const today = new Date().toISOString().split('T')[0];
-      return taskDate < today; // Verifica se a data da tarefa é anterior à data atual
+      const today = new Date();
+      const taskDateObj = new Date(taskDate);
+      
+      // Verifica se a data da tarefa é anterior à data atual, considerando apenas o dia
+      return isBefore(taskDateObj, startOfDay(today));
     };
-
-
+    
     const filterTasks = (tasks) => {
+
+      const brazilTimeZone = 'America/Sao_Paulo'; // Fuso horário do Brasil (exemplo: horário de Brasília)
+      const today = new Date(); // Data atual local
+
       switch (filtro) {
         case 'day':
-          return tasks.filter((task) => task.date.split('T')[0] === new Date().toISOString().split('T')[0]);
+      const todayInBrazilTimeZone = utcToZonedTime(today, brazilTimeZone); // Convertendo a data atual para o fuso horário do Brasil
+      const todayISO = format(todayInBrazilTimeZone, 'yyyy-MM-dd'); // Formatando a data para comparar com o formato das datas do banco de dados
 
-        case 'delayed': 
-            return tasks.filter((task) => isTaskDelayed(task.date));   
+      return tasks.filter((task) => {
+        const taskDate = parseISO(task.date); // Convertendo a data da tarefa para um objeto Date
+        const taskDateInBrazilTimeZone = utcToZonedTime(taskDate, brazilTimeZone); // Convertendo a data da tarefa para o fuso horário do Brasil
+        const taskISO = format(taskDateInBrazilTimeZone, 'yyyy-MM-dd'); // Formatando a data da tarefa para comparar com o formato das datas do banco de dados
 
-            case 'week':
-              const today = new Date();
-              const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Sunday
-              const endOfWeek = new Date(today.setDate(startOfWeek.getDate() + 6)); // Saturday
-              return tasks.filter((task) => {
-                const taskDate = new Date(task.date);
-                return taskDate >= startOfWeek && taskDate <= endOfWeek;
-              });
-        
-              case 'month':
-                const todayMonth = new Date();
-                const startOfMonth = new Date(todayMonth.getFullYear(), todayMonth.getMonth(), 1); // Primeiro dia do mês
-                const endOfMonth = new Date(todayMonth.getFullYear(), todayMonth.getMonth() + 1, 0); // Último dia do mês
-                return tasks.filter((task) => {
-                  const taskDate = new Date(task.date);
-                  return taskDate >= startOfMonth && taskDate <= endOfMonth;
-                });
-
+        return taskISO === todayISO; // Comparando apenas as partes de data (ignorando horários)
+      });
+        case 'delayed':
+          return tasks.filter((task) => isTaskDelayed(task.date));
+    
+        case 'week':
+          const startOfWeekDate = startOfWeek(new Date(), { weekStartsOn: 0 }); // Domingo como início da semana
+          const endOfWeekDate = endOfWeek(new Date(), { weekStartsOn: 0 });
+    
+          return tasks.filter((task) => {
+            const taskDate = new Date(task.date);
+            return isAfter(taskDate, startOfWeekDate) && isBefore(taskDate, endOfWeekDate);
+          });
+    
+        case 'month':
+          const startOfMonthDate = startOfMonth(new Date());
+          const endOfMonthDate = endOfMonth(new Date());
+    
+          return tasks.filter((task) => {
+            const taskDate = new Date(task.date);
+            return isAfter(taskDate, startOfMonthDate) && isBefore(taskDate, endOfMonthDate);
+          });
+    
         default:
           return tasks;
       }
-    }
+    };
+    
 
     const filteredTasks = filterTasks(tasks);
 
+
    
+    const [editedTitle, setEditedTitle] = useState(selectedTask ? selectedTask.title : '');
+    const [editedDescription, setEditedDescription] = useState(selectedTask ? selectedTask.description : '');
+   const [hasChanges, setHasChanges] = useState(false);
+
+    const handleTitleChange = (value) => {
+      setEditedTitle(value);
+      setHasChanges(true); // Indica que houve uma alteração no título
+    };
+    
+    const handleDescriptionChange = (value) => {
+      setEditedDescription(value);
+      setHasChanges(true); // Indica que houve uma alteração na descrição
+    };
+
+
+    const handleTitleClick = () => {
+      setEditingTitle(true); // Ativa o modo de edição do título
+      setEditedTitle(selectedTask.title); // Define o valor atual do título no estado de edição
+    };
+
+    const handleDescriptionClick = () => {
+      setEditingDescription(true); // Ativa o modo de edição da descrição
+      setEditedDescription(selectedTask.description); // Define o valor atual da descrição no estado de edição
+    };
+    
+    const confirmEdit = (field) => {
+      if (field === 'title') {
+        if (editedTitle !== '') {
+          setSelectedTask({ ...selectedTask, title: editedTitle });
+          setEditingTitle(false);
+          setHasChanges(true);
+        }
+      } else if (field === 'description') {
+        if (editedDescription !== '') {
+          setSelectedTask({ ...selectedTask, description: editedDescription });
+          setEditingDescription(false);
+          setHasChanges(true);
+        }
+      }
+    };
+    
+    
+
+    const handleKeyPress = (event, field) => {
+      if (event.key === 'Enter') {
+        confirmEdit(field);
+      }
+    };
+
+    const handleConfirmation = async (confirm) => {
+      if (confirm) {
+        const updatedTask = {
+          title: editedTitle !== '' ? editedTitle : selectedTask.title,
+          description: editedDescription !== '' ? editedDescription : selectedTask.description,
+        };
+    
+        try {
+          await db
+            .collection('tasks')
+            .doc(user.uid)
+            .collection('todos')
+            .doc(selectedTask.id)
+            .update(updatedTask);
+    
+          setSelectedTask({ ...selectedTask, ...updatedTask });
+          setEditingTitle(false);
+          setEditingDescription(false);
+          setHasChanges(false);
+          setShowConfirmation(false);
+          setSelectedTask(null); // Aqui fecha o painel de detalhes após a confirmação
+          fetchData();
+        } catch (error) {
+          console.error('Erro ao atualizar tarefa:', error);
+        }
+      } else {
+        setEditedTitle(selectedTask.title);
+        setEditedDescription(selectedTask.description);
+        setSelectedTask(null);
+        setShowConfirmation(false);
+      }
+    };
+    
+    
   
     
   
@@ -350,20 +417,9 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
       </div>
       </div> 
       
-                           </div>
-                           <div className="card card-tarefa card-doing">
-                           <div className="card-body">
-                <h5 className="card-title">Doing</h5>
-                <div className="todo-list">
-        {doings.map((doing) => (
-         <Doing key={doing.id}  doing = {doing} removeDoing={removeDoing} completeDoing= {completeDoing}/>
-        ))}
       </div>
-      
-      </div> 
-                           </div>
-                           <div className="card card-tarefa">
-                           <div className="card-body card-done">
+            <div className="card card-tarefa">
+            <div className="card-body card-done">
                 <h5 className="card-title">Concluídas</h5>
                 <div className="todo-list">
         {dones.map((done) => (
@@ -376,22 +432,36 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
                            {selectedTask && (
        <div className="page">
        <div className='page-overlay'></div>
-     <div className='task-details ' onClick={closeTaskDetails}>
+     <div className='task-details '>
+      <button className='close-button' onClick={closeTaskDetails}><FontAwesomeIcon icon={faXmark} /></button>
        <div className='details-header'>
        <h2>Detalhes da Tarefa</h2>
        </div>
-       <div className='details-title'>
-     <p >Titulo: {selectedTask.title}</p>
+       <div className='details-title' onClick={handleTitleClick}>
+      <p>Título: {editingTitle ? <input type="text" value={editedTitle}  onKeyPress={(e) => handleKeyPress(e, 'title')} onChange={(e) => handleTitleChange(e.target.value)} /> : selectedTask.title}</p>
+      {editingTitle}
       </div>
-    <div className='details-desc'>
-    <p >Descrição: <br></br> {selectedTask.description}</p>
-    </div>
+      <div className='details-desc' onClick={handleDescriptionClick}>
+  <p>Descrição: {editingDescription ? <textarea value={editedDescription} onKeyPress={(e) => handleKeyPress(e, 'description')}  onChange={(e) => handleDescriptionChange(e.target.value)} /> : selectedTask.description}</p>
+  {editingDescription}
+</div>
+
     <div className='details-date'>
    <p >Data: {selectedTask.date}</p>
     </div>
-
        
      </div>
+     {showConfirmation && (
+        <div className="confirmation-dialog">
+          <p className='confirmation-title'>Deseja salvar as alterações?</p>
+          <div className="confirmation-buttons">
+            <button className='btn-confirm' onClick={() => handleConfirmation(true)}>Confirmar</button>
+            <button onClick={() => handleConfirmation(false)}>Cancelar</button>
+          </div>
+        </div>
+      )}
+     
+
      </div>
       )}
                            

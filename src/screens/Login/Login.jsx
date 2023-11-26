@@ -47,7 +47,7 @@ function Login(){
               <img className='login-logo' src='https://github.com/Kaiquekaan/TaskBot/blob/master/src/imagens/logo2.png?raw=true' alt="" />
             </div>
             <div className='titulo-login'>
-            <label className='label-login' htmlFor="nome">login</label>
+            <label className='label-login' htmlFor="nome">Login</label>
             </div>
             <label className='label-login' htmlFor="email">E-mail:</label>
             <input

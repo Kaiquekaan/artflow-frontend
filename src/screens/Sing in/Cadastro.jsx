@@ -35,7 +35,7 @@ const Cadastro = () => {
             <div className='titulo-cadas'>
             <label htmlFor="nome">Cadastro</label>
             </div>
-            <label htmlFor="email">E-mail:</label>
+            <label className='label-cadas' htmlFor="email">E-mail:</label>
             <input
             className='input-cadas'
               type="email"
@@ -45,7 +45,7 @@ const Cadastro = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label htmlFor="senha">Senha:</label>
+            <label className='label-cadas' htmlFor="senha">Senha:</label>
             <input
             className='input-cadas'
               type="password"

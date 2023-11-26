@@ -53,15 +53,6 @@ function Home() {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
-            <a className="nav-link" href="#">Home</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">Calendário</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">Contato</a>
-          </li>
-          <li className="nav-item">
             <a className="nav-link" href="#">Sobre</a>
           </li>
         </ul>
@@ -96,14 +87,6 @@ function Home() {
             onClick={() => handleTabClick('calendar')}
           >
             <FontAwesomeIcon icon={faCalendarDays} style={{ color: "#d8a313" }} />
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className={`btn btn-light ${activeTab === 'phone' ? 'active' : ''}`}
-            onClick={() => handleTabClick('phone')}
-          >
-            <FontAwesomeIcon icon={faPhone} style={{ color: "#d8a313" }} />
           </button>
         </li>
       </ul>
@@ -148,12 +131,6 @@ function Home() {
         <Chat/>
         </div>
         {/* Adicione conteúdo para outras guias aqui */}
-        <div className={` phone ${activeTab === 'phone' ? 'active' : ''}`}>
-
-     
-                           
-            
-          </div>
           <div className={` calendar ${activeTab === 'calendar' ? 'active' : ''}`}>
           <MyCalendar/>
           </div>

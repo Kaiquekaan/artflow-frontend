@@ -278,10 +278,9 @@ body {
 }
 
 .add-body{
-
   padding: 1rem;
   border-radius: 0 0 .5rem .5rem;
-  margin-top: 2rem;
+  margin-top: .5rem;
 }
 .add-body p{
 font-weight: bold;
@@ -352,8 +351,8 @@ textarea:focus {
   left: 50%; /* Posiciona o elemento no centro horizontal */
   transform: translate(-50%, -50%); /* Move o elemento de volta em 50% da sua própria largura e altura */
   z-index: 2; /* Defina um índice z maior para que a janela de detalhes fique sobre o fundo escurecido */
-  height: 50rem;
-  width: 40rem;
+  height: 90%;
+  width: 35%;
 }
 
 .details-header{
@@ -381,6 +380,8 @@ textarea:focus {
   margin: 0;
   padding: 0;
   padding: 1rem;
+  max-height: 40%;
+  overflow-y: auto;
 }
 
 .details-date{
@@ -403,6 +404,65 @@ textarea:focus {
   opacity: 0.5;
   background-color: #101728;
   z-index: 1; /* Defina um índice z menor para que o fundo fique atrás do evento */
+}
+
+@media screen and (max-width: 1680px) {
+  .calendar-container{
+    position: relative;
+    display: grid;
+    padding: 1rem;
+  background-color: #fff;
+   width: calc(100vw - 4rem);
+    height: calc(100vh - 4rem);
+  z-index: 1;
+  overflow: hidden;
+  }
+
+  .details-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .5rem .5rem 0 0;
+    background-color: var(--primaria-claro);
+    color: var(--text);
+    height: 10rem;
+  }
+
+  .details-header h2{
+    font-size: 2rem;
+  }
+
+
+  .details-title{
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    padding: 1rem;
+  
+  
+  }
+  
+  .details-desc{
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    padding: 1rem;
+    max-height: 40%;
+    overflow-y: auto;
+  }
+  
+  .details-date{
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    padding: 1rem;
+  }
+
+  .event-details {
+    height: 90%;
+    width: 35%;
+  }
 }
 
 

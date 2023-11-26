@@ -2,6 +2,10 @@ import React from 'react'
 
 
 const Todo = ({todo, removeTodo, completeTodo, onClick, isDelayed}) => {
+
+
+
+
   return (
     
     <div className={`todo ${isDelayed ? 'task-atrasada' : ''}`} style={{textDecoration: todo.isCompleted ? "line-through": ""}} >
