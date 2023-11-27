@@ -361,6 +361,13 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
         }
       }
     };
+
+    useEffect(() => {
+      if (selectedTask) {
+        setEditedTitle(selectedTask.title);
+        setEditedDescription(selectedTask.description);
+      }
+    }, [selectedTask]);
     
     
 
