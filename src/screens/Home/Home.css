@@ -459,6 +459,75 @@ header {
   color: var(--text);
 }
 
+.confirmation-message{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1rem;
+}
+
+.input-edit{
+  width: 100%;
+  height: 3rem;
+  padding: 0 1rem;
+  border: 1px solid #ddd;
+  border-radius: .5rem;
+  margin-bottom: 1rem;
+}
+
+.details-title{
+  display: flex;
+  align-items: center;
+}
+
+.title-container {
+  flex: 1; /* Ocupa todo o espaço disponível */
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.btn-edit{
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--primaria);
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+   /* Defina o tamanho máximo para o título */
+}
+
+.edit-title{
+ width: 100%;
+}
+
+.textarea-edit{
+  width: 100%;
+  height: 15rem;
+  padding: 0 1rem;
+  border: 1px solid #ddd;
+  border-radius: .5rem;
+  margin-bottom: 1rem;
+}
+
+
+@media screen and (max-width: 1680px) {
+  .confirmation-dialog {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 25%;
+    border-radius: .5rem;
+  }
+}
 
 
 

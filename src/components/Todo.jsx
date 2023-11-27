@@ -8,7 +8,7 @@ const Todo = ({todo, removeTodo, completeTodo, onClick, isDelayed}) => {
 
   return (
     
-    <div className={`todo ${isDelayed ? 'task-atrasada' : ''}`} style={{textDecoration: todo.isCompleted ? "line-through": ""}} >
+    <div className={`todo ${isDelayed ? 'task-atrasada' : ''}`} style={{textDecoration: todo.isCompleted ? "line-through": ""}} title="Clique para visualizar detalhes ou editar a tarefa">
     <div className="content-todo" key={todo.id}>
       <div className='task-click' onClick={onClick}>
       <p>{todo.title}</p>

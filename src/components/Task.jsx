@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark} from '@fortawesome/free-solid-svg-icons';
 import { startOfDay, isBefore, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isAfter, format, parseISO } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+
 
 function Task({atualizarPorcentagem, filtro , setFiltro}) {
     const user = auth.currentUser;
@@ -255,7 +257,9 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
       if (hasChanges) {
         setShowConfirmation(true); // Mostra a div de confirmação se houver mudanças pendentes
       } else {
-        setSelectedTask(null); // Fecha os detalhes da tarefa se não houver mudanças pendentes
+        setSelectedTask(null);
+        setEditingTitle(false);
+        setEditingDescription(false); // Fecha os detalhes da tarefa se não houver mudanças pendentes
       }
     };
   
@@ -396,6 +400,9 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
         setEditedDescription(selectedTask.description);
         setSelectedTask(null);
         setShowConfirmation(false);
+        setHasChanges(false);
+        setEditingTitle(false);
+        setEditingDescription(false); // Aqui fecha o painel de detalhes sem salvar as alterações
       }
     };
     
@@ -437,13 +444,60 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
        <div className='details-header'>
        <h2>Detalhes da Tarefa</h2>
        </div>
-       <div className='details-title' onClick={handleTitleClick}>
-      <p>Título: {editingTitle ? <input type="text" value={editedTitle}  onKeyPress={(e) => handleKeyPress(e, 'title')} onChange={(e) => handleTitleChange(e.target.value)} /> : selectedTask.title}</p>
-      {editingTitle}
-      </div>
-      <div className='details-desc' onClick={handleDescriptionClick}>
-  <p>Descrição: {editingDescription ? <textarea value={editedDescription} onKeyPress={(e) => handleKeyPress(e, 'description')}  onChange={(e) => handleDescriptionChange(e.target.value)} /> : selectedTask.description}</p>
-  {editingDescription}
+       <div className='details-title'>
+              <div className="title-container">
+                {editingTitle ? (
+                  <React.Fragment>
+                    <div className="edit-title">
+                    <input
+                      type="text"
+                      className='input-edit'
+                      value={editedTitle}
+                      onKeyPress={(e) => handleKeyPress(e, 'title')}
+                      onChange={(e) => handleTitleChange(e.target.value)}
+                    />
+                    <span className="confirmation-message">(Aperte ENTER para confirmar)</span>
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <p className="title">
+                      Título:{" "}
+                      {selectedTask.title}
+                    </p>
+                    <button className='btn-edit' onClick={() => setEditingTitle(true)}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </button>
+                  </React.Fragment>
+                )}
+              </div>
+            </div>
+            <div className='details-desc'>
+      <div className="description-container">
+    {editingDescription ? (
+      <React.Fragment>
+        <div className="edit-description">
+          <textarea
+            className='textarea-edit'
+            value={editedDescription}
+            onKeyPress={(e) => handleKeyPress(e, 'description')}
+            onChange={(e) => handleDescriptionChange(e.target.value)}
+          />
+          <span className="confirmation-message">(Aperte ENTER para confirmar)</span>
+        </div>
+      </React.Fragment>
+    ) : (
+      <React.Fragment>
+        <p className="description">
+          Descrição:{" "}
+          {selectedTask.description}
+        </p>
+        <button className='btn-edit' onClick={() => setEditingDescription(true)}>
+          <FontAwesomeIcon icon={faPenToSquare} />
+        </button>
+      </React.Fragment>
+    )}
+  </div>
 </div>
 
     <div className='details-date'>
