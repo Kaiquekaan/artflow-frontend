@@ -79,6 +79,7 @@ header {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 10px;
     height: auto;
+    width: 92.5%;
     margin-left: 1rem;
     margin-right: 1rem;
     margin-top: 2px;
@@ -603,6 +604,7 @@ header {
 }
 
 .btn-confirm-alt{
+  display: block;
   background-color: #5cb85c;
   color: var(--text);
   border-radius: .25rem;
