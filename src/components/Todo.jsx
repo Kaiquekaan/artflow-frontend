@@ -17,7 +17,7 @@ const Todo = ({todo, removeTodo, completeTodo, onClick, isDelayed}) => {
         ({todo.category})
       </p>
       </div>
-      <div>
+      <div className='div-buttons'>
       <button className='complete-todo' onClick= {() => completeTodo(todo.id)}>Fazer</button>
       <button className='remove-todo' onClick= {() => removeTodo(todo.id)} >
         x

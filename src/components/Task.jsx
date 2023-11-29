@@ -212,17 +212,20 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     
     const removeTask = (id, collectionRef, setLocalState) => {
       // Remova a tarefa da coleção no banco de dados
-      collectionRef.doc(id).delete()
+      collectionRef
+        .doc(id)
+        .delete()
         .then(() => {
           console.log('Tarefa removida com sucesso.');
+    
+          // Remova a tarefa do estado local após a remoção bem-sucedida no Firestore
+          setLocalState((prevState) => prevState.filter((task) => task.id !== id));
         })
         .catch((error) => {
           console.error('Erro ao remover tarefa: ', error);
         });
     
-      // Remova a tarefa do estado local
-      setLocalState((prevState) => prevState.filter((task) => task.id !== id));
-      fetchData();
+      fetchData(); // Chama fetchData após remover a tarefa
     };
     
     const removeTodo = (id) => {
@@ -337,13 +340,19 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
 
 
     const handleTitleClick = () => {
-      setEditingTitle(true); // Ativa o modo de edição do título
-      setEditedTitle(selectedTask.title); // Define o valor atual do título no estado de edição
+      // Permitir edição apenas se a tarefa não estiver concluída
+      if (!selectedTask.completed) {
+        setEditingTitle(true);
+        setEditedTitle(selectedTask.title);
+      }
     };
 
     const handleDescriptionClick = () => {
-      setEditingDescription(true); // Ativa o modo de edição da descrição
-      setEditedDescription(selectedTask.description); // Define o valor atual da descrição no estado de edição
+      // Permitir edição apenas se a tarefa não estiver concluída
+      if (!selectedTask.completed) {
+        setEditingDescription(true);
+        setEditedDescription(selectedTask.description);
+      }
     };
     
     const confirmEdit = (field) => {
@@ -412,9 +421,9 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
         setEditingDescription(false); // Aqui fecha o painel de detalhes sem salvar as alterações
       }
     };
-    
-    
   
+
+   
     
   
     return <div className="task">
@@ -453,7 +462,7 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
        </div>
        <div className='details-title'>
               <div className="title-container">
-                {editingTitle ? (
+              {editingTitle && !selectedTask.completed ? (
                   <React.Fragment>
                     <div className="edit-title">
                     <input
@@ -464,6 +473,9 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
                       onChange={(e) => handleTitleChange(e.target.value)}
                     />
                     <span className="confirmation-message">(Aperte ENTER para confirmar)</span>
+                    <button className='btn-confirm-alt' onClick={() => confirmEdit('title')}>Confirmar</button>
+                    <span className="confirmation-message-alt">(Aperte o botão para confirmar)</span>
+                    
                     </div>
                   </React.Fragment>
                 ) : (
@@ -472,6 +484,7 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
                       Título:{" "}
                       {selectedTask.title}
                     </p>
+                    
                     <button className='btn-edit' onClick={() => setEditingTitle(true)}>
                       <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
@@ -481,7 +494,7 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
             </div>
             <div className='details-desc'>
       <div className="description-container">
-    {editingDescription ? (
+      {editingDescription && !selectedTask.completed ? (
       <React.Fragment>
         <div className="edit-description">
           <textarea
@@ -491,13 +504,17 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
             onChange={(e) => handleDescriptionChange(e.target.value)}
           />
           <span className="confirmation-message">(Aperte ENTER para confirmar)</span>
+          <button className='btn-confirm-alt' onClick={() => confirmEdit('description')}>Confirmar</button>
+          <span className="confirmation-message-alt">(Aperte o botão para confirmar)</span>
+          
+
         </div>
       </React.Fragment>
     ) : (
       <React.Fragment>
         <p className="description">
           Descrição:{" "}
-          {selectedTask.description}
+          <span className="description-text">{selectedTask.description}</span>
         </p>
         <button className='btn-edit' onClick={() => setEditingDescription(true)}>
           <FontAwesomeIcon icon={faPenToSquare} />

@@ -211,10 +211,10 @@ const MyCalendar = () => {
           <h2>Detalhes da Tarefa</h2>
           </div>
           <div className='details-title'>
-          <p >Titulo: {selectedEvent.title}</p>
+          <p className='title'>Titulo: {selectedEvent.title}</p>
           </div>
           <div className='details-desc'>
-          <p >Descrição: <br></br> {selectedEvent.extendedProps.description}</p>
+          <p >Descrição: <br></br> <span className='description-text'>{selectedEvent.extendedProps.description}</span></p>
           </div>
           <div className='details-date'>
           <p >Data: {selectedEvent.start.toLocaleString()}</p>

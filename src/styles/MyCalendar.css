@@ -1,0 +1,14 @@
+@media screen and (max-width: 767px) {
+    /* Estilos para dispositivos móveis (largura menor ou igual a 767px) */
+    .full-calendar-wrapper {
+      width: 100vw; /* Define a largura do wrapper como 100% da largura da viewport */
+      height: 100%; /* Ajuste a altura conforme necessário */
+      overflow-x: hidden; /* Evita a barra de rolagem horizontal caso haja */
+    }
+  
+    .full-calendar {
+      width: 100%; /* Define a largura do FullCalendar como 100% */
+      height: 100%; /* Define a altura do FullCalendar como 100% */
+      border: none; /* Opcional: remove a borda, se desejado */
+    }
+  }

@@ -1,5 +1,5 @@
 import './Home.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,6 @@ import Task from '../../components/Task';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../../firebase';
 import { useCollection} from 'react-firebase-hooks/firestore';
-import Chat from '../../components/Chat/Chat';
 import MyCalendar from '../../components/Calender';
 
 
@@ -21,6 +20,11 @@ function Home() {
   const [activeTab, setActiveTab] = useState('taskgui');
   const [porcentagem, setPorcentagem] = useState(0);
   const [filtro, setFiltro] = useState('all'); // 'all' para mostrar todas as tarefas, 'day' para mostrar apenas as do dia
+
+
+
+
+
 
   const atualizarPorcentagem = (novaPorcentagem) => {
     setPorcentagem(novaPorcentagem);
@@ -53,7 +57,7 @@ function Home() {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
-            <a className="nav-link" href="#">Sobre</a>
+           {/*<a className="nav-link" href="#">Sobre</a> */} 
           </li>
         </ul>
       </div>
@@ -63,7 +67,7 @@ function Home() {
   <div className="container-fluid">
     <div className="row">
       {/* Barra Lateral */}
-      <nav id="sidebar" className="col-3 d-flex flex-column flex-shrink-0 bg-light  sidebar">
+      <nav id="sidebar" className="col-3 d-flex flex-column flex-shrink-0 bg-light sidebar">
       <ul className="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li className="nav-item">
           <button
@@ -103,6 +107,53 @@ function Home() {
           </ul>
         </div>
     </nav>
+
+     {/* Barra Lateral alternativa para celulares */}
+    <nav className='sidebar-alt'>
+    <div className='sidebar-alt-container'>
+    <ul className="nav nav-pills nav-flush  text-center">
+        <li className="nav-item">
+          <button
+            className={`btn btn-light ${activeTab === 'taskgui' ? 'active' : ''}`}
+            onClick={() => handleTabClick('taskgui')}
+          >
+            <FontAwesomeIcon icon={faThumbtack} style={{ color: "#d8a313" }} />
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={`btn btn-light ${activeTab === 'comment' ? 'active' : ''}`}
+            onClick={() => handleTabClick('comment')}
+          >
+            <FontAwesomeIcon icon={faComment} style={{ color: "#d8a313" }} />
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={`btn btn-light ${activeTab === 'calendar' ? 'active' : ''}`}
+            onClick={() => handleTabClick('calendar')}
+          >
+            <FontAwesomeIcon icon={faCalendarDays} style={{ color: "#d8a313" }} />
+          </button>
+        </li>
+      </ul>
+      {/* Restante do conteúdo da barra lateral */}
+      <div className="dropdown border-top">
+          <a href="#" className="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src={user?.photoURL} alt="mdo" width={24} height={24} className="rounded-circle" />
+          </a>
+          <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
+            <li><a className="dropdown-item" href="#">Settings</a></li>
+            <li><a className="dropdown-item" href="#">Profile</a></li>
+            <li><hr className="dropdown-divider" /></li>
+            <li><a className="dropdown-item" href="#" onClick={() => [auth.signOut()]}>Sign out</a></li>
+          </ul>
+        </div>
+    </div>
+    </nav>
+
+
+
       {/* Conteúdo Principal */}
       <main className="main">
         <div className="main-container">
@@ -128,7 +179,7 @@ function Home() {
       
         <div className={`comment ${activeTab === 'comment' ? 'active' : ''}`}>
    
-        <Chat/>
+       
         </div>
         {/* Adicione conteúdo para outras guias aqui */}
           <div className={` calendar ${activeTab === 'calendar' ? 'active' : ''}`}>

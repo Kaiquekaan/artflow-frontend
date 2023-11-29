@@ -517,6 +517,19 @@ header {
   margin-bottom: 1rem;
 }
 
+.description-text {
+  word-wrap: break-word;
+  max-width: 300px; /* Ou qualquer largura desejada para quebrar o texto */
+}
+
+.confirmation-message-alt{
+  display: none;
+}
+
+.btn-confirm-alt{
+  display: none;
+}
+
 
 @media screen and (max-width: 1680px) {
   .confirmation-dialog {
@@ -548,7 +561,55 @@ header {
   background-color: #f5f5f5;
 }
 
+.fc-toolbar-title {
+  color: black;
+  font-weight: bold;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 
+.sidebar-alt{
+  display: none;
+  position: fixed;
+}
+
+.todo p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 450px;
+   /* Defina o tamanho máximo para o título */
+}
+
+
+@media screen and (max-width: 768px) {
+.todo p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 125px;
+   /* Defina o tamanho máximo para o título */
+}
+
+.confirmation-message{
+  display: none;
+}
+
+.confirmation-message-alt{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1rem;
+}
+
+.btn-confirm-alt{
+  background-color: #5cb85c;
+  color: var(--text);
+  border-radius: .25rem;
+  margin-bottom: .5rem;
+}
+
+}
 
 
 

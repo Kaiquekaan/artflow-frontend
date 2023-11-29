@@ -132,10 +132,6 @@ header {
  
 }
 
-.main::before{
-
- 
-}
 .main{
    padding: 0  0 0 0;
   
@@ -415,7 +411,7 @@ textarea:focus {
    width: calc(100vw - 4rem);
     height: calc(100vh - 4rem);
   z-index: 1;
-  overflow: hidden;
+  overflow: auto;
   }
 
   .details-header{
@@ -463,6 +459,151 @@ textarea:focus {
     height: 90%;
     width: 35%;
   }
+
+
+
+ /*-------------------------- CSS celular---------------------------- */
+
+ @media screen and (max-width: 768px) {
+  #sidebar{
+   transform: translateX(-100%);
+   position: fixed;
+  }
+  .sidebar-alt{
+    display: flex;
+    position: fixed;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4rem;
+    background-color: var(--text);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 2;
+  }
+  .sidebar-alt-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .btn{
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primaria);
+    width: 4rem;
+    cursor: pointer;
+    margin-right: 1rem;
+  }
+
+  .btn.active{
+   border-top: #d8a313 solid 5px;
+  }
+
+  .main{
+    width: 100vw;
+  }
+
+  .taskheader{
+    width: 100vw;
+    left: 0;
+  }
+
+  .task{
+    margin: 0;
+  }
+
+  .card-container{
+    padding: 0;
+    width: 100%;
+  }
+
+.card-tarefa{
+  width: 100vw;
+  height: 100%;
+  padding: 0;
+}
+
+.cart-todo{
+  height: auto;
+}
+
+.todo-list{
+  overflow: hidden;
+}
+
+
+
+  .div-buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    padding: 0 1rem;
+  }
+
+
+
+  .task-details{
+    width: 100%;
+    height: 100%;
+  }
+
+  .confirmation-dialog{
+    width: 80%;
+  }
+
+  .confirmation-buttons{
+    padding: 0 1rem;
+  }
+
+  .calendar{
+    width: 100vw;
+    height: calc(100vh - 4rem);
+  }
+
+  .calendar-container{
+    width: 100vw;
+    height: calc(100vh - 4rem);
+    display: grid;
+  }
+
+
+    /* Estilos para dispositivos móveis (largura menor ou igual a 767px) */
+    .full-calendar-wrapper {
+      width: 100vw; /* Define a largura do wrapper como 100% da largura da viewport */
+      height: 100%; /* Ajuste a altura conforme necessário */
+      overflow-x: hidden; /* Evita a barra de rolagem horizontal caso haja */
+    }
+  
+    .full-calendar {
+      width: 100%; /* Define a largura do FullCalendar como 100% */
+      height: 100%; /* Define a altura do FullCalendar como 100% */
+      border: none; /* Opcional: remove a borda, se desejado */
+    }
+
+    .event-details{
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .calender-add{
+      width: 100vw;
+      height: 100vh;
+      bottom: 0; /* Ajuste conforme necessário */
+      right: 0; /* Ajuste conforme necessário */
+    }
+
+
+  }
+
+
 }
 
 
