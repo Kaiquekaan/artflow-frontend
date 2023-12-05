@@ -1,0 +1,19 @@
+.loading-container {
+    position: fixed; /* Use fixed para manter o elemento fixo na tela enquanto rola */
+    top: 50%; /* Define o topo no meio da tela */
+    left: 50%; /* Define a margem esquerda no meio da tela */
+    transform: translate(-50%, -50%); /* Usa translate para mover o elemento para o centro */
+    z-index: 6;
+    background-color: transparent;
+    width: 8rem;
+    height: 8rem;
+    display: flex; /* Usando flexbox para centralizar */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;
+    border-radius: 1rem;
+  }
+
+  .spinner-border{
+    height: 3rem;
+    width: 3rem;
+  }

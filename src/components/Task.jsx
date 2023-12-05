@@ -10,6 +10,8 @@ import { faXmark} from '@fortawesome/free-solid-svg-icons';
 import { startOfDay, isBefore, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isAfter, format, parseISO } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import Loadingalt from './Loading-alt/Loading';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 function Task({atualizarPorcentagem, filtro , setFiltro}) {
@@ -19,6 +21,9 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     const [editingTitle, setEditingTitle] = useState(false);
     const [editingDescription, setEditingDescription] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showTaskCompleted, setShowTaskCompleted] = useState(false);
+    const [showTaskExcluded, setShowTaskExcluded] = useState(false)
 
 
     const { tasks, updateTasks } = useTaskContext();
@@ -122,6 +127,8 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     
     const completeTask = async (id, sourceCollectionRef, targetCollectionRef) => {
       try {
+
+        setIsLoading(true)
     
         const sourceDocRef = sourceCollectionRef.doc(id);
         const doc = await sourceDocRef.get();
@@ -141,7 +148,16 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
         }
       } catch (error) {
         console.error('Error completing task:', error);
+      } finally {
+        setIsLoading(false)
+        setShowTaskCompleted(true);
+
+        setTimeout(() => {
+          setShowTaskCompleted(false);
+        }, 10000); // Define a exibição por 6 segundos
+
       }
+
     };
     
     const fetchData = () => {
@@ -211,21 +227,35 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     
     
     const removeTask = (id, collectionRef, setLocalState) => {
-      // Remova a tarefa da coleção no banco de dados
-      collectionRef
-        .doc(id)
-        .delete()
-        .then(() => {
-          console.log('Tarefa removida com sucesso.');
+      try {
+        setIsLoading(true);
     
-          // Remova a tarefa do estado local após a remoção bem-sucedida no Firestore
-          setLocalState((prevState) => prevState.filter((task) => task.id !== id));
-        })
-        .catch((error) => {
-          console.error('Erro ao remover tarefa: ', error);
-        });
+        // Remova a tarefa da coleção no banco de dados
+        collectionRef
+          .doc(id)
+          .delete()
+          .then(() => {
+            console.log('Tarefa removida com sucesso.');
     
-      fetchData(); // Chama fetchData após remover a tarefa
+            // Remova a tarefa do estado local após a remoção bem-sucedida no Firestore
+            setLocalState((prevState) => prevState.filter((task) => task.id !== id));
+          })
+          .catch((error) => {
+            console.error('Erro ao remover tarefa: ', error);
+          })
+          .finally(() => {
+            fetchData(); // Chama fetchData após remover a tarefa
+            setIsLoading(false);
+            setShowTaskExcluded(true);
+    
+            setTimeout(() => {
+              setShowTaskExcluded(false);
+            }, 10000); // Define a exibição por 10 segundos
+          });
+      } catch (error) {
+        console.error('Error completing task:', error);
+        setIsLoading(false);
+      }
     };
     
     const removeTodo = (id) => {
@@ -427,14 +457,32 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     
   
     return <div className="task">
+      {isLoading && <Loadingalt />}
+      {showTaskCompleted && (
 
+      <div className={`task-added-notification ${showTaskCompleted ? 'active' : ''}`}>
+ <      FontAwesomeIcon icon={faCircleCheck} className='icon-check'/>
+   <p>Tarefa concluída com sucesso!</p>
+ </div>
+)}
+
+{showTaskExcluded && (
+
+<div className={`task-added-notification ${showTaskCompleted ? 'active' : ''}`}>
+<      FontAwesomeIcon icon={faCircleCheck} className='icon-check'/>
+<p>Tarefa excluída com sucesso!</p>
+</div>
+)}
        <div className="card-container">
           <div className="card card-tarefa card-todo">
           <div className="card-body">
                 <h5 className="card-title">Tarefas</h5>
                 <div className="todo-list">
                 {filteredTasks.map((todo) => (
-        <Todo key={todo.id} todo={todo} removeTodo={removeTodo} completeTodo={completeTodo} onClick={() => handleTaskClick(todo)} isDelayed={isTaskDelayed(todo.date)} // Adiciona a classe condicionalmente
+        <Todo key={todo.id} todo={todo}
+         removeTodo={removeTodo} 
+         completeTodo={completeTodo}
+         onClick={() => handleTaskClick(todo)} isDelayed={isTaskDelayed(todo.date)} // Adiciona a classe condicionalmente
         />
       ))}
       </div>

@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark} from '@fortawesome/free-solid-svg-icons';
 import { TaskContext } from '../services/TaskContext';
 import { useContext } from 'react';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -24,6 +25,7 @@ const MyCalendar = () => {
   const user = auth.currentUser;
   const tasksCollectionRef = db.collection('tasks');
   const todosCollectionRef = tasksCollectionRef.doc(user.uid).collection('todos');
+  const [showTaskAdded, setShowTaskAdded] = useState(false);
 
   
 
@@ -87,6 +89,12 @@ const MyCalendar = () => {
         .then((docRef) => {
           console.log('Evento salvo com ID: ', docRef.id);
           fetchData(); // Chama a função para buscar os dados atualizados
+          setShowTaskAdded(true);
+
+          setTimeout(() => {
+            setShowTaskAdded(false);
+          }, 10000); // Define a exibição por 6 segundos
+
         })
         .catch((error) => {
           console.error('Erro ao salvar evento: ', error);
@@ -174,6 +182,16 @@ const MyCalendar = () => {
 
   return (
     <div className='calendar-container '>
+      
+     
+      {showTaskAdded && (
+
+       <div className={`task-added-notification ${showTaskAdded ? 'active' : ''}`}>
+        <FontAwesomeIcon icon={faCircleCheck} className='icon-check'/>
+          <p>Tarefa adicionada com sucesso!</p>
+        </div>
+      )}
+    
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
@@ -183,7 +201,8 @@ const MyCalendar = () => {
         eventContent={eventContent}
         eventClick={handleEventClick} // Lidar com o clique em eventos
       />
-
+      
+      
       {/* Adicione ou remova a classe "active" com base no estado */}
       
       <div className={`calender-task ${isCalendarActive ? 'active' : ''}`}>

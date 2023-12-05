@@ -322,6 +322,56 @@ textarea:focus {
   left: 50%;
 }
 
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+
+.task-added-notification {
+  position: fixed;
+  top: 0;
+  left: calc(50% - 12.5%);
+  width: 25%;
+  height: 10%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #101728;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border-left: solid 10px #5cb85c;
+  display: flex; /* Utilizando flexbox */
+  flex-direction: row; /* Itens em linha */
+  justify-content: space-between; /* Espaçamento entre os itens */
+  align-items: center; 
+  animation: fadeInOut 6.5s forwards;
+  z-index: 1000;
+}
+
+.icon-check{
+  font-size: 2rem;
+  color: #5cb85c;
+}
+
+.task-added-notification p{
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.task-added-notification.active {
+  visibility: visible;
+}
 /*-------------------------- Detalhe tarefa---------------------------- */ 
 
 /* Defina um índice z para a classe .event-details maior do que o ::before */
@@ -460,7 +510,20 @@ textarea:focus {
     width: 35%;
   }
 
+  .task-added-notification{
 
+  }
+
+  .icon-check{
+    font-size: 1.5rem;
+
+  }
+
+  .task-added-notification p{
+    font-size: .9rem;
+  }
+
+}
 
  /*-------------------------- CSS celular---------------------------- */
 
@@ -600,10 +663,17 @@ textarea:focus {
       right: 0; /* Ajuste conforme necessário */
     }
 
+    .task-added-notification{
+     width: 90%;
+    }
+
+    .task-added-notification p{
+      font-size: 1.20rem;
+    }
 
   }
 
 
-}
+
 
 

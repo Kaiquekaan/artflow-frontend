@@ -79,7 +79,7 @@ header {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 10px;
     height: auto;
-    width: 92.5%;
+    width: auto;
     margin-left: 1rem;
     margin-right: 1rem;
     margin-top: 2px;
@@ -580,6 +580,8 @@ header {
   max-width: 450px;
    /* Defina o tamanho máximo para o título */
 }
+
+
 
 
 @media screen and (max-width: 768px) {
