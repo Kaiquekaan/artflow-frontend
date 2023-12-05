@@ -72,6 +72,7 @@ header {
   display: grid;
   border-bottom: 1px solid #555;
   overflow-y: auto;
+  width: 100%;
   
   }
   .todo{
@@ -110,6 +111,7 @@ header {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 10px;
     height: auto;
+    width: auto;
     margin-left: 1rem;
     margin-right: 1rem;
     margin-top: 2px;
@@ -585,7 +587,7 @@ header {
 
 
 @media screen and (max-width: 768px) {
-.todo p{
+.todo p, .done p{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

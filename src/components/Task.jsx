@@ -23,7 +23,7 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showTaskCompleted, setShowTaskCompleted] = useState(false);
-    const [showTaskExcluded, setShowTaskExcluded] = useState(false)
+    const [showTaskExcluded, setShowTaskExcluded] = useState(false);
 
 
     const { tasks, updateTasks } = useTaskContext();

@@ -244,6 +244,7 @@ body {
 }
 .calender-add{
   position: fixed;
+  display: block;
   background-color: #fff;
   transition: 0.5s;
   border-radius: 0.5rem;
@@ -664,11 +665,12 @@ textarea:focus {
     }
 
     .task-added-notification{
-     width: 90%;
+     width: 100%;
+     left: auto;
     }
 
     .task-added-notification p{
-      font-size: 1.20rem;
+      font-size: 1.40rem;
     }
 
   }
