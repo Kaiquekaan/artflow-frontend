@@ -459,8 +459,9 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     const taskDay = selectedTaskDate ? selectedTaskDate.getDate() : '';
     const taskMonth = selectedTaskDate ? selectedTaskDate.getMonth() + 1 : ''; // Os meses em JavaScript vão de 0 a 11, então é necessário adicionar 1 para o formato padrão
     const taskYear = selectedTaskDate ? selectedTaskDate.getFullYear() : '';
-    const taskHour = selectedTaskDate ? selectedTaskDate.getHours(): '';
-    const taskMinute = selectedTaskDate ? selectedTaskDate.getMinutes(): '';
+    const taskHour = selectedTaskDate ? selectedTaskDate.getHours().toString().padStart(2, '0') : '';
+    const taskMinute = selectedTaskDate ? selectedTaskDate.getMinutes().toString().padStart(2, '0') : '';
+
 
    
     

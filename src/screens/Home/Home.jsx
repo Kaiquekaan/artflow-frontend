@@ -12,6 +12,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../../firebase';
 import { useCollection} from 'react-firebase-hooks/firestore';
 import MyCalendar from '../../components/Calender';
+import Chatbot from '../../components/Chat/Chat';
 
 
 
@@ -20,6 +21,7 @@ function Home() {
   const [activeTab, setActiveTab] = useState('taskgui');
   const [porcentagem, setPorcentagem] = useState(0);
   const [filtro, setFiltro] = useState('all'); // 'all' para mostrar todas as tarefas, 'day' para mostrar apenas as do dia
+  const [isChatVisible, setIsChatVisible] = useState(false);
 
 
 
@@ -32,6 +34,11 @@ function Home() {
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
+    if (tabName === 'comment') {
+      setIsChatVisible(true);
+    } else {
+      setIsChatVisible(false);
+    }
   };
 
   const handleFiltroChange = (event) => {
@@ -177,10 +184,9 @@ function Home() {
             
           </div>
       
-        <div className={`comment ${activeTab === 'comment' ? 'active' : ''}`}>
-   
-       
-        </div>
+          <div className={`comment ${activeTab === 'comment' ? 'active' : ''}`}>
+          <Chatbot isVisible={isChatVisible && activeTab === 'comment'} />
+      </div>
         {/* Adicione conteúdo para outras guias aqui */}
           <div className={` calendar ${activeTab === 'calendar' ? 'active' : ''}`}>
           <MyCalendar/>
