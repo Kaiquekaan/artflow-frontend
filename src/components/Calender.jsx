@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import TodoForm from './TodoFrom';
 import { auth, db } from '../firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,6 +10,10 @@ import { faXmark} from '@fortawesome/free-solid-svg-icons';
 import { TaskContext } from '../services/TaskContext';
 import { useContext } from 'react';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faBarsStaggered } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
+
 
 
 
@@ -31,6 +36,7 @@ const MyCalendar = () => {
 
 
   useEffect(() => {
+
     // Realiza a consulta inicial e atualiza o estado tasks apenas uma vez
     todosCollectionRef.get().then((querySnapshot) => {
       const tasks = [];
@@ -75,14 +81,21 @@ const MyCalendar = () => {
   
 
 
-  const addTodo = (title, category, desc) => {
+  const addTodo = (title, category, desc, selectedTime) => {
+
+    if (!selectedDate || !selectedTime) {
+      console.error('Data ou hora inválida.');
+      return;
+    }
+    
+    
     if (title && selectedDate) {
       const newTask = {
         user: user.uid,
         title: title,
         description: desc,
         category: category,
-        date: selectedDate.toISOString(),
+        date: selectedTime,
       };
 
       todosCollectionRef.add(newTask)
@@ -177,6 +190,12 @@ const MyCalendar = () => {
     setCalendarActive(!isCalendarActive);
   };
 
+  const selectedTaskDate = selectedEvent ? new Date(selectedEvent.start) : null;
+  const taskDay = selectedTaskDate ? selectedTaskDate.getDate() : '';
+  const taskMonth = selectedTaskDate ? selectedTaskDate.getMonth() + 1 : ''; // Os meses em JavaScript vão de 0 a 11, então é necessário adicionar 1 para o formato padrão
+  const taskYear = selectedTaskDate ? selectedTaskDate.getFullYear() : '';
+  const taskHour = selectedTaskDate ? selectedTaskDate.getHours(): '';
+  const taskMinute = selectedTaskDate ? selectedTaskDate.getMinutes(): '';
 
 
 
@@ -192,14 +211,37 @@ const MyCalendar = () => {
         </div>
       )}
     
-      <FullCalendar
+    <FullCalendar
         ref={calendarRef}
-        plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
         initialView="dayGridMonth"
         dateClick={handleDateClick}
         events={events}
+        headerToolbar={{
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay', // Adicionando o botão de visualização de lista semanal
+        }}
+         businessHours={{ // Define os horários de trabalho padrão
+        daysOfWeek: [1, 2, 3, 4, 5], // Dias da semana (segunda a sexta-feira)
+        startTime: '09:00', // Hora de início do expediente
+        endTime: '18:00', // Hora de término do expediente
+        }}
+        slotLabelFormat={{
+          hour: '2-digit',
+          minute: '2-digit',
+          omitZeroMinute: false,
+          meridiem: 'short',
+          hour12: true,
+        }}
+         locale='pt-br' // Define o idioma para português do Brasil
+        slotMinTime='00:00:00' // Hora de início dos slots (0h)
+        slotMaxTime='24:00:00' // Hora de término dos slots (24h)
+         allDaySlot={true} // Mostra a área de slots de "dia inteiro"
         eventContent={eventContent}
         eventClick={handleEventClick} // Lidar com o clique em eventos
+        // Adicionando os eventos de fundo
+      
       />
       
       
@@ -213,7 +255,7 @@ const MyCalendar = () => {
              <h2>Adicionar tarefas</h2>
              </div>
              <div className="add-body">
-          {selectedDate && <TodoForm addTodo={addTodo} />}
+          {selectedDate && <TodoForm addTodo={addTodo} selectedDate={selectedDate} />}
           </div>
          </div>
       
@@ -230,13 +272,19 @@ const MyCalendar = () => {
           <h2>Detalhes da Tarefa</h2>
           </div>
           <div className='details-title'>
-          <p className='title'>Titulo: {selectedEvent.title}</p>
+          <p className='title'>
+          <FontAwesomeIcon icon={faPaperclip} className='icon-detalhes'/>
+            Titulo: {selectedEvent.title}</p>
           </div>
           <div className='details-desc'>
-          <p >Descrição: <br></br> <span className='description-text'>{selectedEvent.extendedProps.description}</span></p>
+          <p >
+          <FontAwesomeIcon icon={faBarsStaggered} className='icon-detalhes'/>
+            Descrição: <br></br> <span className='description-text'>{selectedEvent.extendedProps.description}</span></p>
           </div>
           <div className='details-date'>
-          <p >Data: {selectedEvent.start.toLocaleString()}</p>
+          <p>
+          <FontAwesomeIcon icon={faClock} className='icon-detalhes' />
+            Data: {taskDay}/{taskMonth}/{taskYear} - {taskHour}:{taskMinute}</p>
           </div>
           
         </div>

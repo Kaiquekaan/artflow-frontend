@@ -2,7 +2,6 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { auth, db } from '../firebase'; 
 import Todo from './Todo'
-import TodoForm from './TodoFrom'
 import Done from './Done'
 import { useTaskContext } from '../services/TaskContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +11,10 @@ import { utcToZonedTime } from 'date-fns-tz';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import Loadingalt from './Loading-alt/Loading';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faBarsStaggered } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
+
 
 
 function Task({atualizarPorcentagem, filtro , setFiltro}) {
@@ -452,6 +455,12 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
       }
     };
   
+    const selectedTaskDate = selectedTask ? new Date(selectedTask.date) : null;
+    const taskDay = selectedTaskDate ? selectedTaskDate.getDate() : '';
+    const taskMonth = selectedTaskDate ? selectedTaskDate.getMonth() + 1 : ''; // Os meses em JavaScript vão de 0 a 11, então é necessário adicionar 1 para o formato padrão
+    const taskYear = selectedTaskDate ? selectedTaskDate.getFullYear() : '';
+    const taskHour = selectedTaskDate ? selectedTaskDate.getHours(): '';
+    const taskMinute = selectedTaskDate ? selectedTaskDate.getMinutes(): '';
 
    
     
@@ -529,12 +538,13 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
                 ) : (
                   <React.Fragment>
                     <p className="title">
+                    <FontAwesomeIcon icon={faPaperclip} className='icon-detalhes' />
                       Título:{" "}
                       {selectedTask.title}
                     </p>
                     
                     <button className='btn-edit' onClick={() => setEditingTitle(true)}>
-                      <FontAwesomeIcon icon={faPenToSquare} />
+                      Editar
                     </button>
                   </React.Fragment>
                 )}
@@ -561,19 +571,24 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     ) : (
       <React.Fragment>
         <p className="description">
+        <FontAwesomeIcon icon={faBarsStaggered} className='icon-detalhes'/>
           Descrição:{" "}
           <span className="description-text">{selectedTask.description}</span>
         </p>
         <button className='btn-edit' onClick={() => setEditingDescription(true)}>
-          <FontAwesomeIcon icon={faPenToSquare} />
+          Editar
         </button>
+       
       </React.Fragment>
     )}
-  </div>
+</div>
 </div>
 
     <div className='details-date'>
-   <p >Data: {selectedTask.date}</p>
+    <p>
+    <FontAwesomeIcon icon={faClock} className='icon-detalhes' />
+      Data: {taskDay}/{taskMonth}/{taskYear} - {taskHour}:{taskMinute}
+      </p>
     </div>
        
      </div>

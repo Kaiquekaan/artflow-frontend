@@ -373,6 +373,18 @@ textarea:focus {
 .task-added-notification.active {
   visibility: visible;
 }
+
+.weekend-day {
+  background-color: #f2f2f2; /* Cor de fundo cinza para os sábados e domingos */
+}
+
+.fc-timegrid-axis-cushion{
+  color: black;
+}
+
+.fc-timegrid-slot-label-cushion{
+  color: black;
+}
 /*-------------------------- Detalhe tarefa---------------------------- */ 
 
 /* Defina um índice z para a classe .event-details maior do que o ::before */
@@ -428,6 +440,7 @@ textarea:focus {
   padding: 0;
   padding: 1rem;
   max-height: 40%;
+  width: 100%;
   overflow-y: auto;
 }
 
@@ -451,6 +464,10 @@ textarea:focus {
   opacity: 0.5;
   background-color: #101728;
   z-index: 1; /* Defina um índice z menor para que o fundo fique atrás do evento */
+}
+
+.icon-detalhes{
+  margin-right: .8rem;
 }
 
 @media screen and (max-width: 1680px) {
@@ -490,7 +507,9 @@ textarea:focus {
   
   }
   
-  .details-desc{
+  .details-desc {
+    display: grid;
+    justify-content: space-between;
     font-size: 1rem;
     margin: 0;
     padding: 0;
@@ -522,6 +541,47 @@ textarea:focus {
 
   .task-added-notification p{
     font-size: .9rem;
+  }
+
+  .calender-add{
+    position: fixed;
+    display: block;
+    background-color: #fff;
+    transition: 0.5s;
+    border-radius: 0.5rem;
+    z-index: 3;
+    bottom: 5vh; /* Ajuste conforme necessário */
+    right: 3vw; /* Ajuste conforme necessário */
+    height: 90vh; /* 50% da altura da tela */
+    width: 32vw; /* 30% da largura da tela */
+  }
+  
+  .add-body{
+    padding: 1rem;
+    border-radius: 0 0 .5rem .5rem;
+    margin-top: 0;
+    
+  }
+
+  .add-body p{
+    font-size: .8rem;
+  }
+
+  .input-desc{
+    height: 7rem;
+  }
+  .description {
+    word-wrap: break-word;
+    max-width: 390px; /* Ou qualquer largura desejada para quebrar o texto */
+    overflow: hidden;
+  }
+
+  .todo p, .done p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 400px;
+     /* Defina o tamanho máximo para o título */
   }
 
 }
@@ -634,8 +694,9 @@ textarea:focus {
 
   .calendar-container{
     width: 100vw;
-    height: calc(100vh - 4rem);
+    height: calc(100vh - 8rem);
     display: grid;
+    overflow-x: hidden;
   }
 
 
@@ -671,6 +732,10 @@ textarea:focus {
 
     .task-added-notification p{
       font-size: 1.40rem;
+    }
+
+    .fc-button-group{
+     
     }
 
   }
