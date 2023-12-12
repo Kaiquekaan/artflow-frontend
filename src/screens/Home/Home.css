@@ -269,9 +269,12 @@ header {
   align-items: center;
 }
 
-.donetask-title{
+.donetask-title {
   margin-left: .5rem;
-  
+  max-width: 600px; /* Defina o tamanho máximo desejado para o título */
+  white-space: nowrap; /* Impede que o texto quebre em várias linhas */
+  overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse o tamanho especificado */
+  text-overflow: ellipsis; /* Exibe reticências (...) quando o texto for cortado */
 }
 
 

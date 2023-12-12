@@ -25,17 +25,6 @@ const AuthenticationService = {
       })
   },
 
-  async loginWithEmailAndPassword(email, password) {
-    try {
-      const userCredential = await auth().signInWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-      return user;
-    } catch (error) {
-      // Handle errors, por exemplo: exibir uma mensagem de erro para o usuário
-      console.error('Erro no login com e-mail e senha:', error.message);
-      throw error;
-    }
-  },
 
   async registerWithEmailAndPassword(email, password) {
     try {
@@ -47,8 +36,22 @@ const AuthenticationService = {
       console.error('Erro no registro com e-mail e senha:', error.message);
       throw error;
     }
+  },
+
+
+  async loginWithEmailAndPassword(email, password) {
+    try {
+      const userCredential = await auth().signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      return user;
+    } catch (error) {
+      // Handle errors, por exemplo: exibir uma mensagem de erro para o usuário
+      console.error('Erro no login com e-mail e senha:', error.message);
+      throw error;
+    }
   }
 
+ 
 }
 
 export default AuthenticationService

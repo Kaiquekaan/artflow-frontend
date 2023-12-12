@@ -69,6 +69,7 @@ const MyCalendar = () => {
               description: doc.data().description,
               user: doc.data().user,
               date: doc.data().date,
+              status: doc.data().status,
             });
           });
           updateTasks(todos);
@@ -96,6 +97,7 @@ const MyCalendar = () => {
         description: desc,
         category: category,
         date: selectedTime,
+        status: "to do",
       };
 
       todosCollectionRef.add(newTask)

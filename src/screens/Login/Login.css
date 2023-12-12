@@ -161,6 +161,9 @@
         position: relative;
         border-radius: 1rem;
     }
+    .btn-login{
+        height: 2rem;
+    }
 }
 
 

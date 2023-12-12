@@ -51,7 +51,8 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
           title: doc.data().title,
           description: doc.data().description,
           user: doc.data().user,
-          date: doc.data().date, // Use a data real do documento
+          date: doc.data().date,
+          status: doc.data().status, // Use a data real do documento
         });
       });
       updateTasks(todos);
@@ -78,7 +79,8 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
             title: doc.data().title,
             description: doc.data().description,
             user: doc.data().user,
-            date: doc.data().date, // Use a data real do documento
+            date: doc.data().date,
+            status: doc.data().status, // Use a data real do documento
           });
         });
         setDones(dones);
@@ -139,6 +141,7 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
         if (doc.exists) {
     
           const taskData = doc.data();
+          taskData.status = 'done';
     
           await targetCollectionRef.doc(id).set(taskData);
           await sourceDocRef.delete();
@@ -184,6 +187,7 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
               description: doc.data().description,
               user: doc.data().user,
               date: doc.data().date,
+              status: doc.data().status,
             });
           });
           setTodos(todos);
@@ -204,7 +208,8 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
               title: doc.data().title,
               description: doc.data().description,
               user: doc.data().user,
-              date: doc.data().date, // Use a data real do documento
+              date: doc.data().date, 
+              status: doc.data().status,// Use a data real do documento
             });
           });
           setDones(dones);
@@ -518,6 +523,8 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
        <div className='details-header'>
        <h2>Detalhes da Tarefa</h2>
        </div>
+       {selectedTask.status === "to do" ? (
+        <React.Fragment>
        <div className='details-title'>
               <div className="title-container">
               {editingTitle && !selectedTask.completed ? (
@@ -584,6 +591,29 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
     )}
 </div>
 </div>
+</React.Fragment>
+) : (
+  <React.Fragment>
+  <div className='details-title'>
+  <div className="title-container">
+  <p className="title">
+                    <FontAwesomeIcon icon={faPaperclip} className='icon-detalhes' />
+                      Título:{" "}
+                      {selectedTask.title}
+                    </p>
+    </div>
+    </div>
+        <div className='details-desc'>
+        <div className="description-container">
+        <p className="description">
+        <FontAwesomeIcon icon={faBarsStaggered} className='icon-detalhes'/>
+          Descrição:{" "}
+          <span className="description-text">{selectedTask.description}</span>
+        </p>
+          </div>
+          </div>
+          </React.Fragment>
+  )}
 
     <div className='details-date'>
     <p>
