@@ -1,0 +1,128 @@
+.body{
+    background-image: url('https://github.com/Kaiquekaan/TaskBot/blob/master/src/imagens/FundoAnimacao.gif?raw=true'); /* Caminho para sua imagem */
+    background-size: cover; /* Redimensiona a imagem para cobrir todo o fundo */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Evita a repetição da imagem */
+    background-color: #000B27;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    width: 100vw;
+    height: 100vh;
+  }
+
+ .config-body{
+  background-color: transparent;
+  width: 100vw;
+  height: 100vh;
+ }
+
+  .item-list{
+    background-color: #101728;
+    height: 16.5rem;
+  }
+
+  .list{
+    display: grid;
+    grid-template-rows: 4rem repeat(6, 3.6rem) auto ;
+    position: relative;
+    width: 20rem;
+    height: 82.5vh;
+    top: 10%;
+    left: 5%;
+    list-style: none;
+  }
+
+  .list h2{
+    color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  .list li{
+    align-content: center;
+    font-size: 1.4em;
+  }
+
+  .btn-voltar{
+    position: relative;
+    justify-self: left;
+    align-self: flex-end;
+    width: 10rem;
+    height: 2.8rem;
+    background-color: #fff;
+    color: #000;
+    font-size: 1.25rem;
+    border: #C8C8C8 1px solid;
+    border-radius: .5rem;
+  }
+
+  .btn-voltar:hover{
+    background-color: #f2f2f2;
+    border: #000 1px solid;
+  }
+
+  .btn-config{
+    width: 15rem;
+    text-align: left;
+    border-radius: .5rem;
+    background-color: transparent;
+  }
+
+  .btn-config:hover{
+    background-color: #19233B;
+  }
+
+  .alt{
+    color: #000B27;
+  }
+
+  .alt:hover{
+    background-color: #f2f2f2;
+  }
+
+  .active-btn{
+    background-color: #4A4CA8;
+    border: 1px solid #6D6FED;
+    color: #fff;
+  }
+
+  .active-btn:hover{
+    background-color: #4A4CA8;
+    border: 1px solid #6D6FED;
+  }
+
+
+  .config-container{
+    background-color: #fff;
+    border: 1px solid #C8C8C8;
+    border-radius: .3rem;
+    width: 60%;
+    height: 75vh;
+    padding: 3rem;
+    display: flex;
+    position: absolute;
+    top: 17%;
+    left: 23%;
+  }
+
+  .title-config{
+    margin-bottom: 2rem;
+  }
+
+  .btn-base{
+    background-color: #6D6FED;
+    color: #F2F2F2;
+    border-radius: .3rem;
+    width: 10rem;
+    height: 2.8rem;
+  }
+
+  .singout{
+    visibility: hidden;
+    display: none;
+  }
+
+  .active{
+    visibility: visible;
+    display: block;
+  }
