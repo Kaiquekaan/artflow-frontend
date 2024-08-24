@@ -75,9 +75,9 @@ header {
   height: 60px;
 }
 /* Estilo dos links de navegação */
-.nav {
+/*.nav {
   margin-right: 20px;
-}
+}*/
 
 .nav a {
   color: #fff; /* Cor dos links */
@@ -86,20 +86,35 @@ header {
 }
 /*-------------------------- SIDEBAR---------------------------- */
 
-#sidebar{
-  margin: 0;
-  width: 4rem;
-  
-}
-#sidebar button{
-  height: 4rem;
-  width: 4rem;
-  background-color: transparent;
-} 
-#sidebar .active{
-  background-color: var(--text);
-  border-right: solid  var(--terciaria);
 
+#sidebar ul{
+  display: flex;
+
+}
+
+#sidebar ul li{
+  display: flex;
+  justify-content: center;
+}
+
+#sidebar button{
+  height: 3rem;
+  width: 3rem;
+  border: none;
+  background-color: transparent;
+  margin: 0;
+} 
+
+#sidebar button:hover{
+  border: 1px solid #223361;
+  background-color:#223361 ;
+}
+
+#sidebar .active{
+  background-color: #4A4CA8;
+  border: 1px solid #6D6FED;
+  width: 3rem;
+  height: 3rem;
 }
 
 
@@ -111,9 +126,82 @@ header {
 #sidebar li{
   width: 4rem;
 }
+
+.hr{
+  background-color: #4A4CA8;
+  height: .1rem;
+  width: 2.8rem;
+  display: grid;
+  justify-self: center;
+  align-self: center;
+  
+}
+
+.dropdown-menu.dropdown-menu-end {
+  right: 10%;
+  left: auto;
+}
+
+.dropdown-menu{
+  background-color: #252c41;
+  width: 16rem;
+}
+
 .dropdown-menu li{
   margin-left: 0;
 }
+
+.dropdown-item{
+  color: #f2f2f2;
+}
+
+.dropdown-item:hover{ 
+  background-color: #293864;
+  color: #fff;
+}
+
+.dropdown-divider{
+  background-color: #6D6FED;
+
+}
+
+.dropdown-icon{
+  margin-right: 1rem;
+  font-size: 1.3rem;
+}
+
+.user-displayname{
+ color: #f2f2f2;
+ font-size: 1rem;
+ font-weight: bold;
+}
+
+.user-email{
+  color: #b6b1b1;
+  font-size: 0.8rem; 
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+a.dropdown-toggle {
+  text-align: left; 
+}
+
+
+.config{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.gear{
+  font-size: 1.6rem;
+  margin: 0;
+}
+
 /*-------------------------- MAIN---------------------------- */
 
 
@@ -444,11 +532,14 @@ textarea:focus {
   overflow-y: auto;
 }
 
-.details-date{
-  font-size: 1.050rem;
-  margin: 0;
-  padding: 0;
-  padding: 1rem;
+.details-date {
+  position: absolute;
+  bottom: 30px; /* Ajuste conforme necessário para o espaçamento do rodapé */
+  right: 30px; /* Ajuste conforme necessário para o espaçamento do lado direito */
+  background-color: #fff; /* Cor de fundo opcional para destacar */
+  padding: 5px 10px; /* Espaçamento interno */
+  border-radius: 5px; /* Arredondamento dos cantos */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra opcional para destacar */
 }
 
 .page{
@@ -530,9 +621,7 @@ textarea:focus {
     width: 35%;
   }
 
-  .task-added-notification{
-
-  }
+ 
 
   .icon-check{
     font-size: 1.5rem;
@@ -734,9 +823,7 @@ textarea:focus {
       font-size: 1.40rem;
     }
 
-    .fc-button-group{
-     
-    }
+    
     .todo p, .done p{
       overflow: hidden;
       text-overflow: ellipsis;

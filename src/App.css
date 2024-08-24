@@ -14,7 +14,7 @@ header {
 }
 .navbar{
   width: 100%;
-  margin-left: 1rem;
+  
 }
 .navbar-nav{
   margin-left: auto;
@@ -22,14 +22,14 @@ header {
 }
 
 
-#sidebar{
-  padding: 0;
-  width: 4rem;
-  
-}
+
 .sidebar-menu {
   max-height: calc(100vh - 100px); /* Ajuste conforme necessário */
   overflow-y: auto;
+}
+
+.btn{
+  border: none;
 }
 
 main{

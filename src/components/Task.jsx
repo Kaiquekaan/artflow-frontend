@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark} from '@fortawesome/free-solid-svg-icons';
 import { startOfDay, isBefore, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isAfter, format, parseISO } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import Loadingalt from './Loading-alt/Loading';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { faBarsStaggered } from '@fortawesome/free-solid-svg-icons';
@@ -491,7 +491,9 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
        <div className="card-container">
           <div className="card card-tarefa card-todo">
           <div className="card-body">
-                <h5 className="card-title">Tarefas</h5>
+              <div className="card-title">
+                <h5>Tarefas</h5>
+                </div>
                 <div className="todo-list">
                 {filteredTasks.map((todo) => (
         <Todo key={todo.id} todo={todo}
@@ -614,6 +616,8 @@ function Task({atualizarPorcentagem, filtro , setFiltro}) {
           </div>
           </React.Fragment>
   )}
+   
+     
 
     <div className='details-date'>
     <p>

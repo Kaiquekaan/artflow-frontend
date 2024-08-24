@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+
+
+*:root{
+    --primaria: #101728;
+    --primaria-claro: #051937;
+    --secundaria: #19233B;
+    --text: #fff;
+    --terciaria:#d8a313;
+    --quarinaria:#282D3B;
+    --text-claro: black;
+  }
+
+  .body{
+    background-image: url('https://github.com/Kaiquekaan/TaskBot/blob/master/src/imagens/FundoAnimacao.gif?raw=true'); /* Caminho para sua imagem */
+    background-size: cover; /* Redimensiona a imagem para cobrir todo o fundo */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Evita a repetição da imagem */
+    background-color: #000B27;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .form-custom{
+    display: grid;
+    grid-template-rows: 1rem  9rem 27rem 3.5rem 6rem;
+    text-align: left;
+    justify-items: center;
+    align-content: center;
+    background-color: #F2F2F2;
+    padding: 25px;
+    box-shadow: 0 0 10px rgb(7, 7, 7);
+    color :white;
+    width: 38vw;
+    height: 100vh;
+    position: relative;
+
+  }
+
+ .logo{
+    height: 11rem;
+    width: 11rem;
+    margin-bottom: 1.5rem;
+ } 
+
+.title-div{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+    width: 65%;
+    justify-items: center;
+    }
+
+.title{
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3rem;
+  color: black;
+  margin: 0;
+}
+
+p{
+    color: black;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.preview-container{
+    display: grid;
+    background-color: #fff;
+    border: 1px solid #e0dede;
+    border-radius: .4rem;
+    padding: 0 .8rem .8rem .8rem;
+    
+   
+}
+
+.label-image{
+    background-color: #6D6FED;
+    width: 100%;
+    border-radius: .4rem 0;
+    color: #F2F2F2;
+    text-align: center;
+}
+
+.imagens{
+ display: grid;
+ grid-template-columns: 4fr;
+ justify-items: center;
+ align-items: center;
+ min-height: 8rem;
+}
+
+.image-preview{
+    width: 50px;
+}
+
+/* Custom.css */
+.profile-images-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .profile-image-option {
+    max-width: 50px;
+    max-height: 50px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  
+  .profile-image-option:hover {
+    transform: scale(1.1);
+  }
+  
+  .profile-image-option.selected {
+    border-color: blue; /* Borda azul para a imagem selecionada */
+  }
+
+.input-image{
+    background-color: transparent;
+    border: solid 2px #19233B;
+    color: #101728;
+    border-radius: 1rem;
+    width: 30%;
+    height: 2.5rem;
+    margin-left: .5rem;
+}
+
+.btns-imagens{
+    display: block;
+    height: 4rem;
+    align-items: center;
+}
+
+.btns-p{
+    font-size: 1rem;
+    margin-top: .5rem;
+    
+}
+
+.file{
+    margin-top: .6rem;
+    background-color: #fff;
+    width: 100%;
+    color: #000;
+    border-left: solid  2px #46BDCC;;
+    border-right: solid  2px #46BDCC;;
+}
+
+
+/* Botão */
+.btn {
+    height: 3.25rem;
+    width: 100%;
+    border: solid #04060B 2px;
+    font-size: 1.20rem;
+    background-color: transparent;
+    display: flex; /* Usar flexbox */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Centraliza o conteúdo */
+    position: relative; /* Necessário para o ícone */
+    overflow: hidden; /* Para evitar problemas com overflow */
+    padding: 0; /* Remove o padding padrão */
+}
+
+.btn:hover {
+    background-color: #6D6FED;
+}
+
+/* Conteúdo do Botão */
+.btn-content {
+    display: flex; /* Flexbox no conteúdo */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Centraliza o texto */
+    position: relative; /* Necessário para centralizar o texto */
+    width: 100%; /* Ocupa toda a largura do botão */
+}
+
+/* Ícone */
+.icon {
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-right: 0.5rem; /* Espaçamento entre o ícone e o texto */
+    position: absolute; /* Posição absoluta */
+    left: 1rem; /* Distância da borda esquerda */
+}
+
+.link-about{
+    position: absolute;
+    font-size: 1rem;
+    bottom: 3%;
+    left: 8%;
+}
+
+.input-cadas {
+    display: block;
+    margin: 0 auto;
+    background-color: rgb(26, 24, 24);
+    color: white;
+    border-radius: 10px;
+    margin-bottom: rem;
+}
+
+
+
+.btn-submit-cadas{
+    height: 50px;
+    margin-bottom: .5rem;
+    background-color: var(--text);
+}
+
+@media screen and (max-width: 1680px) {
+    .titulo-cadas{
+        display: block;
+        margin: 0 auto;
+        font-size: 1.5rem;
+    }
+
+
+
+.btn-cadas{
+    height: 2rem;
+    margin-bottom: .5rem;
+
+}
+
+.label-cadas{
+    font-size: .7rem;
+}
+
+}

@@ -11,73 +11,123 @@
 
 
 
-.login-container {
-    background-image: url("https://github.com/Kaiquekaan/TaskBot/blob/master/src/imagens/Fundo_Login_Branco.png?raw=true");
+  .login-form{
     display: grid;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #e6e3e3;
-    top: 50rem;
-}
-
-
-.login-logo  {
-    width: 50%;
-    height: auto;
-    text-align: center;
-}
-
-.login-form {
-    display: grid;
+    grid-template-rows: 1rem  10rem 17rem 3.5rem 8rem;
     text-align: left;
-    background-color: #101728;
+    justify-items: center;
+    align-content: center;
+    background-color: #F2F2F2;
     padding: 25px;
     box-shadow: 0 0 10px rgb(7, 7, 7);
     color :white;
-    width: 30vw;
-    height: 85vh;
+    width: 38vw;
+    height: 100vh;
     position: relative;
-    border-radius: 1rem;
+
+  }
+
+ label{
+    color: #000;
+ }
+
+  span{
+    color: #000000;
+  }
+
+.login-logo  {
+    width: 6rem;
+    height: auto;
+    position: absolute;
+    top: 6%;
+    left: 6%;
+}
+
+.input-container{
+    width: 65%;
+}
+
+.titulo{
+    color: #000;
+    font-weight: bold;
 }
 
 .titulo-login {
     text-align: center;
-    font-size: 2rem;
+    font-size: 3rem;
+}
+
+.save-div{
+    display: flex;
+}
+
+.save{
+    width: 1.5rem;
+    height: 1.3rem;
+    border-radius: 1px;
+    margin: 0  .2rem 0;
 }
 
 
 .label-login {
     display: block;
     margin: 0 auto;
-    font-size: 70%;
+    font-weight: bold;
+    color: #000;
 }
 
 .input-login {
     display: block;
     margin: 0 auto;
-    background-color: rgb(26, 24, 24);
-    color: white;
-    border-radius: 10px;
+    background-color: #FFFFFF;
+    height: 2.6rem;
+    color: black;
+    border-radius: 5px;
     margin-bottom: 1rem;
+    padding-left: .6rem;
 }
 
-.botao-com-imagem{
+.input-login::placeholder{
+    color: #C8C8C8;
+}
+
+.input-login-err{
+   border: #d9534f 1px solid;
+   height: 2.6rem;
+}
+.label-err{
+    color: #d9534f;
+    font-size: 1rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.btn-login {
+    background-color: #6D6FED;
+    color: #F2F2F2;
+    border-radius: .3rem;
+    width: 55%;
     height: 3rem;
-    background-color: rgba(128, 128, 128, 0.358);
-    border: black 5px solid;
-    border-radius: .5rem;
-    padding: 2px;
+}
 
+.btn-back {
+    background-color: #F2F2F2;
+    color: #000;
+    border: solid 1px ;
+    border-radius: .3rem;
+    width: 52%;
+    height: 2.5rem;
+}
+
+.btn-back:hover{
+    background-color:#D9D9D9 ;
+}
+
+.link{
+    font-size: 1.1rem;
 }
 
 
-.botao-com-imagem img {
-    /* Espaçamento à esquerda da imagem para separá-la do texto */
-    width: auto;
-    height: 100%;
-    margin-right: 0.5rem;
-}
 @media screen and (max-width: 1680px) {
 
     .login-container {
@@ -130,17 +180,7 @@
   
 
 
-.btn-cadas{
-    height: 50px;
-    margin-bottom: .5rem;
-}
 
-.btn-login {
-    background-color: var(--text);
-    color: var(--primaria);
-    border-radius: .3rem;
-    width: 100%;
-}
 
 .img-logo{
     display: flex;

@@ -15,24 +15,46 @@ header {
   }
   .navbar{
     width: 100%;
-    margin-left: 1rem;
+
+    justify-content: space-between;
   }
   .navbar-nav{
     margin-left: auto;
     margin-right: 2rem;
   }
 
-  
+  .navbar-brand img{
+    height: 4rem;
+    width: auto;
+  }
+
+  .avatar-img img{
+    height: 2.1rem;
+    width: 2.1rem;
+  }
   
   #sidebar{
     padding: 0;
     width: 4rem;
     height: calc(100vh - 4rem);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #101728;
+    border-right: 4px solid #6D6FED;
   }
+  
   .sidebar-menu {
     max-height: calc(100vh - 100px); /* Ajuste conforme necessário */
     overflow-y: auto;
+  }
+
+  .nav-item{
+    margin-bottom: .2rem;
+    
+  }
+
+  .nav-pills{
+    width: 100%;
+    align-content: center;
   }
   
   main{
@@ -177,6 +199,10 @@ header {
   padding: 0;
   display: flex;
   width: calc(100vw - 4rem);
+}
+
+.side-open{
+  width: calc(100vw - 6rem);
 }
 
 
@@ -415,8 +441,17 @@ header {
 
    /*-------------------------- Detalhes---------------------- */
 
+.category {
+  display: flex;
+  flex-direction: row; /* Alinha os elementos horizontalmente */
+  align-items: center; /* Alinha os itens verticalmente ao centro */
+  justify-content: flex-start; /* Alinha os itens horizontalmente no início do contêiner */
+  height: 1.5rem;
+}
 
-
+.category p{
+ margin-right: 1rem;
+}
 
  /*-------------------------- To DO---------------*/
 
@@ -501,7 +536,7 @@ header {
   align-items: center;
 }
 
-.btn-edit{
+.d-edit{
   background-color: #d1d1d1;
   border-radius: .3rem;
   border: none;
