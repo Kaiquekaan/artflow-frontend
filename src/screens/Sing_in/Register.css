@@ -2,41 +2,73 @@
 
 
 *:root{
-    --primaria: #101728;
-    --primaria-claro: #051937;
+    --primaria: #0d0d0d;
+    --preto-claro: #3a3a3a;
+    --azul: #39aee1;
     --secundaria: #19233B;
-    --text: #fff;
+    --text-primaria: #ffffff;
     --terciaria:#d8a313;
     --quarinaria:#282D3B;
-    --text-claro: black;
+    --text-secunaria: #c8c8c8;
   }
 
-  .body{
-    background-image: url('https://github.com/Kaiquekaan/TaskBot/blob/master/src/imagens/FundoAnimacao.gif?raw=true'); /* Caminho para sua imagem */
-    background-size: cover; /* Redimensiona a imagem para cobrir todo o fundo */
-    background-position: center; /* Centraliza a imagem */
-    background-repeat: no-repeat; /* Evita a repetição da imagem */
-    background-color: #000B27;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
 
-  .form-singup{
+.register-form{
     display: grid;
-    grid-template-rows: 1rem  9rem 18rem 3.5rem 8rem;
+    grid-template-rows: 4rem 18rem 3rem 2.5rem 2rem ;
     text-align: left;
     justify-items: center;
     align-content: center;
-    background-color: #F2F2F2;
+    background-color: transparent;
     padding: 25px;
-    box-shadow: 0 0 10px rgb(7, 7, 7);
-    color :white;
-    width: 38vw;
-    height: 100vh;
-    position: relative;
+    color :var(--text-primaria);
+    width: 30vw;
+    height: 50vh;
+    transition: .5s;
+    position: absolute;
+    right: 20%; /* Posiciona no lado direito da tela */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajuste para centralizar verticalmente */
+}
 
-  }
+.final-form{
+    display: grid;
+    grid-template-rows: 4rem 18rem 3rem ;
+    text-align: left;
+    justify-items: center;
+    align-content: center;
+    background-color: transparent;
+    padding: 25px;
+    color :var(--text-primaria);
+    width: 30vw;
+    height: 50vh;
+    position: absolute;
+    right: 20%; /* Posiciona no lado direito da tela */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajuste para centralizar verticalmente */
+}
+
+.stap-bar-container{
+    width: 100%;
+}
+
+.stap-bar{
+    background-color: var(--preto-claro) ;
+    height: .2rem;
+}
+
+.bar{
+    background-color: var(--azul);
+    height: .3rem;
+    width: 50%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+}
+
+
+
 
  .logo{
     height: 11rem;
