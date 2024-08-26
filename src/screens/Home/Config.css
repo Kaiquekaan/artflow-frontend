@@ -1,15 +1,4 @@
-.body{
-    background-image: url('https://github.com/Kaiquekaan/TaskBot/blob/master/src/imagens/FundoAnimacao.gif?raw=true'); /* Caminho para sua imagem */
-    background-size: cover; /* Redimensiona a imagem para cobrir todo o fundo */
-    background-position: center; /* Centraliza a imagem */
-    background-repeat: no-repeat; /* Evita a repetição da imagem */
-    background-color: #000B27;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    width: 100vw;
-    height: 100vh;
-  }
+
 
  .config-body{
   background-color: transparent;

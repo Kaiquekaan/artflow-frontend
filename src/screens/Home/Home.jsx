@@ -18,18 +18,28 @@ function Home() {
   const [filtro, setFiltro] = useState('all'); // 'all' para mostrar todas as tarefas, 'day' para mostrar apenas as do dia
   const [isChatVisible, setIsChatVisible] = useState(false);
   const navigate = useNavigate();
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    api.get("/api/user/profile/")
-    .then((response) => {
-      const userData = response.data;
-      setUser(userData)
-    })
-    .catch((error) => {
-      console.log('erro ao busca usuario', error);
-    })
+  useEffect(() =>  {
+    // api.get("/api/user/data/")
+    //.then((response) =>  {
+    //  const userData = response.data;
+    //  setUser(userData)
+    //})
+    //.catch((error) => {
+    //  console.log('erro ao busca usuario', error);
+    //})
 
+    const fetchData = async () => {
+       try{
+         const res = await api.get('/api/user/data/');
+         setUser(res.data)
+       }catch(erro){
+        console.log(erro)
+       }
+    }
+
+    fetchData();
   }, [])
 
   const handleLogout = () => {
@@ -60,8 +70,10 @@ function Home() {
   };
   
 
-  console.log(user)
- 
+
+
+
+
      
     //const [user] = useAuthState(auth);
     //const refchat = db
@@ -89,7 +101,7 @@ function Home() {
        aria-expanded="false"
        >
     <img
-      src={user?.userprofile.profile_picture}
+      src={!user ? '' : user.userdata.profile_picture_url} //user.usedata.profile_picture_url
       alt="mdo"
       width={40} // tamanho adequado para ser mais visível
       height={40}

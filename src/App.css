@@ -1,3 +1,26 @@
+*:root{
+  --primaria: #0d0d0d;
+  --preto-claro: #3a3a3a;
+  --azul: #39aee1;
+  --secundaria: #19233B;
+  --text-primaria: #ffffff;
+  --terciaria:#d8a313;
+  --quarinaria:#282D3B;
+  --text-secunaria: #c8c8c8;
+}
+
+
+
+.body{ 
+  background-color: #0d0d0d;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  width: 100vw;
+  height: 100vh;
+}
+
+
 header {
   background-color: var(--primaria); /* Cor de fundo azul escuro */
   color: #fff; /* Cor do texto */
@@ -70,6 +93,119 @@ input, select{
   border-radius: 3px;
   width: 100%;
 }
+
+/*-------------------------- Form ---------------------------- */
+
+.input-form {
+  display: block;
+  margin: 0 auto;
+  background-color: var(--preto-claro);
+  height: 2.6rem;
+  color: var(--text-secunaria);
+  border-radius: 8px;
+  border: 0;
+  margin-bottom: 1rem;
+  padding-left: .6rem;
+  transition: all 0.3s ease;
+}
+
+.input-form::placeholder{
+  color: var(--text-secunaria);
+}
+
+.input-form-err{
+ border: #d9534f 1px solid;
+ height: 2.6rem;
+}
+.label-err{
+  color: #d9534f;
+  font-size: 1rem;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.btn-form {
+  background-color: var(--azul);
+  color: var(--text-primaria);
+  border-radius: .3rem;
+  width: 45%;
+  height: 2.2rem;
+}
+
+.label-form {
+  display: block;
+  margin: 0 auto;
+  font-weight: bold;
+  color: var(--text-primaria);
+  transition: all 0.3s ease;
+}
+
+
+.input-container{
+  width: 65%;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+
+.input-container.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #09f;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.usertag-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.label-form-tag{
+  font-weight: bold;
+  color: var(--text-primaria);
+  transition: all 0.3s ease;
+}
+
+.usertag-input-button {
+  display: flex;
+}
+
+.usertag-input-button input {
+  flex: 1;
+  margin-right: 10px; /* Espaço entre o input e o botão */
+}
+
+.generate-usertag-btn {
+  padding: 8px 16px;
+  background-color: var(--azul); /* Altere para a cor desejada */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 2.6rem;
+}
+
+.generate-usertag-btn:hover {
+  background-color: transparent; /* Altere para uma cor de hover desejada */
+}
+
+
 /*-------------------------- Tarefas---------------------------- */
 
 
