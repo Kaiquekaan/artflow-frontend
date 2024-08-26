@@ -208,7 +208,7 @@ function Form({route, method}){
  return <>
       <div className='div-logo'>
       <img src="https://github.com/TeamArtFlow/GabrielHirata-FATEC-PJI2-2024-6-ArtFlow/blob/master/src/imagens/Af_logo.png?raw=true" alt="img-logo" className='img-logo' />
-      <h1>ArtFlow</h1>
+      <img src="https://github.com/TeamArtFlow/GabrielHirata-FATEC-PJI2-2024-6-ArtFlow/blob/feature-login/src/imagens/artflow_written.png?raw=true" alt="logo-name" className="h1" />
       </div>
       {loading && <div className="spinner"></div>}
         <form className={ styleMethod + "-form"} onSubmit={handleSubmit} onTransitionEnd={handleTransitionEnd}>

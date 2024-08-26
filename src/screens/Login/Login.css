@@ -156,10 +156,8 @@ hr{
     transform: translateY(-50%); /* Ajuste para centralizar verticalmente */
 }
 
-.div-logo h1{
-    color: var(--text-primaria);
-    font-family: 'Dancing Script', cursive;
-    font-size: 4rem;
+.div-logo .h1{
+   width: 100%;
 }
 
 .img-logo{
