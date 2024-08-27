@@ -16,6 +16,8 @@ import Verify from './screens/Sing_in/Verify';
 import Config from './screens/Home/Config';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from './screens/NotFound';
+import ResetPassword from './screens/Login/ResetPassword';
+import ForgotPassword from './screens/Login/ForgotPassword';
 
 function Logout() {
   localStorage.clear()
@@ -74,6 +76,8 @@ function App() {
             <Route path='/' element={<ProtectedRoute> <Home/></ProtectedRoute>} />
             <Route path='/login' element={<Login/>} />
             <Route path='/signup' element={<Register/>} />
+            <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
+            <Route path='/ForgotPassword' element={<ForgotPassword/>} />
             <Route path='*' element={<NotFound/>}/>
           </Routes>
         </div>

@@ -25,6 +25,10 @@ function Form({route, method}){
     const handleBack = () => {
         navigate('/');
       };
+
+    const handleForgotPassword = () => {
+        navigate('/ForgotPassword');
+      };
     
     const handleSignup = () => {
         navigate('/signup');
@@ -364,7 +368,7 @@ function Form({route, method}){
               />
 
              <div className="link-redevained">
-               <a href="">Esqueceu a senha? </a>
+               <a href="" onClick={handleForgotPassword}>Esqueceu a senha? </a>
                </div>
             </div>
 
