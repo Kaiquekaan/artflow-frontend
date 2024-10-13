@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotate } from '@fortawesome/free-solid-svg-icons';
+import { UserContext } from "../Context/UserContext";
+
+
+
+
 
 
 
@@ -20,7 +25,17 @@ function Form({route, method}){
     const [userbirth, setUserbirth] = useState('');
     const [loading, setLoading ] = useState(false);
     
+    
     const navigate = useNavigate();
+    
+
+    const {token, setToken} = useContext(UserContext);
+
+    useEffect(() => {
+      if(token){
+        setToken('');
+      }
+    }, [])
 
     const handleBack = () => {
         navigate('/');
@@ -110,7 +125,6 @@ function Form({route, method}){
 
         if (method === 'login'){
           try{
-            setLoading(true);
             const res = await api.post(route, {
               username: email,
               password: senha
@@ -118,8 +132,11 @@ function Form({route, method}){
 
             localStorage.setItem(ACCESS_TOKEN, res.data.access);
             localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-            navigate('/');
+            setToken(res.data.access)
             
+           
+            navigate('/');
+          
           }catch(error){
             console.log('Erro no login' , error);
             setSingupErr(true)
@@ -181,6 +198,8 @@ function Form({route, method}){
                 userdata: {
                   user_tag: usertag,
                   birth_date: formattedBirthDate,
+                  friends: [],
+                  followers: [],
                 }
               });
 
@@ -211,8 +230,8 @@ function Form({route, method}){
 
  return <>
       <div className='div-logo'>
-      <img src="https://github.com/TeamArtFlow/GabrielHirata-FATEC-PJI2-2024-6-ArtFlow/blob/master/src/imagens/Af_logo.png?raw=true" alt="img-logo" className='img-logo' />
-      <img src="https://github.com/TeamArtFlow/GabrielHirata-FATEC-PJI2-2024-6-ArtFlow/blob/feature-login/src/imagens/artflow_written.png?raw=true" alt="logo-name" className="h1" />
+      <img src="https://github.com/TeamArtFlow/GabrielHirata-FATEC-PJI2-2024-6-ArtFlow/blob/master/src/imagens/Af_logo.png?raw=true" alt="img-logo" className='img-logo' loading="lazy" />
+      <img src="https://github.com/TeamArtFlow/GabrielHirata-FATEC-PJI2-2024-6-ArtFlow/blob/feature-login/src/imagens/artflow_written.png?raw=true" alt="logo-name" loading="lazy" className="h1" />
       </div>
       {loading && <div className="spinner"></div>}
         <form className={ styleMethod + "-form"} onSubmit={handleSubmit} onTransitionEnd={handleTransitionEnd}>

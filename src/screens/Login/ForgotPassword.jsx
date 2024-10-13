@@ -28,7 +28,7 @@ function ForgotPassword(){
          <img src="https://github.com/TeamArtFlow/GabrielHirata-FATEC-PJI2-2024-6-ArtFlow/blob/feature-login/src/imagens/artflow_written.png?raw=true" alt="logo-name" className="h1" />
         </div>
         <div className="forgot-conteirner">
-        <h2>Esqueci minha senha</h2>
+    
         <form className="forgot-form" onSubmit={handleSubmit}>
             <div className="input-container active">
             <label className="label-form" htmlFor="email">Digite seu email</label>
@@ -37,6 +37,7 @@ function ForgotPassword(){
                 id="email"
                 className="input-form"
                 value={email}
+                placeholder="exemplo@gmail.com"
                 onChange={(e) => setEmail(e.target.value)}
                 required
             />

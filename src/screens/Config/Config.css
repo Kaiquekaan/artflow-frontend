@@ -1,0 +1,348 @@
+*:root{
+  --primaria: #0d0d0d;
+  --borda-preta:#2a2a2a;
+  --preto-claro: #3a3a3a;
+  --preto-terceiro: #1c1c1c;
+  --btb-white-color: #e0e0e0;
+  --background-color: #121212;
+  --icon-cinza:#b3b3b3;
+  --azul: #39aee1;
+  --secundaria: #19233B;
+  --text-primaria: #ffffff;
+  --terciaria:#d8a313;
+  --quarinaria:#282D3B;
+  --text-secunaria: #c8c8c8;
+}
+
+
+ 
+ .config-body{
+  background-color: var(--primaria);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+ }
+
+ .config-sidebar{
+  border-right: 1px solid var(--preto-terceiro);
+  width: 25vw;
+ }
+
+  .item-list{
+    padding: 1.2rem;
+    justify-content: end;
+    display: flex;
+  
+    border-radius: 0 .5rem 0  0;
+  }
+
+  .list{
+    display: flex;
+    flex-direction: column;
+    height: 82.5vh;
+    left: 5%;
+    gap: .5rem;
+    width: max-content;
+  }
+
+  .list h2{
+    color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  .list div{
+    align-content: center;
+    font-size: 1.2rem;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .btn-voltar{
+    position: relative;
+    justify-self: left;
+    align-self: flex-end;
+    width: 10rem;
+    height: 2.8rem;
+    background-color: #fff;
+    color: #000;
+    font-size: 1rem;
+    border: #C8C8C8 1px solid;
+    border-radius: .5rem;
+  }
+
+  .btn-voltar:hover{
+    background-color: #f2f2f2;
+    border: #000 1px solid;
+  }
+
+  .btn-config{
+    width: 15rem;
+    text-align: left;
+    border-radius: .5rem;
+    background-color: transparent;
+  }
+
+  .btn-config:hover{
+    background-color: var(--borda-preta);
+  }
+
+  .alt{
+    color: #000B27;
+  }
+
+  .alt:hover{
+    background-color: #f2f2f2;
+  }
+
+  .active-btn{
+    background-color: var(--borda-preta);
+    color: #fff;
+  }
+
+  .active-btn:hover{
+    background-color: var(--borda-preta);
+    
+  }
+
+  .config-content{
+    display: flex;
+    height: 100%;
+    width: 100%;
+   
+  }
+
+
+  .config-container{
+    
+    border-radius: .3rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+   
+  }
+
+  .title-config{
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .btn-base{
+    background-color: var(--azul);
+    color: #F2F2F2;
+    border-radius: .3rem;
+    width: 10rem;
+    height: 2.8rem;
+  }
+
+  .profile-config {
+   display: flex;
+   justify-content: end;
+   width: 100%;
+  }
+
+  .singout{
+    visibility: hidden;
+    display: none;
+    padding: 2rem;
+    color: var(--text-primaria);
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .active{
+    visibility: visible;
+    display: block;
+   
+  }
+
+  .Logo-container-config{
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .Logo-container-config:hover{
+    cursor: pointer;
+  }
+
+  .profile-edit-section{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .profile-edit-sidebar{
+    padding: 2rem 1rem;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    
+  }
+
+  
+
+  .profile-edit-sidebar button{
+    width: 100%;
+    border-radius: .5rem;
+  }
+
+  .profile-edit-header{
+    width: 95%;
+    height: 25%;
+    background-color: var(--azul);
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    border-radius: .5rem;
+  }
+
+  .profile-edit-pic-container{
+    display: flex;
+    align-items: center;
+  }
+
+  .profile-edit-user-pic{
+   height: 8rem;
+   width: 8rem;
+   border-radius: 50%;
+   border: 2px solid var(--background-color);
+  }
+
+  .profile-edit-main{
+    height: 100%;
+    width: 100%;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+  }
+  
+  .profile-edit-input-container{
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+  }
+
+  .profile-edit-input-container .profile-edit-item{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile-edit-item span{
+    color: var(--azul);
+  }
+
+  .profile-edit-input-container .lbl-profile-input{
+    color: var(--text-primaria);
+    font-weight: 600;
+    font-family: "Nanum Gothic", sans-serif;
+    font-size: 1rem;
+    padding: .5rem 0;
+  }
+
+  .profile-edit-input-container p{
+    color: #aaa;
+    font-size: .9rem;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .profile-edit-input-container input{
+    background-color: transparent;
+    color: var(--text-secunaria);
+    border: 1px solid var(--preto-terceiro);
+    border-radius: .5rem;
+    padding: .5rem;
+    margin-bottom: .2rem;
+  }
+
+  .profile-edit-input-container textarea{
+    background-color: transparent;
+    color: var(--text-secunaria);
+    padding: .5rem;
+    border-radius: .5rem;
+    border: 1px solid var(--preto-terceiro);
+    resize: none;
+    margin-bottom: .2rem;
+    height: 8rem;
+  }
+
+  .profile-edit-save{
+    width: 100%;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--preto-terceiro);
+    height: 100%;
+    padding-top: 2rem;
+    align-items: end;
+  }
+
+  .profile-edit-save p{
+    color: var(--text-primaria);
+    border-bottom: 2px solid var(--azul);
+    font-size: 1.2rem;
+  }
+
+  .profile-edit-btn{
+    background-color: var(--btb-white-color);
+    border-radius: .5rem;
+    padding: .5rem 2rem;
+    font-size: .9rem;
+    
+    text-align: center;
+    color: var(--primaria);
+    transition: .3s all ease-in-out;
+  }
+
+  .profile-edit-btn:hover{
+    cursor: pointer;
+    background-color: var(--text-secunaria);
+  }
+
+  .profile-edit-btn-container{
+    padding-bottom: .5rem;
+  }
+
+  .btn-save-alterations {
+    background-color: var(--azul);
+    border-radius: 1rem;
+    padding: .5rem 2rem;
+    font-size: .9rem;
+  }
+
+  .profile-edit-btns-container{
+    display: flex;
+    gap: 1rem;
+  }
+
+  .profile-edit-btns-container label{
+    background-color: var(--btb-white-color);
+    color: var(--primaria);
+  }
+
+  .input-config-container{
+    display: flex;
+    position: relative;
+    align-items: center;
+  }
+
+  .input-config-container div{
+    position: absolute;
+    right: 2%;
+    
+  }
+
+  .available-icon{
+    color:  #5cb85c;
+  }
+
+  .exits-icon{
+    color: #d9534f;
+  }

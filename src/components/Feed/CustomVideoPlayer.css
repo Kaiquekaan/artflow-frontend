@@ -1,0 +1,93 @@
+*:root{
+    --primaria: #0d0d0d;
+    --borda-preta:#2a2a2a;
+    --preto-claro: #3a3a3a;
+    --preto-terceiro: #1c1c1c;
+    --btb-white-color: #e0e0e0;
+    --background-color: #121212;
+    --icon-cinza:#b3b3b3;
+    --azul: #39aee1;
+    --secundaria: #19233B;
+    --text-primaria: #ffffff;
+    --terciaria:#d8a313;
+    --quarinaria:#282D3B;
+    --text-secunaria: #c8c8c8;
+} 
+
+
+
+.custom-video-player {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .modal-left .video-element{
+    max-height: 85vh;
+  }
+  
+  .video-element {
+    width: 100%;
+    height: 100%;
+    
+  }
+
+  .cover{
+        object-fit: cover; /* Mantém o vídeo cobrindo a área apenas quando não está em fullscreen */
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 1.5%;
+    width: 100%;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    margin: 0 8px;
+  
+  }
+
+  .progress-bar:hover,  .volume-bar:hover{
+    cursor: pointer;
+  }
+
+  .play-btn{
+    background-color: #1c1c1c1f;
+    margin: 0;
+    margin-left: .5rem;
+    border-radius: .4rem;
+  }
+
+  .fullscreen-btn{
+    background-color: #1c1c1c1f;
+    border-radius: .4rem;
+  }
+
+
+  .volume-btn:hover + .volume-bar, .volume-bar:hover {
+    opacity: 1; /* Fica visível quando o mouse está sobre o botão de volume ou a barra de volume */
+  }
+  
+
+  .volume-btn{
+    background-color: #1c1c1c1f;
+    border-radius: .4rem;
+    position: relative;
+  }
+
+  .volume-bar {
+    position: absolute; /* Para posicionar a barra de volume sobre a barra de progresso */
+    bottom: 30px; /* Ajuste para o quanto você quer que fique acima da barra de progresso */
+    right: 2%; /* Ajuste conforme necessário */
+    width: 100px; /* Ajuste o tamanho da barra de volume conforme necessário */
+    z-index: 1; /* Para garantir que a barra de volume fique acima da barra de progresso */
+    opacity: 0; /* Começa invisível */
+    transition: opacity 0.5s; /* Para uma transição suave */
+  }
+  
+
+  

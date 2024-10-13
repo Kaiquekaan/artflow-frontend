@@ -1,0 +1,134 @@
+*:root{
+    --primaria: #0d0d0d;
+    --borda-preta:#2a2a2a;
+    --preto-claro: #3a3a3a;
+    --preto-terceiro: #1c1c1c;
+    --btb-white-color: #e0e0e0;
+    --background-color: #121212;
+    --icon-cinza:#b3b3b3;
+    --azul: #39aee1;
+    --secundaria: #19233B;
+    --text-primaria: #ffffff;
+    --terciaria:#d8a313;
+    --quarinaria:#282D3B;
+    --text-secunaria: #c8c8c8;
+  }
+
+  /* Aplica a personalização da barra de rolagem para todo o documento */
+* {
+    scrollbar-width: thin; /* Barra fina para Firefox */
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent; /* Cor para Firefox */
+  }
+  
+  /* Personaliza a barra de rolagem para navegadores WebKit */
+  ::-webkit-scrollbar {
+    width: 8px; /* Largura fina da barra de rolagem */
+    height: 8px; /* Altura da barra de rolagem horizontal */
+  }
+  
+  /* Estilo do "polegar" da barra de rolagem (a parte que se move) */
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.4); /* Cor do polegar */
+    border-radius: 10px; /* Borda arredondada */
+    transition: background-color 0.2s ease; /* Animação ao passar o mouse */
+  }
+  
+  /* Quando o mouse passa sobre o "polegar" da barra de rolagem */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.7); /* Cor do polegar ao interagir */
+  }
+  
+  /* Fundo da barra de rolagem (trilho) */
+  ::-webkit-scrollbar-track {
+    background: transparent; /* Transparente, similar ao YouTube */
+  }
+  
+
+
+.image-crop-preview-container {
+    position: fixed;
+    display: flex;
+    grid-template-rows:  auto  ;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--borda-preta);
+    border-radius: 8px;
+    width: 45vw;
+    max-height: 85vh;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Combine os dois translates aqui */
+    gap: .5rem;
+    z-index: 99999;
+}
+
+.canvas-container{
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1.5rem ;
+}
+
+.image-crop-area {
+    position: relative;
+    width: max-content;
+    height: max-content;
+    margin:  0;
+}
+
+.crop-area-circle {
+    pointer-events: none;
+    border: 2px dashed white;
+}
+
+.controls-edit {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-top: 1px solid var(--preto-claro);
+    padding: .5rem;
+}
+
+.image-edit-title{
+    padding: .5rem;
+    border-bottom: 1px solid var(--preto-claro);
+    width: 100%;
+}
+
+.image-edit-title p{
+    color: var(--text-primaria);
+    font-size: 1rem;
+}
+
+
+
+.canvas-squares{
+    border: 2px solid var(--text-primaria);
+    background-color: var(--background-color);
+}
+
+
+
+.ReactCrop__drag-handle{
+  border: 1px solid #fff;
+  height: 1rem;
+  width: 1rem;
+  border-radius: .3rem;
+}
+
+/* Para remover a linha tracejada */
+
+.ReactCrop--no-animate .ReactCrop__crop-selection {
+  outline: 1px solid var(--azul);
+}
+
+.ReactCrop__crop-selection:not(.ReactCrop--no-animate .ReactCrop__crop-selection){
+  color: var(--azul);
+  border: 2px solid var(--azul);
+  background-image: none;
+}
