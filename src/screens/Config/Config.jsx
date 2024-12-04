@@ -1,24 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Config.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '../../firebase';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import ProfileEdit from './ProfileEdit';
+import SecurityConfig from './SecurityConfig';
+import About from './About';
 
 
-function Config(){
-  const [activeTab, setActiveTab] = useState('profile');
-  const [user] = useAuthState(auth);
-  const refchat = db
+const Config = ({ section }) => {
+  const [activeSection, setActiveSection] = useState(section || 'profile');
   const navigate = useNavigate();
+  const location = useLocation();
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
 
   const handleHome = () => {
     navigate('/');
   };
 
   const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
+    setactiveSection(tabName);
+  };
+
+  useEffect(() => {
+    const currentSection = location.pathname.split('/').pop();
+    setActiveSection(currentSection || 'profile');
+  }, [location]);
+
+  const handleSectionChange = (newSection) => {
+    setActiveSection(newSection);
+    navigate(`/configuration/${newSection}`);
   };
 
   return(
@@ -35,26 +49,38 @@ function Config(){
     <div className='item-list'>
      <div className='list'>
       <div><h2>Configurações</h2></div>
-      <div><button className={`btn-config ${activeTab === 'profile' ? 'active-btn' : ''}`}  onClick={() => handleTabClick('profile')}>Perfil</button></div>
-      <div><button className={`btn-config ${activeTab === 'notifications' ? 'active-btn' : ''}`}  onClick={() => handleTabClick('notifications')}>Notificações</button></div>
-      <div><button className={`btn-config ${activeTab === 'about' ? 'active-btn' : ''}`}  onClick={() => handleTabClick('about')}>Sobre</button></div>
-      <div><button className={`btn-config  ${activeTab === 'security' ? 'active-btn' : ''}`}  onClick={() => handleTabClick('security')}>Segurança</button></div>
-      <div><button  className={`btn-config ${activeTab === 'singout' ? 'active-btn' : ''}`}  onClick={() => handleTabClick('singout')}>Sair</button></div>
+      <div><button className={`btn-config ${activeSection === 'profile' ? 'active-btn' : ''}`}  onClick={() =>  handleSectionChange('profile')}>Perfil</button></div>
+      <div><button className={`btn-config ${activeSection === 'notifications' ? 'active-btn' : ''}`}  onClick={() =>  handleSectionChange('notifications')}>Notificações</button></div>
+      <div><button className={`btn-config ${activeSection === 'about' ? 'active-btn' : ''}`}  onClick={() =>  handleSectionChange('about')}>Sobre</button></div>
+      <div><button className={`btn-config  ${activeSection === 'security' ? 'active-btn' : ''}`}  onClick={() =>  handleSectionChange('security')}>Segurança</button></div>
+      <div><button  className={`btn-config ${activeSection === 'signout' ? 'active-btn' : ''}`}  onClick={() =>  handleSectionChange('signout')}>Sair</button></div>
        
      </div>
     </div>
     </div>
     <div className='config-container'>
-    <div className={` profile-config ${activeTab === 'profile' ? 'active' : ''}` }>
-      {activeTab == 'profile' && (
+    {activeSection == 'profile' && (
+       <div className={`profile-config ` }>
         <ProfileEdit/>
-      )} 
-    </div>
-     <div className={` singout ${activeTab === 'singout' ? 'active' : ''}` }>
-      <h2 className='title-config'>Deseja desconectar conta?</h2>
+        </div>
+     )} 
+     {activeSection == 'security' && (
+        <SecurityConfig/>
+     )} 
+     {activeSection == 'about' && (
+        <About/>
+     )}
+     {activeSection == 'signout' && (
+     <div className={`signout ` }>
+        <>
+       <h2 className='title-config'>Deseja desconectar conta?</h2>
+       <div>
       <button className='btn-base' onClick={() => handleTabClick('profile')}>Cancelar</button>
-      <button className='btn-voltar' onClick={() => [auth.signOut()]}>Desconectar</button>
-  </div>
+      <button className='btn-voltar' onClick={handleLogout}>Desconectar</button>
+      </div>
+        </>
+     </div>
+   )}
     </div>
     </div>
    </div>

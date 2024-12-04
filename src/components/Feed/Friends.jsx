@@ -31,15 +31,37 @@ function Friends() {
 
 
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (loading ) {
+    return <div className='friends-container'>
+    <div className='friends-list'>
+    <div className='friends-list-title loading'>
+       <p></p>
+    </div>
+   <div className='friends-list-content loading'>
+  <div className='friends-list-itens loading'>
+  <ul>  
+
+  {Array.from({ length: !data ? 4 : data?.userdata.friends_count  }).map((_, index) => (
+                         <li >
+                         <div className='li-content loading'>
+                         <div  alt="" className='friends-list-img loading' />
+                         <p></p>
+                         </div>
+                         </li>
+                        ))}
+           
+           
+       </ul>
+   
+  </div>
+  </div>
+  </div>
+</div>;
   }
 
 
     // Função para filtrar amigos offline
-    if (!data || !data.userdata.friends) {
-      return <div>Loading...</div>;
-    }
+    
   
 
     console.log(friends);
@@ -62,10 +84,14 @@ function Friends() {
             {onlineFriendsList.map(friend => (
               <li key={friend.user_tag}>
                 <div className='li-content'>
+                <div className='friend-img-container'>
+                <button className='btn-open-profile-friend-list'>
                 <img src={friend.profile_picture_url} alt="" className='friends-list-img' />
+                <div className='online-indicator'></div>
+                </button>
+                </div>
                 <p>{friend.username} </p>
                 </div>
-                <div className='online-indicator'></div>
                 </li>
             ))}
           </ul>
@@ -81,15 +107,19 @@ function Friends() {
             {offlineFriendsList.map(friend => (
               <li key={friend.user_tag}>
                 <div className='li-content'>
-                <img src={friend.profile_picture_url} alt="" className='friends-list-img'/>
-                <p>{friend.username}</p>
+                  <div className='friend-img-container'>
+                 <button className='btn-open-profile-friend-list'>
+                 <img src={friend.profile_picture_url} alt="" className='friends-list-img'/> 
+                 <div className='offline-indicator'></div>
+                 </button>
                 </div>
-                <div className='offline-indicator'></div>
+                <p>{friend.username}</p>
+                </div> 
                 </li>
             ))}
           </ul>
         ) : (
-          <p>No offline friends</p>
+          <p></p>
         )}
       </div>
       </div>

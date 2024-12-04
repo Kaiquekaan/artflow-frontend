@@ -309,10 +309,18 @@ header {
   height: auto;
   display: grid;
   flex-direction: column;
-  grid-template-columns:  28% 72%;
+  grid-template-columns:  30% 70%;
   position: relative;
   overflow: hidden;
 
+}
+
+.main-div.collum{
+  grid-template-columns:  18% 82%;
+}
+
+.sidecontent-space.collum{
+  width: 0;
 }
 
 
@@ -792,21 +800,8 @@ header {
 
 
 @media screen and (max-width: 1680px) {
-  .confirmation-dialog {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30%;
-    height: 25%;
-    border-radius: .5rem;
-  }
-
-  .textarea-edit{
-    width: 180%;
-  }
-
-  .close-button{
-    font-size: 1.6rem;
+  .main-div {
+    grid-template-columns:  25% 75%;
   }
 
 }

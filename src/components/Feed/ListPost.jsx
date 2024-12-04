@@ -1,39 +1,64 @@
-  import React, { useState, useEffect } from 'react';
+  import React, { useState, useEffect, useContext,  useRef } from 'react';
   import { useInfiniteQuery,  } from '@tanstack/react-query';
   import api from '../../api';
   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
   import {faThumbsUp, faMessage, faShareNodes,  faEllipsis, faHeart, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+  import { faHeart as HeartResgular, faMessage as CommentRegular, faThumbsUp as LikeRegular } from '@fortawesome/free-regular-svg-icons';
   import { formatDistanceToNow, parseISO } from 'date-fns';
   import { pt } from 'date-fns/locale';
   import CustomVideoPlayer from './CustomVideoPlayer';
   import PostDetailModal from './PostDetailModal';
-  
+  import ConfirmDeleteModal from './ConfirmDeleteModal';
+  import NewPost from '../NewPost';
+  import { UserContext } from '../../Context/UserContext';
+  import { Link } from 'react-router-dom';
+  import SkeletonPost from './SkeletonPost';
+  import { useNavigate } from 'react-router-dom';
+  import ShareModal from './ShareModel';
+
 
   const fetchPosts = async ({ pageParam = 1, queryKey }) => {
-    const [, { endpoint }] = queryKey;
-
-      const res = await api.get(`${endpoint}?page=${pageParam}`);
+    const [, { endpoint, query }] = queryKey;
+    const url = query 
+    ? `${endpoint}?query=${encodeURIComponent(query)}&page=${pageParam}`
+    : `${endpoint}?page=${pageParam}`;
+     const res = await api.get(url);
       return res.data;
-    
-
   };
 
-  const ListPost = ({ endpoint, style }) => {
+  const ListPost = ({ endpoint, query,  style }) => {
     const [data, setData] = useState(null);
+    const {data: userData } = useContext(UserContext);
+    const dropdownRef = useRef(null);
+    const toggleButtonRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+    
     
     const { data: posts, fetchNextPage, hasNextPage, isFetchingNextPage} = useInfiniteQuery({
-      queryKey: ['posts', { endpoint }],
+      queryKey: ['posts', { endpoint, query }],
       queryFn: fetchPosts,
       getNextPageParam: (lastPage) => {
         if (!lastPage.next) return undefined;
         const url = new URL(lastPage.next);
         return url.searchParams.get('page');
       },
+      staleTime: 30000,  // Dados são considerados frescos por 30 segundos
+      cacheTime: 600000, // Os dados permanecem em cache por 10 minutos após ficarem obsoletos
+      refetchOnWindowFocus: true, // Refetch ao focar na janela
+      refetchOnMount: false,
     });
 
     const [selectedPost, setSelectedPost] = useState(null);  
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedMediaIndex, setSelectedMediaIndex] = useState(0); 
+    const [activeDropdownPostId, setActiveDropdownPostId] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [postToDelete, setPostToDelete] = useState(null);
+    const [postToEdit, setPostToEdit] = useState(null);
+    const [showEditPost, setShowEditPost] = useState(false);
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+    const [currentShareLink, setCurrentShareLink] = useState('');
    
     useEffect(() => {
       console.log("isFetchingNextPage:", isFetchingNextPage);
@@ -44,6 +69,7 @@
     useEffect(() => {
       if (posts) {
         setData(posts);
+        setIsLoading(false);
       }
     }, [posts]);
 
@@ -62,6 +88,18 @@
         mainContainer.removeEventListener('scroll', handleScroll);
       };
     }, [fetchNextPage]);
+
+    useEffect(() => {
+      if (selectedPost) {
+        const updatedPost = data.pages
+          .flatMap(page => page.results)
+          .find(post => post.id === selectedPost.id);
+    
+        if (updatedPost) {
+          setSelectedPost(updatedPost); // Atualiza o post selecionado
+        }
+      }
+    }, [data, selectedPost]);
 
     const openPostDetail = (post, mediaIndex = 0, forceOpen = false) => {
 
@@ -83,8 +121,37 @@
         setIsModalOpen(true); // Abre o modal
       }
     };
-  
 
+    const handleOpenDeleteModal = (postId) => {
+      setPostToDelete(postId);
+      setIsDeleteModalOpen(true);
+      setActiveDropdownPostId(null);
+    };
+  
+    const handleCloseDeleteModal = () => {
+      setIsDeleteModalOpen(false);
+      setPostToDelete(null);
+    };
+  
+    const handleDeletePost = async () => {
+     if (!postToDelete) return;
+
+     try{
+        const res = await api.delete(`/api/posts/${postToDelete}/`);
+        setData(prevData => ({
+          ...prevData,
+          pages: prevData.pages.map(page => ({
+            ...page,
+            results: page.results.filter(post => post.id !== postToDelete),
+          })),
+        }));
+      }catch(error){
+        console.error('Erro na requisição:', error);
+      }finally {
+        handleCloseDeleteModal(); // Fechar o modal após a operação
+      }
+  
+    };
   
     const closeModal = () => {
       setSelectedPost(null);  // Reseta a postagem selecionada
@@ -137,12 +204,32 @@
       }
     };
 
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        // Verifica se o clique foi fora do dropdown e do botão de toggle
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target) &&
+          toggleButtonRef.current &&
+          !toggleButtonRef.current.contains(event.target)
+        ) {
+          setTimeout(() => {
+            setActiveDropdownPostId(null); // Fecha o dropdown se o clique for fora
+          }, 0); // Atraso de 0ms para garantir que o clique no botão não seja tratado
+        }
+      };
+  
+      // Adiciona o eventListener para o evento mouseup (que ocorre após mousedown)
+      document.addEventListener('mouseup', handleClickOutside);
+      
+      // Remove o eventListener ao desmontar o componente
+      return () => {
+        document.removeEventListener('mouseup', handleClickOutside);
+      };
+    }, [dropdownRef, toggleButtonRef]);
 
-    const addComment = async (postId, content) => {
-      const res = await api.post(`/api/posts/${postId}/comment/`, { content });
-      return res.data;
-    };
 
+ 
     const handleLikePost = async (postId) => {
 
       if (!data) return;
@@ -199,21 +286,55 @@
       }
     };
   
-    const handleCommentSubmit = async (postId, content) => {
-      try {
-        const newComment = await addComment(postId, content);
-        console.log('Comentário adicionado:', newComment);
-      } catch (error) {
-        console.error('Erro ao adicionar comentário:', error);
+    const handleToggleItemDropdown = (postId) => {
+      if (activeDropdownPostId === postId) {
+        setActiveDropdownPostId(null); 
+      } else {
+        setActiveDropdownPostId(postId); 
       }
     };
 
+    const handleViewPost = (username, postId) => {
+      navigate(`/post/${username}/${postId}/view`) // Esconde o NewPost quando o cancelar é clicado
+    };
 
+
+    const handleCancelEditPost = () => {
+      setShowEditPost(false); // Esconde o NewPost quando o cancelar é clicado
+    };
+
+    const handleOpenEditPost = (post) => {
+      setPostToEdit(post);
+      setShowEditPost(true);
+      setActiveDropdownPostId(null);
+    };
+
+    const renderCaptionWithLinks = (caption) => {
+      const regex = /#([\wÀ-ÿ]+)/g; // RegEx para encontrar hashtags
+      const parts = caption.split(regex); // Divide o caption em partes
+
+      return parts.map((part, index) => {
+          // Se a parte for uma hashtag, cria um link
+          if (index % 2 === 1) {
+              return (
+                  <Link key={index} to={`/t?q=${encodeURIComponent(`#${part}`)}`}>
+                      {`#${part}`} {/* Adiciona o '#' de volta */}
+                  </Link>
+              );
+          }
+          return part; // Retorna partes normais do texto
+      });
+  }
     
     
 
 
     const renderGallery = (post) => {
+      const isVideo = post.media_files.some(file => {
+        const fileExtension = file.file.split('.').pop().toLowerCase();
+        return ['mp4', 'webm', 'ogg'].includes(fileExtension);
+      });
+      
       if (post.media_files.length === 3) {
         // Estrutura específica para 3 mídias
         return (
@@ -235,7 +356,7 @@
     
       // Layout padrão para outros números de mídias
       return (
-        <div className={`media-gallery ${getClassForGallery(post.media_files.length)}`}>
+        <div className={`media-gallery ${getClassForGallery(post.media_files.length)} ${isVideo ? 'video-content' : ''}`}>
           {post.media_files.slice(0, 4).map((file, index) => (
             <div key={file.id} className="media-overlay" onClick={() => openPostDetail(post, index)}>
               {renderMediaFile(file)}
@@ -262,20 +383,66 @@
       }
     };
 
+    const handleProfileClick = (username) => {
+      if(style == 'profile') return 
+      navigate(`/profile/${username}/postagens`);
+    };
+
+    const handleSearch = (query) => {
+      navigate(`/t/trending?q=${encodeURIComponent(query)}`);
+  };
+
+  const handleOpenShareModal = async (postId) => {
+    try {
+        // Faz a requisição ao backend para registrar o compartilhamento
+        const response = await api.post(`/api/posts/${postId}/share/`);
+        const shareLink = response.data.share_link;
+
+        // Define o link no estado e abre o modal
+        setCurrentShareLink(shareLink);
+        setIsShareModalOpen(true);
+    } catch (error) {
+        console.error("Erro ao compartilhar o post:", error);
+        alert("Não foi possível compartilhar o post. Tente novamente.");
+    }
+};
+
+const handleCloseShareModal = () => {
+    setIsShareModalOpen(false);
+    setCurrentShareLink('');
+};
+    
+
     return (
       <div className='post-list'>
-        {data?.pages.map((page, pageIndex) => (
+         {isLoading && Array.from({ length: 5 }).map((_, index) => <div className={`post-pag ${style ? style : ''}`}> <SkeletonPost key={index} /></div>)}
+
+        {!isLoading &&
+          data?.pages.map((page, pageIndex) => (
           <div key={pageIndex} className={`post-pag ${style ? style : ''}`}>
             {page.results.map((post) => (
-              <div key={post.id} className={`post-list-item ${style ? style : ''}`}>
+              <div key={post.id} className={`post-list-item ${style ? style : ''}`} onClick={(event) => {
+                // Impede a navegação se o clique não for no próprio container
+                if (
+                  event.target.closest('.media-gallery') ||
+                  event.target.closest('.post-list-item-header') ||
+                  event.target.closest('.post-caption') ||
+                  event.target.closest('.btn-open-profile') ||
+                  event.target.closest('.post-footer-container')
+                ) {
+                  return;
+                }
+                handleViewPost(post.user_username, post.id);
+              }}>
                 <div className='post-img'>
+                <button className='btn-open-profile' onClick={() => handleProfileClick(post.user_username)}>
                 <img
               src={post.profile_picture} //user.usedata.profile_picture_url
               alt="mdo"
               width={25} // tamanho adequado para ser mais visível
               height={25}
               className="rounded-circle me-2  post-profile-img" // Adiciona margem à direita
-              />
+              /></button>
                 </div>
                 <div className='post-list-item-content' >
                 <div className='post-list-item-header'>
@@ -287,7 +454,7 @@
           <div className="user-info">
             <div className='post-hader-info'>
               <p className="user-displayname mb-0">{post.user_displayname ? post.user_displayname : post.user_username}</p>
-              <p className='data-p'>{formatPostDate(post.created_at)}</p> 
+              <p className='data-p'>{formatPostDate(post.created_at)} {post.last_edited_at && <span> (editado)</span>} </p> 
               </div>
               <p className="user-email mb-0">{post.user_tag}</p>
           </div>
@@ -296,51 +463,81 @@
                 {/* Ajuste para exibir o campo "caption" */}
                  {/* Exibindo a data de criação */}
                 <div className='item-header'>
-
-                  
-                  
+                <button className='btn-item-header' onClick={() => handleToggleItemDropdown(post.id)} ref={toggleButtonRef} >
+                <FontAwesomeIcon icon={faEllipsis} />
+                </button> 
+                {activeDropdownPostId === post.id && (
+                  <div className='item-header-dropdown' ref={dropdownRef}>
+                    {userData.userdata.user_id == post.user &&(
+                      <button onClick={() => handleOpenEditPost(post)}>Editar</button>
+                    )}
+                  <button>Denunciar</button>
+                  {userData.userdata.user_id == post.user &&(
+                      <button onClick={() => handleOpenDeleteModal(post.id)}>Deletar</button>
+                    )}
+                </div>
+                )}
                 </div>
                 </div>
                 <div className='post-caption'>
-              <p>{post.caption}</p>  
+              <p>{renderCaptionWithLinks(post.caption)}</p>  
               </div>
                 {renderGallery(post)}
                 <div className='post-footer-container'>
               <div className='post-item-footer'>
-              <div className={`post-item-btn ${post.has_liked ? 'liked' : ''}`}><button onClick={() => handleLikePost(post.id)}><FontAwesomeIcon icon={faThumbsUp} /></button>{post.likes_count > 0 ? post.likes_count : ''}</div>
+              <div className={`post-item-btn ${post.has_liked ? 'liked' : ''}`}><button onClick={() => handleLikePost(post.id)}><FontAwesomeIcon icon={post.has_liked ? faThumbsUp : LikeRegular} /></button>{post.likes_count > 0 ? post.likes_count : ''}</div>
               
-              <div className={`post-item-btn ${post.has_favorited ? 'favorited' : ''}`}><button onClick={() => handleFavoritePost(post.id)}><FontAwesomeIcon icon={faHeart} /></button>{post.favorites_count > 0 ? post.favorites_count : ''}</div>
+              <div className={`post-item-btn ${post.has_favorited ? 'favorited' : ''}`}><button onClick={() => handleFavoritePost(post.id)}><FontAwesomeIcon icon={ post.has_favorited ? faHeart : HeartResgular} /></button>{post.favorites_count > 0 ? post.favorites_count : ''}</div>
               
-              <div className='post-item-btn'><button onClick={() => openPostDetail(post, 0, true)}><FontAwesomeIcon icon={faMessage} /></button>{post.comments_count > 0 ? post.comments_count : ''}</div> 
+              <div className='post-item-btn'><button onClick={() => openPostDetail(post, 0, true)}><FontAwesomeIcon icon={CommentRegular} /></button>{post.comments_count > 0 ? post.comments_count : ''}</div> 
              
-              <div className='post-item-btn'><button><FontAwesomeIcon icon={faArrowUpFromBracket} /></button></div>
+              <div className='post-item-btn'><button onClick={() => handleOpenShareModal(post.id)}><FontAwesomeIcon icon={faArrowUpFromBracket} /></button>{post.shares_count > 0 && <span>{post.shares_count}</span>}</div>
               
 
               </div>
               </div>
                 </div>
-                <div>
                 
-                </div>
               </div>
             ))}
           </div>
         ))}
 
-    {isFetchingNextPage && (
+    {/*{isFetchingNextPage && (
       <div className="loading-indicator">
-       {/* Ou você pode colocar um spinner */}
+     
        <div className="spinner"></div> 
      </div>
-    )}
+    )} */}
+
+    {isFetchingNextPage && Array.from({ length: data?.pages[data?.pages.length - 1].next_count}).map((_, index) => <div className={`post-pag ${style ? style : ''}`}> <SkeletonPost key={index} /></div>)}
       
-      {!hasNextPage && isFetchingNextPage == false && (
-      <div className="no-more-posts">
-       <p>Você já viu todos os posts!</p>
-      </div>
+      {!hasNextPage && !isFetchingNextPage && !isLoading &&(
+        <> 
+          <div className="no-more-posts">
+          <p>Você já viu todos os posts!</p>
+          </div>  
+        </>
+       
       )}
 
-        <PostDetailModal post={selectedPost} initialImageIndex={selectedMediaIndex} isOpen={isModalOpen} onClose={closeModal} />
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={handleCloseDeleteModal}
+        onConfirm={handleDeletePost}
+      />
+        {showEditPost &&(
+          <NewPost user={userData} onCancel={handleCancelEditPost} route={`/api/posts/${postToEdit.id}/`} postToEdit={postToEdit} />
+        )}
+
+        <ShareModal
+                isOpen={isShareModalOpen}
+                onClose={handleCloseShareModal}
+                shareLink={currentShareLink}
+            />
+        
+
+        <PostDetailModal post={selectedPost} initialImageIndex={selectedMediaIndex} isOpen={isModalOpen} onClose={closeModal} onLikePost={handleLikePost} onFavoritePost={handleFavoritePost}/>
       </div>
     );
   };

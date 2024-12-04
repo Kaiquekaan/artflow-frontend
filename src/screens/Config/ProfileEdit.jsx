@@ -7,9 +7,10 @@ import { faCircleCheck, faCircleXmark
 import api from '../../api';
 
 
-function ProfileEdit({style , parent, onCancel}){
+function ProfileEdit({style , parent, onClose, parentQueryClient, invalidate}){
     const { data: userContextData } = useContext(UserContext);
-    const [isPrivate, setIsPrivate] = useState(false);
+    const { queryClient } = useContext(UserContext);
+    const [isPrivate, setIsPrivate] = useState(userContextData?.userdata.is_private || false);
     const [showCropPreview, setShowCropPreview] = useState(false);
     const [isBanner, setIsBanner] = useState(false);
     const [profileImage, setProfileImage] = useState(userContextData?.userdata.profile_picture_url || '');
@@ -52,59 +53,44 @@ function ProfileEdit({style , parent, onCancel}){
 
   const handleSave = async () => {
     setLoading(true);
-    // Cria um objeto para armazenar os dados a serem atualizados
-    const newData = {
-      userdata: {},
-    };
-  
-    // Verifica se o displayname foi alterado
-    if (displayName !== userContextData.userdata.displayname) {
-      newData.userdata.displayname = displayName;
-    }
-  
-    // Verifica se o user_tag foi alterado
+
+    const newData = { userdata: {} };
+
+    // Checa e adiciona os campos alterados
+    if (displayName !== userContextData.userdata.displayname) newData.userdata.displayname = displayName;
     if (userTag !== userContextData.userdata.user_tag) {
-      const userTagExists = await checkUserTagExists(userTag);
-      if (userTagExists) {
-        alert('Este tag já está em uso. Por favor, escolha outro.');
-        return; // Impede o envio se a tag já existir
-      }
-      newData.userdata.user_tag = userTag;
+        const userTagExists = await checkUserTagExists(userTag);
+        if (userTagExists) {
+            alert('Este tag já está em uso. Por favor, escolha outro.');
+            return; 
+        }
+        newData.userdata.user_tag = userTag;
     }
-  
-    // Verifica se a bio foi alterada
-    if (bio !== userContextData.userdata.bio) {
-      newData.userdata.bio = bio;
-    }
-  
-    // Verifica se a imagem de perfil foi alterada
-    if (profileImage !== userContextData.userdata.profile_picture_url) {
-      newData.userdata.profile_picture_url = profileImage;
-    }
-  
-    // Verifica se a imagem do banner foi alterada
-    if (bannerImage !== userContextData.userdata.banner_picture_url) {
-      newData.userdata.banner_picture_url = bannerImage;
-    }
-  
-    // Se não houver alterações, não envia a requisição
+    if (bio !== userContextData.userdata.bio) newData.userdata.bio = bio;
+    if (profileImage !== userContextData.userdata.profile_picture_url) newData.userdata.profile_picture_url = profileImage;
+    if (bannerImage !== userContextData.userdata.banner_picture_url) newData.userdata.banner_picture_url = bannerImage;
+    if (isPrivate !== userContextData.is_private) newData.userdata.is_private = isPrivate;
+
     if (Object.keys(newData.userdata).length === 0) {
-      alert('Nenhuma alteração detectada.');
-      return; // Não envia nada
+        alert('Nenhuma alteração detectada.');
+        return;
     }
-    console.log('dados sendo envidado para o backend: ', newData)
-    console.log('imagem sendo enviada para o backend: ', newData.userdata.profile_picture)
-  
+
     try {
-      const response = await api.put('/api/user/update/', newData);
-      queryClient.invalidateQueries(['userData']);
-      console.log('Dados do usuário atualizados com sucesso:', response.data);
+        const response = await api.patch('/api/user/update/', newData
+      );  // Usando o método PATCH
+        queryClient.invalidateQueries(['userData']);
+        queryClient.refetchQueries(['userData']);
+        console.log('Dados do usuário atualizados com sucesso:', response.data);
     } catch (error) {
-      console.error('Erro ao atualizar usuário:', error.response.data);
+        console.error('Erro ao atualizar usuário:', error);
     } finally {
-      setLoading(false); 
+        setLoading(false);
+        if (parent === 'profilepage') {
+            onClose();
+        }
     }
-  };
+};
   
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -169,7 +155,7 @@ function ProfileEdit({style , parent, onCancel}){
     } else {
       setTagAvailable(null);  // Reseta o estado se a tag estiver vazia
     }
-  }, 500);
+  }, 1500);
 
   const handleUserTagChange = (tag) => {
     setUserTag(tag);  // Atualiza o input imediatamente
@@ -181,7 +167,7 @@ function ProfileEdit({style , parent, onCancel}){
        <p>Editar Perfil</p>
       <div className='profile-edit-btn-container'>
         {parent && (
-          <button className='btn-white profile-edit' onClick={onCancel}>Cancelar</button>
+          <button className='btn-white profile-edit' onClick={onClose}>Cancelar</button>
         )}
       
       <button className='btn-save-alterations' onClick={handleSave}>{loading ? <div className="spinner-save"></div> : 'Salvar'}</button>
@@ -272,7 +258,7 @@ function ProfileEdit({style , parent, onCancel}){
                 <span class="slider"></span>
               </label><label>Perfil Privado</label>
             </div>
-              <p>Seu perfil será visível apenas para <span>seus amigos.</span> Usuários que não são seus amigos não poderão ver seu conteúdo.</p>
+              <p>Seu perfil será visível apenas para <span>seus amigos e seguidores.</span> Usuários que não são seus amigos não poderão ver seu conteúdo.</p>
               </div>
             </div> 
      </div>

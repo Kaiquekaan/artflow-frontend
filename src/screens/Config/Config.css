@@ -125,6 +125,7 @@
   .title-config{
     margin-bottom: 2rem;
     font-size: 1.8rem;
+    color: var(--text-secunaria);
   }
 
   .btn-base{
@@ -346,3 +347,166 @@
   .exits-icon{
     color: #d9534f;
   }
+
+  .signout{
+    display: flex;
+    padding: 4rem 2rem;
+    flex-direction: column;
+  }
+
+
+
+.security-section, .about-section{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.profile-edit-save.security{
+  height: auto;
+}
+
+.security-container{
+  padding: 2rem 2.5rem;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-edit-input-container.security{
+  width: 100%;
+}
+
+.input-config-container.security{
+  justify-items: center;
+  margin-bottom: .2rem;
+}
+
+.input-config-container.security input{
+  margin-bottom: 0;
+}
+
+.input-config-container.error input{
+ border: 1px solid #d9534f;
+}
+
+.btn-white.security-btn-input{
+  height: 100%;
+  border-radius: 0 .5rem .5rem 0;
+  margin: 0;
+  margin-left: -2rem;
+  background-color: var(--background-color);
+  color: var(--icon-cinza);
+  border: 1px solid var(--preto-terceiro);
+}
+
+.edit-password-container{
+  padding: .3rem .8rem .8rem .8rem;
+  border-radius: .5rem;
+  border: 1px solid var(--preto-terceiro);
+  display: flex;
+  gap: .4rem;
+  flex-direction: column;
+  position: relative;
+}
+
+.btns-container-edit-password{
+ margin-top: .5rem;
+}
+
+.btns-container-edit-password button{
+  border-radius: .5rem;
+}
+
+.profile-edit-item.btn-edit-password{
+ width: 100%;
+}
+
+.profile-edit-item.btn-edit-password button{
+  width: 50%;
+  padding: .5rem;
+  border-radius: .5rem;
+}
+
+.post-config.security{
+  width: 100%;
+}
+
+.container-message{
+  color: #d9534f;
+}
+
+.loading-indicator.edit-password{
+  height: max-content;
+  width: max-content;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.loading-indicator.edit-password .spinner{
+  width: 26px;
+  height: 26px;
+}
+
+.profile-edit-item.edit-email{
+  padding: .3rem .8rem .8rem .8rem;
+  border: 1px solid var(--preto-terceiro);
+  border-radius: .5rem;
+  position: relative;
+}
+
+
+.about-container{
+ padding: 2rem;
+ display: flex;
+ flex-direction: column;
+ gap: 1.5rem;
+ overflow-y: auto;
+}
+
+.about-container section{
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+.section-title{
+ color: var(--text-primaria);
+ font-weight: 800;
+ font-size: 1.5rem;
+ border-left: 4px solid var(--azul);
+ padding-left: .25rem;
+ width: max-content;
+}
+
+.section-text{
+  color: var(--text-secunaria);
+  width: 80%;
+  max-width: 1000px;
+}
+
+@media screen and (max-width: 1680px) {
+
+  .profile-edit-sidebar {
+    width: 55%;
+  }
+
+
+  .security-container{
+    width: 55%;
+  }
+
+  .list h2{
+    font-size: 25px;
+  }
+
+  .list div{
+    font-size: 1rem;
+  }
+
+}
+

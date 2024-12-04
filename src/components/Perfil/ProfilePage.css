@@ -18,10 +18,15 @@
 
 
 .Profile-div{
-    width: 60%;
+    width: 50%;
     min-height: 100vh;
     display: flex;
     justify-content: center;
+    max-width: 800px;
+}
+
+.sidecontent-space.profile{
+    width: 45%;
 }
 
 .profile-container{
@@ -39,21 +44,27 @@
 }
 
 .profile-contant{
-  background-color: var(--azul);
-  border-left: 1px solid var(--preto-terceiro);
-  border-right: 1px solid var(--preto-terceiro);
+
+  border-right: 1px solid var(--borda-preta);
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+  align-items: center;
+  padding-top: 1rem;
 }
 
-.profile-header{
+.profile-header {
+    position: relative;
     padding: 1.2rem;
     display: flex;
     justify-content: end;
-    height: 22.5vh;
+    width: 95%;
+    border-radius: .5rem;
+    background-color: var(--azul);
+    height: 0;
+    padding-bottom: 22%; 
+    overflow: hidden;
 }
 
 
@@ -82,10 +93,16 @@
 
 .profile-header-content{
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
 }
 
 .profile-user-info{
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
 }
 
 .profile-main-header-2{
@@ -114,24 +131,31 @@
 
 .profile-user-info-btns{
     display: flex;
-    justify-content: center;
+    justify-content: end;
 }
 
 .profile-pic-container{
   position: relative;
-  padding-right: 1rem;
+  padding-right: .5rem;
   height: 4rem;
 }
 
-.profile-user-pic{
-    width: 8rem;
-    height: 8rem;
+.profile-user-pic {
+    width: 8vw; 
+    height: 8vw;
+    max-width: 120px; 
+    max-height: 120px;
+    min-width: 60px; 
+    min-height: 60px;
     background-color: var(--background-color);
-    border: 1px solid var(--borda-preta);
-    border-radius: 1rem;
+    border: 5px solid var(--background-color);
+    border-radius: 50%;
     position: relative;
-    top: -100%;
-    
+    top: -120%;
+    overflow: hidden; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -155,16 +179,38 @@
 
 
 .user-info.profile .user-displayname{
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.user-info.profile .user-displayname.loading{
+    height: 1.3rem;
+    width: 200px;
+    background-color: var(--borda-preta);
+    
 }
 
 .user-info.profile .user-tag{
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--icon-cinza);
+}
+
+.user-info.profile .user-tag.loading{
+    height: 1rem;
+    width: 150px;
+    background-color: var(--borda-preta);
+    border-radius: .3rem;
 }
 
 .profile-bio span{
     color: var(--text-primaria);
+}
+
+.profile-bio.loading div{
+    height: 1rem;
+    width: 300px;
+    background-color: var(--borda-preta);
+    border-radius: .3rem;
+    margin-top: .2rem;
 }
 
 .btn-user-info{
@@ -179,54 +225,60 @@
 }
 
 .btn-white.profile{
-    
-    border-radius: .5rem;
+    border-radius: .8rem;
 }
 
 .btn-blue.profile{
     padding: .5rem;
-    border-radius: .5rem;
+    border-radius: .8rem;
 }
 
 #dropdownUser3.profile{
     justify-content: space-between;
 }
 
+.profile-contant-main{
+    border-top: 1px solid var(--borda-preta);
+    min-height: 100%;
+    
+}
 
 .profile-contant-main-sections{
     padding: 0 1.2rem;
     display: flex;
     justify-content: center;
-    border-bottom: 1px solid var(--preto-terceiro);
+    gap: 1rem;
 }
 
 .profile-contant-main-sections button{
     padding: .5rem;
     background-color: transparent;
     margin: 0;
+    border-top: 2px solid transparent;
 }
 
 .profile-contant-main-sections button.active{
-    border-bottom: 4px solid var(--azul);
+    border-top: 2px solid var(--azul);
 }
 
 .btn-white.profile.following{
   background-color: transparent;
   color: var(--text-primaria);
   border: 2px solid var(--icon-cinza);
+  font-size: 15px;
 }
 
 .btn-blue.profile.friend{
     background-color: transparent;
     color: var(--azul);
     border: 2px solid var(--azul);
-
+    font-size: 15px;
   }
 
 .post-list-item.profile{
     width: 100%;
     border: none;
-    border-bottom: 1px solid var(--preto-terceiro);
+    border-bottom: 1px solid var(--borda-preta);
     gap: 0;
     border-radius: 0;
 }
@@ -270,8 +322,7 @@
 
 
 .profile-edit{
-    padding: .4rem 1rem;
-    border-radius: .5rem;
+    border-radius: .8rem;
 }
 
 .profilepage-profileedit{
@@ -284,8 +335,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
-    overflow: hidden;
     padding-top: 3rem;
+    overflow: hidden;
+    max-width: 900px;
 }
 
 .profile-edit-save.profilepage{
@@ -310,3 +362,140 @@
     font-size: .9rem;
     font-weight: 400;
 }
+
+
+
+
+.profile-contant-main .gallery-grid {
+    column-count: 3; /* Ajuste o número de colunas de acordo com o layout */
+    column-gap: 10px; /* Espaçamento entre as colunas */
+    margin: 0 auto;
+    padding: 10px 0;
+    width: 95%;
+    max-width: 1200px; /* Limita a largura máxima da galeria para centralizá-la */
+}
+
+.post-item.gallery {
+    break-inside: avoid; /* Evita que o conteúdo quebre entre as colunas */
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    border-radius: .5rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-item.gallery img, 
+.post-item.gallery video {
+    width: 100%;
+    height: auto; /* Mantém a proporção do conteúdo */
+    object-fit: cover;
+    border: none;
+    
+}
+
+.multiple-media-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #1c1c1c1f;
+    color: white;
+    padding: 0 5px;
+    border-radius: 5px;
+    font-size: 1.25rem;
+    aspect-ratio: 1/1;
+    z-index: 9;
+  }
+
+/*------ locked ------*/
+
+.locked-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+  }
+
+.locked-container p{
+ color: var(--text-primaria);
+ font-size: 1rem;
+}
+
+
+@media screen and (max-width: 1680px) {
+    .Profile-div{
+        width: 55%;
+    }
+
+    .achievement-container{
+        width: 30%;
+    }
+
+    .profilepage-profileedit{
+        height: 90vh;
+        width: 45vw;
+    }
+
+    .user-info.profile .user-displayname{
+        font-size: 1.2rem;
+    }
+
+    .btn-blue.profile-edit{
+        font-size: 14px;
+    }
+
+    .user-info.profile .user-tag{
+        font-size: 15px;
+    }
+
+    .profile-bio span{
+        font-size: 14px;
+    }
+
+    .profile-user-info-2 p{
+        font-size: 14px;
+    }
+
+    .profile-contant-main-sections button{
+        font-size: 14px;
+    }
+
+    .locked-container p{
+        font-size: 14px;
+    }
+
+    .btn-blue.profile {
+        font-size: 15px;
+    }
+
+    .btn-white.profile{
+        font-size: 15px;
+    } 
+
+    .locked-container .btn-blue{
+      font-size: 14px;
+    }
+}
+
+@media (max-width: 1200px) {
+
+    
+
+    .profile-contant-main .gallery-grid {
+        column-count: 2; /* Ajusta o número de colunas para telas menores */
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-contant-main .gallery-grid {
+        column-count: 1; /* Em telas pequenas, usa uma única coluna */
+    }
+}
+
+

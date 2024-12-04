@@ -2,18 +2,26 @@ import React from 'react'
 import { useEffect, useState, useRef } from 'react';
 import api from '../api';
 import FileUpload from './FileUpload';
+import EditPostFileUpload from './EditPostFileUpload';
 
-const NewPost = ({ user, onCancel, route }) =>{
-  const [files, setFiles] = useState([]);
+const NewPost = ({ user, onCancel, route, postToEdit = null }) =>{
+  const [files, setFiles] = useState(postToEdit ? postToEdit.media_files : []);
   const [showForm, setShowForm] = useState(false);
-  const [message, setMessage] = useState('');
-  const [isPrivate, setIsPrivate] = useState(false);
-  const [isSensitive, setIsSensitive] = useState(false);
+  const [message, setMessage] = useState(postToEdit ? postToEdit.caption : '');
+  const [isPrivate, setIsPrivate] = useState(postToEdit ? postToEdit.is_private : false);
+  const [isSensitive, setIsSensitive] = useState(postToEdit ? postToEdit.is_sensitive : false);
   const postFormRef = useRef(null); 
   const [isLoading, setIsLoading] = useState(false);
+  const [filesToRemove, setFilesToRemove] = useState([]);
+
+  console.log(postToEdit)
 
  
-
+  useEffect(() => {
+    if (postToEdit && postToEdit.media_files) {
+      setFiles(postToEdit.media_files.map(media => ({ file: media.file, url: media.file_url })));
+    }
+  }, [postToEdit]);
 
   // Função para lidar com o arrastar sobre a área
   const handleDragOver = (e) => {
@@ -28,30 +36,45 @@ const NewPost = ({ user, onCancel, route }) =>{
 
     const droppedFiles = Array.from(e.dataTransfer.files); // Converte para array
     const validFiles = droppedFiles.filter(file =>
-      file.type.startsWith('image/') || file.type.startsWith('video/')
+      (file.type.startsWith('image/') || file.type.startsWith('video/')) && file.size <= 10 * 1024 * 1024
     );
 
-    if (validFiles.length > 0 && files.length + validFiles.length <= 5) {
-        setFiles(prevFiles => [...prevFiles, ...validFiles]);  // Adiciona arquivos válidos
-      } else {
-        alert('Você pode selecionar no máximo 5 arquivos.');
-      }
+    if (validFiles.length < droppedFiles.length) {
+      alert('Alguns arquivos foram ignorados porque excedem o limite de 10MB.');
+  }
+
+  // Verifica se o total de arquivos válidos e os já adicionados excede o limite de 5
+    if (files.length + validFiles.length <= 5) {
+      setFiles(prevFiles => [...prevFiles, ...validFiles]);  // Adiciona arquivos válidos
+    } else if (files.length > 5) {
+      alert(`Você pode selecionar no máximo 5 arquivos.`);
+    }
   };
 
   // Função para lidar com a seleção via botão de upload
   const handleFileSelect = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const validFiles = selectedFiles.filter(file =>
-      file.type.startsWith('image/') || file.type.startsWith('video/')
+      (file.type.startsWith('image/') || file.type.startsWith('video/')) && file.size <= 10 * 1024 * 1024
     );
+    
+    if (validFiles.length < selectedFiles.length) {
+        alert('Alguns arquivos foram ignorados porque excedem o limite de 10MB.');
+    }
+    
 
-    if (validFiles.length > 0 && files.length + validFiles.length <= 5) {
-        setFiles(prevFiles => [...prevFiles, ...validFiles]);  // Adiciona arquivos válidos
-      } else {
-        alert('Você pode selecionar no máximo 5 arquivos.');
+    if (files.length + validFiles.length <= 5) {
+      setFiles(prevFiles => [...prevFiles, ...validFiles]);  // Adiciona arquivos válidos
+      } else if (files.length > 5) {
+      alert(`Você pode selecionar no máximo 5 arquivos.`);
       }
 
+
       e.target.value = null;
+  };
+
+  const handleFilesToRemove = (removedFiles) => {
+    setFilesToRemove(removedFiles);
   };
 
   const handleClick = () => {
@@ -86,45 +109,42 @@ const NewPost = ({ user, onCancel, route }) =>{
     setIsLoading(true);
 
     try {
-      let res;
-      
-      const postData = {
-        caption: message,
-        is_sensitive: isSensitive === 'true' || isSensitive === true,  // Verifica e converte para booleano
-        is_private: isPrivate === 'true' || isPrivate === true,        // Verifica e converte para booleano
-      };
-  
-      console.log(postData); // Verifique os valores aqui para garantir que são booleanos
-  
-      if (files && files.length > 0) {
+        let res;
         const formData = new FormData();
         formData.append('caption', message);
-        formData.append('is_sensitive', postData.is_sensitive);
-        formData.append('is_private', postData.is_private);
-  
-        // Adiciona os arquivos de mídia ao FormData
+        formData.append('is_sensitive', isSensitive);
+        formData.append('is_private', isPrivate);
+
         files.forEach((file) => {
-          formData.append('files', file);
+            if (file.url) {
+                formData.append('existing_files', file.url);  // Arquivo existente
+            } else {
+                formData.append('files', file);  // Novo arquivo
+            }
         });
-  
-        res = await api.post(route, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-      } else {
-        // Se não houver arquivos, envia os dados como JSON
-        res = await api.post(route, postData);
-      }
-  
-      console.log('Post criado com sucesso!', res.data);
-      setIsLoading(false);
-      onCancel();
+
+        console.log('Arquivos: ', formData)
+
+        if (postToEdit) {
+            res = await api.put(route , formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+        } else {
+            res = await api.post(route, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+        }
+
+        console.log('Post salvo com sucesso!', res.data);
+        setIsLoading(false);
+        onCancel();
     } catch (error) {
-      console.log('Erro ao criar post: ' + error);
-      setIsLoading(false);
+        setIsLoading(false);
+        console.error("Erro ao salvar post:", error.response ? error.response.data : error.message);
+        // Mostrar feedback amigável ao usuário
+        alert(`Erro ao salvar post: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
     }
-  };
+};
 
     return(
     <>
@@ -136,7 +156,9 @@ const NewPost = ({ user, onCancel, route }) =>{
         </div>
         <div className='post-content'>
 
-        {files.length > 0 && <FileUpload files={files} setFiles={setFiles} />}
+        {files.length > 0 && postToEdit && <EditPostFileUpload files={files} setFiles={setFiles} onRemove={handleFilesToRemove}/>}
+
+        {files.length > 0 &&  <FileUpload files={files} setFiles={setFiles} />}
 
         {isLoading && <div className='spinner-container'><div className="spinner"></div></div>}
           
@@ -159,7 +181,7 @@ const NewPost = ({ user, onCancel, route }) =>{
             className="rounded-circle me-2 ms-2" // Adiciona margem à direita
             />
         <div className="user-info">
-            <p className="user-displayname mb-0">{user?.username}</p>
+            <p className="user-displayname mb-0">{user?.userdata.displayname ? user?.userdata.displayname : user?.username}</p>
             <p className="user-email mb-0">{user?.userdata.user_tag}</p>
         </div>
       </a>  
@@ -240,9 +262,8 @@ const NewPost = ({ user, onCancel, route }) =>{
           ): (
             <button className='btn-white' onClick={onCancel}>Cancelar</button>
           )}
-            
             {showForm ? (
-            <button className='btn-blue' onClick={handlePostSubmit}>Postar</button>
+            <button className='btn-blue' onClick={handlePostSubmit}>{postToEdit ? 'Salvar Alterações' : 'Postar'}</button>
           ): (
             <button className='btn-blue' onClick={handleAdvanceClick}>Avançar</button>
           )}

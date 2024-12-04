@@ -14,14 +14,17 @@
     --text-secunaria: #c8c8c8;
 } 
 
+.sidecontent-space{
+  width: 50%;
+}
+
 .sidecontent-container{
-    display: grid;
-    width: 30%;
-    grid-template-columns: 100%;
-    grid-template-rows: 6rem auto;
+    display: flex;
+    flex-direction: column;
     justify-items: start;
     padding: 1rem;
     position: fixed;
+    padding-top: 5rem;
 }
 
 
@@ -29,12 +32,17 @@
  .Logo-container{
     display: flex;
     align-items: center;
-    width: 20%;
-    height: 4rem;
-    border-radius: .5rem;
-    
-    padding: 1rem;
+    height: 4.5rem;
+    padding: 1.5rem 1rem;
+    width: 26vw;
+    background-color: var(--primaria);
+    position: fixed;
+    z-index: 100;
    
+ }
+
+ .Logo-container:hover{
+  cursor: pointer;
  }
 
  .friends-container{
@@ -42,27 +50,109 @@
     width: 20vw;
     flex-direction: column;
     border-radius: .8rem;
-    background-color: var(--background-color);
-    border:  1px solid var();
+    background-color: transparent;
+    border:  1px solid var(--borda-preta);
+    max-width: 450px;
  }
+
+
 
  .friends-list-title{
   display: flex;
   justify-content: start;
-  color: var(--text-secunaria);
+  color: var(--text-primaria);
   padding: .1rem .8rem;
   font-size: 1.2rem;
   background-color: #4498bd;
   border-radius: .8rem .8rem 0 0;
   border-bottom: 1px solid var(--borda-preta);
+  font-weight: 600;
+ }
+
+ .friends-list-title.loading p{
+   height: 1.4rem;
+   margin: .2rem 0;
+   width: 100px;
+   background-color: var(--azul);
+   border-radius: .5rem;
+   animation: pulse 1.5s infinite ease-out;
+ }
+
+
+
+ .friends-list-content{
+   max-height: 30vh;
+   min-height: 10rem;
+   overflow-y: auto;
+ }
+
+ .friends-list-content.loading{
+   min-height: 10rem;
+ }
+
+ .friends-list.loading h5{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   width: 4rem;
+   color: var(--text-secunaria);
+   font-size: 1rem;
  
- }
+}
 
- .friends-list-title p{
-    color: var(--text-secunaria);
-    
- }
+.friends-list-itens.loading ul {
+   list-style-type: none;
+   padding: 0;
+   margin: 0;
+}
 
+.friends-list-itens.loading ul li{
+   display: flex;
+   margin-top: .2rem;
+   margin-bottom: .2rem;
+   align-items: center;
+   border-bottom: 1px solid var(--);
+   justify-content: space-between;
+   padding: .6rem;
+}
+
+.friends-list-itens.loading ul li p{
+   color: var(--icon-cinza);
+   font-size: 1rem;
+   height: 1rem;
+   background-color: var(--borda-preta);
+   width: 50%;
+   border-radius: .5rem;
+}
+
+.li-content.loading{
+ display: flex;
+ align-items: center;
+ width: 90%;
+}
+
+.friends-list-img.loading{
+   height: 2.5rem;
+   width: 2.5rem;
+   border-radius: 50%;
+   margin-right: .5rem;
+   background-color: var(--borda-preta);
+  
+}
+
+
+.friend-img-container{
+  display: flex;
+}
+
+.btn-open-profile-friend-list{
+  margin-right: .5rem;
+  position: relative;
+  padding: 0;
+  border-radius: .5rem;
+  opacity: 1;
+  background-color: transparent;
+}
 
 
  .friends-list h5{
@@ -88,12 +178,13 @@
     align-items: center;
     border-bottom: 1px solid var(--);
     justify-content: space-between;
-    padding: .6rem;
+    padding: .6rem .8rem;
  }
 
  .friends-list ul li p{
     color: var(--icon-cinza);
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 300;
  }
 
  .li-content{
@@ -103,26 +194,32 @@
 
  .friends-list-img{
     height: 2.5rem;
-    border-radius: .5rem;
-    margin-right: .5rem;
+    border-radius: 50%;
     border: 1px solid var(--borda-preta);
    
  }
 
  .offline-indicator{
-    height: .7rem;
-    width: .7rem;
+    height: 1rem;
+    width: 1rem;
     border-radius: 100%;
-    border: 3px solid var(--borda-preta);
+    background-color: var(--borda-preta);
+    border: 5px solid var(--preto-terceiro);
+    position: absolute;
+    right: 0;
+    bottom: 0;
  }
 
  
  .online-indicator{
-    height: .7rem;
-    width: .7rem;
+    height: 1rem;
+    width: 1rem;
     border-radius: 100%;
     background-color: var(--azul);
-    border: 3px solid var(--azul);
+    border: 1px solid var(--icon-cinza);
+    position: absolute;
+    right: 0;
+    bottom: 0;
  }
 
  .sidecontent-content{
@@ -136,20 +233,345 @@
    width: 20vw;
    flex-direction: column;
    border-radius: .8rem;
-   background-color: var(--background-color);
-   border:  1px solid var();
+   border:  1px solid var(--borda-preta);
+   padding: .6rem;
+   max-width: 450px;
  }
  
  .whatnew-title{
    display: flex;
   justify-content: start;
   color: var(--text-secunaria);
-  padding: .1rem .8rem;
+  padding: 0 .8rem 0 .8rem;
   border-radius: .8rem .8rem 0 0;
-  border: 1px solid #4498bd;
+  font-weight: 600;
+ 
  }
 
  .whatnew-title p{
    color: var(--text-primaria);
-   font-size: 1.2rem;
+   font-size: 1.4rem;
  }
+
+ .whatnew-content .topic-container{
+   display: flex;
+   flex-direction: column;
+   gap: .2rem;
+   margin: 0 .4rem;
+   margin-bottom: .4rem;
+   padding: 0 .4rem;
+   border-radius: .5rem;
+ }
+
+ .whatnew-content .topic-container hr{
+  margin: 0;
+  width: 100%;
+ }
+
+
+ .whatnew-content .topic-line{
+  color: var(--icon-cinza);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: .5rem;
+  background-color: var(--primaria);
+  border-radius: .5rem;
+ }
+
+ .whatnew-content .topic-line:hover{
+   background-color: var(--preto-terceiro);
+   cursor: pointer;
+ }
+
+ .whatnew-content .topic-line.loading:hover{
+   background-color: var(--primaria);
+ }
+
+ .whatnew-title.loading p{
+   background-color: var(--borda-preta);
+   color: var(--borda-preta);
+   border-radius: .5rem;
+   height: 1.8rem;
+   width: 200px;
+   animation: pulse 1.5s infinite ease-out;
+ }
+
+ .topic-line.loading p{
+   background-color: var(--borda-preta);
+   height: 1.4rem;
+   border-radius: .5rem;
+   animation: pulse 1.5s infinite ease-out;
+ }
+
+ @keyframes pulse {
+   0% {
+     opacity: 1;
+   }
+   50% {
+     opacity: 0.4;
+   }
+   100% {
+     opacity: 1;
+   }
+ }
+
+
+ /*----highlighted-posts-----*/
+
+ .highlighted-posts{
+  width: 20vw;
+  border-radius: .8rem;
+  overflow: hidden;
+  max-width: 450px;
+ }
+
+ .highlighted-media-gallery {
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  overflow: hidden;
+  width: 100%;
+  max-width: 600px;
+  margin-top: .1rem;
+  position: relative;
+  
+}
+
+.highlighted-media-item-content{
+ overflow: hidden;
+}
+
+.highlighted-media-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  aspect-ratio: 1;
+  background-color: var(--preto-terceiro);
+}
+
+.highlighted-media-item:hover {
+  transform: scale(1.05);
+}
+
+.highlighted-media-item.loading{
+  background-color: var(--preto-terceiro);
+  animation: pulse 1.5s infinite ease-out;
+}
+
+.highlighted-media-item.loading:hover,.highlighted-media-item.none:hover {
+  transform: scale(1);
+}
+
+.none-item-highlighted{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--icon-cinza);
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+
+ /*----recommended-profiles-----*/
+
+ .recommended-profiles-container{
+  width: 20vw;
+  overflow: hidden;
+  border-radius: .8rem;
+  border: 1px solid var(--borda-preta);
+  transition: all .3s ease-in-out;
+  max-width: 450px;
+ }
+
+ .recommended-profile-content{
+  display: flex;
+  flex-direction: column;
+  padding: .6rem .5rem;
+  transition: all .3s ease-in-out;
+ }
+
+ .recommended-profile{
+  display: flex;
+  padding: .6rem .6rem;
+  background-color: var(--borda-preta);
+  border-radius: .4rem;
+  position: relative;
+  transition: all .3s ease-in-out;
+ 
+ }
+
+ .recommended-profile:hover{
+  cursor: pointer;
+  height: 8rem;
+  transition: all .3s ease-in-out;
+ }
+
+ .recommended-profile:hover .recommended-profile-overlay{
+  transition: all .3s ease-in-out;
+  height: 50%;
+ }
+
+ .recommended-profile:hover .recommended-profile-main{
+  align-items: end;
+ }
+
+ .img-recommended-profile{
+  display: flex;
+  align-items: center;
+  height: 50%;
+ }
+
+ .recommended-profile:hover .btn-recommended-profile-container{
+  align-items: start;
+  transition: all .3s ease-in-out;
+ }
+
+ .recommended-profile.loading{
+  background-color: var(--borda-preta);
+ }
+
+ .recommended-profile-overlay{
+  width: 100%;
+  height: 100%;
+  background-color:var(--primaria);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+ }
+
+
+ .recommended-profile-main{
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  transition: all .3s ease-in-out;
+ }
+
+ .btn-recommended-profile-container{
+  z-index: 1;
+  display: flex;
+  align-items: center;
+ }
+
+ .recommended-profile-img{
+  height: 2.6rem;
+  width: 2.6rem;
+ }
+ 
+ .recommended-profile-img.loading{
+  background-color: var(--preto-terceiro);
+  border: 0;
+ }
+
+
+ .recommended-profile-p{
+  color: var(--text-secunaria);
+
+  padding: .1rem .5rem;
+  border-radius: .4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: end;
+  height: 100%;
+ }
+
+ .recommended-profile-p.loading div{
+   background-color: var(--preto-terceiro);
+   height: 1.2rem;
+   margin-bottom: .2rem;
+   width: 8rem;
+   border-radius: .4rem;
+ }
+
+ .recommended-profile-span{
+  color: var(--icon-cinza);
+  padding: .1rem .5rem;
+  border-radius: .4rem;
+  font-size: .9rem;
+  font-weight: 400;
+  display: flex;
+  align-items: end;
+  height: 100%;
+ }
+
+ .recommended-title{
+  display: flex;
+ justify-content: start;
+ color: var(--text-secunaria);
+ padding: 0 .8rem 0 .8rem;
+ border-radius: .8rem .8rem 0 0;
+ font-weight: 600;
+ padding: .6rem .8rem;
+ padding-bottom: 0;
+}
+
+.recommended-title p{
+  color: var(--text-primaria);
+  font-size: 1.4rem;
+}
+
+.recommended-profile-btn{
+  height: max-content;
+  border: 0;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.recommended-profile-btn.following{
+  background-color: var(--background-color);
+  border: 1px solid var(--icon-cinza);
+  color: var(--text-secunaria);
+}
+
+@media screen and (max-width: 1680px) {
+
+  .friends-container{
+    width: 24vw;
+  }
+
+  .whatnew-container{
+    width: 24vw;
+  }
+
+  .highlighted-posts{
+    width: 24vw;   
+  }
+
+  .recommended-profiles-container{
+    width: 24vw;
+  }
+
+  .whatnew-title p{
+    font-size: 20px;
+  }
+
+  .whatnew-content .topic-line{
+    font-size: 15px;
+  }
+
+
+  .friends-list ul li p{
+    font-size: 1rem;
+  }
+
+  .recommended-title p{
+    font-size: 20px;
+  }
+  
+  .recommended-profile-p{
+    font-size: 15px;
+  }
+
+  .recommended-profile-span{
+    font-size: 14px;
+  }
+
+  .recommended-profile-btn{
+    font-size: 14px;
+  }
+}

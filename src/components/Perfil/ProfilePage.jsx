@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../api';
 import { UserContext } from '../../Context/UserContext';
@@ -13,22 +13,29 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import './ProfilePage.css';
 import '../../screens/Home/Home.css';
+import ProfileGallery from './ProfileGallery';
 import ProfileEdit from '../../screens/Config/ProfileEdit';
 
 
 
 
 
-const ProfilePage = () => {
+
+const ProfilePage = ({ section }) => {
     const { username } = useParams(); // Certifica-se de capturar o userTag corretamente da URL
     const { data: userContextData } = useContext(UserContext); // Pega os dados do contexto do usuário logado
     const [isFollowing, setIsFollowing] = useState(false);
     const [isFriend, setIsFriend] = useState(false);
     const [pendingRequest, setPendingRequest] = useState(false);
-    const [activeSection, setActiveSection] = useState('postagens');
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [activeSection, setActiveSection] = useState(section || 'postagens');
+    const [activeSidebarSection, setActiveSidebarSection] = useState(section || 'feed');
     const queryClient = useQueryClient();
     const [isDropDonwOpen, setIsDropDonwOpen] = useState(false);
     const [showEditProfile, setShowEditProfile] = useState(false);
+
+   
 
 
     // Usa o useQuery para buscar os dados do perfil baseado no userTag capturado
@@ -38,10 +45,12 @@ const ProfilePage = () => {
     const fetchUserProfile  = async () => {
       try {
         const { data } = await api.post('/api/profile/', { username });
+        if(data.message){
+            return null
+        }
         return data;
       } catch (error) {
-        console.error('Erro na requisição fetchUser:', error);
-        throw error;
+        console.log(error)
       }
     };
 
@@ -66,6 +75,11 @@ const ProfilePage = () => {
             setPendingRequest(data.pending_request_friend);
         }
     }, [data]);
+
+    useEffect(() => {
+        const currentSection = location.pathname.split('/').pop();
+        setActiveSection(currentSection || 'postagens');
+      }, [location]);
 
 
   /*  const followMutation = useMutation({
@@ -108,8 +122,7 @@ const ProfilePage = () => {
 
 
     // Verifica se a requisição está carregando ou se houve um erro
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    
 
 
     const addFriend = async (userId) => {
@@ -151,11 +164,20 @@ const ProfilePage = () => {
 
     // Verifica se o perfil é do usuário logado (usando userContextData para verificar se o usuário logado é o dono do perfil)
     const isOwner = userContextData?.username === data?.username;
+    const renderContant = data?.is_locked 
 
 
-    const handleSectionChange = (section) => {
-        setActiveSection(section);
-    };
+    const handleSectionChange = (newSection) => {
+        setActiveSection(newSection);
+        navigate(`/profile/${username}/${newSection}`);
+      };
+
+      const handleSidebarSectionChange = (newSection) => {
+        setActiveSidebarSection(newSection);
+        navigate(`/${newSection}`);
+      };
+
+
 
     const handleShowDropDown = () => {
         if(isDropDonwOpen){
@@ -174,10 +196,14 @@ const ProfilePage = () => {
         }   
     };
 
-    const handleCancelProfileEdit = () => {
+    const handleCloseProfileEdit = () => {
         setShowEditProfile(false); 
       };
 
+
+      const handleFeed = () => {
+        navigate('/feed');
+      };
 
     return (
         <div className='body'>
@@ -189,7 +215,7 @@ const ProfilePage = () => {
                             <div className="main-container">
                             <div className="col-3 main-div profile">
                             
-                            <Sidebar />
+                            <Sidebar sectionChange={handleSidebarSectionChange} activeSection={activeSection}/>
                             <div className='main-content'>
                                 <div className='Profile-div'>
                                     <div className='profile-container'>
@@ -198,7 +224,8 @@ const ProfilePage = () => {
                                              style={{ 
                                                 backgroundImage: `url(${data?.banner_picture_url})`,
                                                 backgroundSize: 'cover',    // Para cobrir toda a área
-                                                backgroundPosition: 'center' // Centralizar a imagem
+                                                backgroundPosition: 'center', // Centralizar a imagem
+                                                backgroundColor: `${data?.banner_picture_url ? '#aaa' : '#39aee1'}`
                                               }}
                                             >
                                                 <div className='achievement-container'></div>
@@ -206,7 +233,11 @@ const ProfilePage = () => {
                                             <div className='profile-main'>
                                                 <div className='profile-main-header' >
                                                     <div className='profile-pic-container'>
-                                                    <img src={data?.profile_picture_url || ''} alt="" className='profile-user-pic' />
+                                                    <div style={{
+                                                         backgroundImage: `url(${data?.profile_picture_url || ''})`,
+                                                         backgroundSize: 'cover',    // Para cobrir toda a área
+                                                         backgroundPosition: 'center' // Centralizar a imagem
+                                                    }} className='profile-user-pic' />
                                                     </div>  
                                                     <div className='profile-header-content'>
                                                     <div className='profile-user-info'>
@@ -216,69 +247,98 @@ const ProfilePage = () => {
                                                             data-bs-toggle="dropdown"
                                                             aria-expanded="false"
                                                         >
-                                                            <div className="user-info profile">
-                                                                <p className="user-displayname mb-0">{data?.displayname ? data?.displayname : data?.username}</p>
-                                                                <p className="user-tag mb-0">{data?.user_tag}</p>
+                                                            <div className={`user-info profile ${isLoading ? 'loading' : ''}`}>
+                                                                {isLoading ? (<>
+                                                                    <p className="user-displayname loading mb-0"></p>
+                                                                    <p className="user-tag loading mb-0"></p>
+                                                                </>):(
+                                                                    <>
+                                                                    <p className="user-displayname mb-0">{data?.displayname ? data?.displayname : data?.username}</p>
+                                                                    <p className="user-tag mb-0">{data?.user_tag}</p>
+                                                                    </>
+                                                                )}
+                                                                
                                                             </div>
                                                             <div className='user-info-itens'>
-                                                                
+                                                            <div className='profile-user-info-btns'>
+                                                                {!isLoading && (
+                                                                       !isOwner ? (
+                                                                            <>
+                                                                              <button className={`btn-blue profile ${isFriend ? 'friend' : ''}`} onClick={() => addFriend(data.user_id)}>
+                                                                                                                                                
+                                                                                        {!isFriend ? (
+                                                                                                    <>
+                                                                                                      {pendingRequest ? (
+                                                                                                                        <>
+                                                                                                                                                    
+                                                                                                                                                        <FontAwesomeIcon icon={faClock} /> <FontAwesomeIcon icon={faUserGroup} />
+                                                                                                                                                        </>
+                                                                                                                                                    ):(
+                                                                                                                                                        <>
+                                                                                                                                                        + <FontAwesomeIcon icon={faUserGroup} />
+                                                                                                                                                        </>
+                                                                                                                                                    )}
+                                                                                                                                                    
+                                                                                                                                                    </>
+                                                                                                                                                ) : (
+                                                                                                                                                    <>
+                                                                                                                                                    <FontAwesomeIcon icon={faCheck} /> <FontAwesomeIcon icon={faUserGroup} />      
+                                                                                                                                                </>
+                                                                                                                                                )}
+                                                                                                                                            </button>
+                                                                                                                                            <button className={`btn-white profile ${isFollowing ? 'following' : ''}`} onClick={handleFollowToggle}>
+                                                                                                                                            {isFollowing ? 'Seguindo' : 'Seguir'}
+                                                                                                                                            </button>
+                                                                                                                                        </>
+                                                                                                                                    ):(
+                                                                                                                                        <div>
+                                                                                                                                            <button className={`btn-blue profile-edit`} onClick={handleShowEditProfile}>
+                                                                                                                                                Editar Perfil
+                                                                                                                                            </button>
+                                                                                                                                        </div>
+                                                                                                                                    )    
+                                                                )}
+ 
+                                                                </div>
                                                                 <button className='btn-user-info' onClick={() => handleShowDropDown() }><FontAwesomeIcon icon={faEllipsisVertical} /></button>
                                                                
                                                             </div>
                                                         </div>
-                                                        <div className='profile-bio'>
-                                                            <span>{data?.bio}</span>
+                                                        <div className={`profile-bio ${isLoading ? 'loading' : ''}`}>
+                                                            {isLoading ? (<>
+                                                                <div></div>
+                                                            </>):(
+                                                                <>
+                                                                <span>{data?.bio}</span>
+                                                                </>
+                                                            )}
+                                                            
                                                         </div>
                                                     </div>
                                                             <div className='profile-main-header-2'>
                                                                 <div className='profile-user-info-2'>
-                                                                <p className='user-friends'><strong>{data?.friends.length}</strong>Amigos</p>
+                                                                {isLoading ? (<>
+                                                                </>):(
+                                                                <>
+                                                                <p><strong>{data?.posts_count}</strong>Postagens</p>
                                                                 <p className='user-follows'><strong>{data?.followers_count}</strong>Seguidores</p>
-                                                                <p><strong>{data?.posts.length}</strong>Postagens</p>
-                                                                    
+                                                                <p className='user-follows'><strong>{data?.following_count}</strong>Seguindo</p>
+                                                                <p className='user-friends'><strong>{data?.friends_count}</strong>Amigos</p> 
+                                                                </>
+                                                                )}
                                                                 </div>
-                                                                <div className='profile-user-info-btns'>
-                                                                {!isOwner ? (
-                                                                            <>
-                                                                                <button className={`btn-blue profile ${isFriend ? 'friend' : ''}`} onClick={() => addFriend(data.user_id)}>
-                                                                                    
-                                                                                    {!isFriend ? (
-                                                                                        <>
-                                                                                        {pendingRequest ? (
-                                                                                            <>
-                                                                                        
-                                                                                            <FontAwesomeIcon icon={faClock} /> <FontAwesomeIcon icon={faUserGroup} />
-                                                                                            </>
-                                                                                        ):(
-                                                                                            <>
-                                                                                            + <FontAwesomeIcon icon={faUserGroup} />
-                                                                                            </>
-                                                                                        )}
-                                                                                        
-                                                                                        </>
-                                                                                    ) : (
-                                                                                        <>
-                                                                                        <FontAwesomeIcon icon={faCheck} /> <FontAwesomeIcon icon={faUserGroup} />      
-                                                                                    </>
-                                                                                    )}
-                                                                                </button>
-                                                                                <button className={`btn-white profile ${isFollowing ? 'following' : ''}`} onClick={handleFollowToggle}>
-                                                                                {isFollowing ? 'Seguindo' : 'Seguir'}
-                                                                                </button>
-                                                                            </>
-                                                                        ):(
-                                                                            <div>
-                                                                                <button className={`btn-blue profile-edit`} onClick={handleShowEditProfile}>
-                                                                                    Editar Perfil
-                                                                                </button>
-                                                                            </div>
-                                                                        )}      
-                                                                </div>
+                                                               
+                                                               
+                                                            </div>
+                                                            <div className='btns-profile-container'>
+                                                            
                                                             </div>
                                                          </div>
                                                 </div>
                                                 
                                                 <div className='profile-contant-main'>
+                                                {!renderContant  ?(
+                                                        <>
                                                     <div className='profile-contant-main-sections'>
                                                             <button 
                                                                 className={`btn-profile ${activeSection === 'postagens' ? 'active' : ''}`} 
@@ -287,11 +347,12 @@ const ProfilePage = () => {
                                                                 Postagens
                                                             </button>
                                                             <button 
-                                                                className={`btn-profile ${activeSection === 'desafios' ? 'active' : ''}`} 
-                                                                onClick={() => handleSectionChange('desafios')}
+                                                                className={`btn-profile ${activeSection === 'galeria' ? 'active' : ''}`} 
+                                                                onClick={() => handleSectionChange('galeria')}
                                                             >
-                                                                Desafios
+                                                                Galeria
                                                             </button>
+                                                            
                                                             <button 
                                                                 className={`btn-profile ${activeSection === 'curtidos' ? 'active' : ''}`} 
                                                                 onClick={() => handleSectionChange('curtidos')}
@@ -299,16 +360,25 @@ const ProfilePage = () => {
                                                                 Curtidos
                                                             </button>
                                                     </div>
-                                                    {activeSection === 'postagens' && (
+                                                    
+                                                     {activeSection === 'postagens' && data &&(
                                                     <ListPost endpoint={`/api/posts/user/${username}/`} method={'GET'} style={'profile'}/>
                                                     )}
-                                                        {/* Você pode adicionar componentes diferentes para 'Desafios' e 'Curtidos' */}
-                                                    { activeSection === 'desafios' && (
-                                                    <div>Lista de Desafios aqui</div>
+                                                     { activeSection === 'galeria' && (
+                                                     <ProfileGallery endpoint={`/api/posts/user/${username}/`} />
                                                     )}
+                                                    
                                                     {activeSection === 'curtidos' && (
                                                     <ListPost endpoint={`/api/posts/${username}/favorites/`} method={'GET'} style={'profile'}/>
                                                     )}
+                                                        </>
+                                                    ): (
+                                                       <div className='locked-container'>
+                                                        <p>Este perfil é privado. Você não tem permissão para visualizar as postagens deste usuário.</p>
+                                                        <button className='btn-blue' onClick={handleFeed}> Voltar ao Feed</button>
+                                                       </div>
+                                                    )}
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -328,13 +398,13 @@ const ProfilePage = () => {
                                         <>
                                       <div class="post-overlay"></div>
                                       <div className='profilepage-profileedit'>
-                                        <ProfileEdit style={'profilepage'} parent={'profilepage'} onCancel={handleCancelProfileEdit}/>
+                                        <ProfileEdit style={'profilepage'} parent={'profilepage'} onClose={handleCloseProfileEdit} parentQueryClient={queryClient} invalidate={'userProfile'}/>
                                      </div>
                                      </>
                                      )}
                                 </div>
-                                <div>
-                                    <SideContent></SideContent>
+                                <div className='sidecontent-space profile'>
+                                    <SideContent page={'profile'} data={data?.username}/>
                                 </div>
                                 </div>
                             </div>

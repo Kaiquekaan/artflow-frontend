@@ -15,6 +15,7 @@ const Notifications = () => {
     staleTime: 60000, // 1 minuto
     cacheTime: 300000, // Manter no cache por 5 minutos
     retry: false,
+    refetchOnWindowFocus:false,
   });
 
   queryClient.setQueryData(['notifications'], (oldData) => {
@@ -96,8 +97,7 @@ const handleShowNotifications = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isLoading ) return <div className='notification-loading'></div>;
 
   // Verificar se há notificações não lidas
   const unreadNotifications = notifications.data.some((notification) => !notification.is_read);

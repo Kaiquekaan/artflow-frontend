@@ -1,5 +1,6 @@
 import './Home.css'
 import { useEffect, useState, useRef, useContext } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,21 +10,27 @@ import { faComment, faCalendarDays, faEllipsis, faGear, faBarsProgress, faUser, 
 import Task from '../../components/Task';
 import { auth, db } from '../../firebase';
 import Banner from '../../components/Banner';
-import { useNavigate } from 'react-router-dom';
 import Feed from '../../components/Feed/Feed';
 import NewPost from '../../components/NewPost';
 import api from '../../api';
 import { UserContext } from '../../Context/UserContext';
 import Sidebar from '../../components/Navigate/Sidebar';
 import SideContent from '../../components/Navigate/SideContent';
+import Explore from '../../components/explore/Explore';
+import HashtagPage from '../GridPages/HashtagPage';
+import GridPage from '../GridPages/Gridpage';
+import PostViewPage from '../../components/Feed/PostViewPage';
+import Chats from '../../components/Chat/Chat';
+import { is } from 'date-fns/locale';
 
 
 
 
 
-const Home = () => {
-  const [activeTab, setActiveTab] = useState('taskgui');
+const Home = ({ section, isQuery = false }) => {
+  const [activeSection, setActiveSection] = useState(section || 'feed');
   const navigate = useNavigate();
+  const location = useLocation();
   const [showNewPost, setShowNewPost] = useState(false)
   const [searchQuery, setSearchQuery] = useState(''); // Estado para o campo de pesquisa
   const [searchResults, setSearchResults] = useState([]);
@@ -37,7 +44,11 @@ const Home = () => {
 
  
 
-
+  useEffect(() => {
+    const currentSection = location.pathname.split('/').pop();
+    console.log('current:',currentSection)
+    setActiveSection(currentSection || 'feed');
+  }, [location]);
 
 
   
@@ -130,12 +141,17 @@ const Home = () => {
 
 
   const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
+    setactiveSection(tabName);
     if (tabName === 'comment') {
       setIsChatVisible(true);
     } else {
       setIsChatVisible(false);
     }
+  };
+
+  const handleSectionChange = (newSection) => {
+    setActiveSection(newSection);
+    navigate(`/${newSection}`);
   };
 
 
@@ -218,6 +234,7 @@ const Home = () => {
     //.where('users', 'array-contains', user.email);
     //const [chatSnapshot] = useCollection(refchat);
 
+
  
 
 
@@ -241,24 +258,24 @@ const Home = () => {
     <ul className="nav nav-pills nav-flush  text-center">
         <li className="nav-item">
           <button
-            className={`btn btn-light ${activeTab === 'taskgui' ? 'active' : ''}`}
-            onClick={() => handleTabClick('taskgui')}
+            className={`btn btn-light ${activeSection === 'feed' ? 'active' : ''}`}
+            onClick={() => handleSectionChange('taskgui')}
           >
             <FontAwesomeIcon icon={faBarsProgress} style={{ color: "#d8a313" }} />
           </button>
         </li>
         <li className="nav-item">
           <button
-            className={`btn btn-light ${activeTab === 'comment' ? 'active' : ''}`}
-            onClick={() => handleTabClick('comment')}
+            className={`btn btn-light ${activeSection === 'comment' ? 'active' : ''}`}
+            onClick={() => handleSectionChange('comment')}
           >
             <FontAwesomeIcon icon={faComment} style={{ color: "#d8a313" }} />
           </button>
         </li>
         <li className="nav-item">
           <button
-            className={`btn btn-light ${activeTab === 'calendar' ? 'active' : ''}`}
-            onClick={() => handleTabClick('calendar')}
+            className={`btn btn-light ${activeSection === 'calendar' ? 'active' : ''}`}
+            onClick={() => handleSectionChange('calendar')}
           >
             <FontAwesomeIcon icon={faCalendarDays} style={{ color: "#d8a313" }} />
           </button>
@@ -284,16 +301,37 @@ const Home = () => {
       {/* Conteúdo Principal */}
       <main className="main">
         <div className="main-container">
-        <div className="col-3 main-div"> 
+        <div className={`col-3 main-div ${section == 'cflow' || section == 'chats' ? 'collum' : ''}`}> 
           {/* Barra Lateral */}
           
-          <Sidebar/>
+          <Sidebar sectionChange={handleSectionChange} activeSection={activeSection} />
          
-        <div className='main-content'>
-          
-            <Feed></Feed>
-            <div>
-          <SideContent page={'feed'}/>
+         <div className='main-content'>
+            {activeSection == 'feed' && (
+              <Feed/>
+            )}
+             {activeSection == 'explore' && (
+              <Explore isQuery={isQuery}/>
+            )}
+            {activeSection == 't' && (
+              <HashtagPage/>
+            )}
+            {activeSection == 'view' && (
+              <PostViewPage/>
+            )}
+             {activeSection == 'chats' && (
+              <Chats/>
+            )}
+             {activeSection == 'cflow' && (
+              <GridPage endpoint={`/api/posts/cflow/`}/>
+            )}
+            
+            <div className={`sidecontent-space ${section == 'cflow' || section == 'chats' ? 'collum' : ''}`}>
+              {section == 'cflow' || section == 'chats' ? (
+                <></>
+              ):(
+              <SideContent page={'feed'}/>
+              )}
           </div>
           {showNewPost && (
           <NewPost user={data} onCancel={handleCancelNewPost} route="/api/create-post/" /> // Passa o onCancel para o NewPost

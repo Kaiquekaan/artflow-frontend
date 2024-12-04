@@ -1,7 +1,12 @@
 
 *:root{
     --primaria: #0d0d0d;
+    --borda-preta:#2a2a2a;
     --preto-claro: #3a3a3a;
+    --preto-terceiro: #1c1c1c;
+    --btb-white-color: #e0e0e0;
+    --background-color: #121212;
+    --icon-cinza:#b3b3b3;
     --azul: #39aee1;
     --secundaria: #19233B;
     --text-primaria: #ffffff;
@@ -30,6 +35,13 @@
     transform: translateY(-50%); /* Ajuste para centralizar verticalmente */
   }
 
+  .login-form.verify-code{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+  }
+
  label{
     color: #000;
  }
@@ -39,11 +51,53 @@
   }
 
 hr{
-    color: var(--preto-claro);
+    color: var(--icon-cinza);
     width: 45%;
 }
 
+.input-container.active.verify-code{
+display: flex;
+flex-direction: column;
+justify-content: center;
+width: max-content;
+gap: 1rem;
+overflow: hidden;
+}
 
+.form-verify-code-header{
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    margin-bottom: .5rem;
+}
+
+.label-form.title-form{
+ font-size: 1.6rem;
+}
+
+.text-form-verify-code{
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    width: 25rem;
+    text-align: center;
+    color: var(--icon-cinza);
+}
+
+.text-form-verify-code span{
+    color: var(--azul);
+}
+
+
+.input-verify-code{
+    background-color: var(--background-color);
+    border: 1px solid var(--azul);
+    color: var(--text-secunaria);
+}
+
+.btn-form.verify-code{
+    width: 100%;
+}
 
 .titulo{
     color: #000;
@@ -105,9 +159,13 @@ hr{
         align-items: center;
         height: 100vh;
         background-size: cover; /* Ajusta a imagem para cobrir toda a área da div */
-  background-position: center;
+        background-position: center;
         background-color: #e6e3e3;
         top: 50rem;
+    }
+
+    .input-container{
+        width: 85%;
     }
 
     .botao-com-imagem span {
@@ -144,6 +202,10 @@ hr{
     
     .input-login {
     height: 1.5rem;
+    }
+
+    .btn-form{
+        width: 60%;
     }
   }
   

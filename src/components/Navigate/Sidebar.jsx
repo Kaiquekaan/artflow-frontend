@@ -4,17 +4,15 @@ import api from '../../api';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faCalendarDays, faBarsStaggered, faGear, faBarsProgress, faUser, faArrowRightFromBracket, faMagnifyingGlass, faLayerGroup, faFire, faFolderClosed, faBell,
-  faSquarePlus
+  faSquarePlus,faSplotch
  } from '@fortawesome/free-solid-svg-icons';
 import NewPost from '../NewPost';
 import { UserContext } from '../../Context/UserContext';
-import { ACCESS_TOKEN } from '../../constants';
 import Notifications from './Notifications';
 import './Sidebar.css'
 
 
-function Sidebar()  {
-    const [activeTab, setActiveTab] = useState('feed');
+const Sidebar = ({sectionChange, activeSection}) =>  {
     const [Dropdown, setDropdown] = useState(false);
     const [showNewPost, setShowNewPost] = useState(false)
     const navigate = useNavigate();
@@ -51,7 +49,7 @@ function Sidebar()  {
 
 
       const handleSettings = () => {
-        navigate('/configuration');
+        navigate('/configuration/profile');
       };
 
 
@@ -132,7 +130,7 @@ function Sidebar()  {
 
   
       const handleProfileClick = (username) => {
-        navigate(`/profile/${username}`);
+        navigate(`/profile/${username}/postagens`);
       };
 
       const handleSearchFocus = () => {
@@ -151,9 +149,8 @@ function Sidebar()  {
       }, [searchResults]);
   
       const handleLogout = () => {
-        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.clear();
         setToken('');
-        console.log('Fazendo logout')
         navigate('/login');
       };
 
@@ -168,24 +165,45 @@ function Sidebar()  {
     <div className='sidebar-space'>
       <nav id="sidebar" className="col-3 d-flex flex-column flex-shrink-0 sidebar ">
      <div className='sidebar-usercontainer'>
-      <div
-              className="d-flex align-items-center p-2 link-dark text-decoration-none "
-              id="dropdownUser3"
-               data-bs-toggle="dropdown"
-              aria-expanded="false"
-              >
-             <img
-             src={!data ? '' : data.userdata.profile_picture_url} //user.usedata.profile_picture_url
-            alt="mdo"
+      {!data ? (
+            <div
+            className="d-flex align-items-center p-2 link-dark text-decoration-none "
+            id="dropdownUser3"
+              data-bs-toggle="dropdown"
+            aria-expanded="false"
+            >
+            <div
+             //user.usedata.profile_picture_url
             width={45} // tamanho adequado para ser mais visível
             height={45}
-            className="rounded me-2 ms-2" // Adiciona margem à direita
+            className="img-sidebar-profile loading rounded-circle me-2 ms-2" // Adiciona margem à direita
             />
-        <div className="user-info">
-            <p className="user-displayname mb-0">{data?.userdata.displayname ? data?.userdata.displayname : data?.username }</p>
-            <p className="user-email mb-0">{data?.userdata.user_tag}</p>
-        </div>
-      </div>
+            <div className="user-info loading">
+            <p className="user-displayname loading mb-0"></p>
+            <p className="user-email loading mb-0"></p>
+            </div>
+            </div>
+      ):(
+        <div
+        className="d-flex align-items-center p-2 link-dark text-decoration-none "
+        id="dropdownUser3"
+         data-bs-toggle="dropdown"
+        aria-expanded="false"
+        >
+        <button className='btn-open-profile' onClick={() => handleProfileClick(data?.username)}>
+       <img
+       src={!data ? 'none' : data.userdata.profile_picture_url} //user.usedata.profile_picture_url
+      width={45} // tamanho adequado para ser mais visível
+      height={45}
+      className="img-sidebar-profile rounded-circle me-2 ms-2" // Adiciona margem à direita
+      /></button>
+  <div className="user-info">
+      <p className="user-displayname mb-0">{data?.userdata.displayname ? data?.userdata.displayname : data?.username }</p>
+      <p className="user-email mb-0">{data?.userdata.user_tag}</p>
+  </div>
+</div>
+      )}
+     
       <div className='sidebar-notifications'>
       <Notifications />
       </div>
@@ -263,38 +281,38 @@ function Sidebar()  {
       <ul className="nav nav-pills nav-flush flex-column mb-auto text-center">
      
         <li className="nav-item">
-        <div className={`nav-item-div ${activeTab === '' ? 'actived' : ''}`} onClick={() => handleTabClick('')}>
+        <div className={`nav-item-div ${activeSection === 'feed' ? 'actived' : ''}`} onClick={() => sectionChange('feed')}>
             
-            <div className='nav-icon'> <FontAwesomeIcon icon={faLayerGroup}  style={{ color: "#FFFFFF" }}/> </div>
+            <div className='nav-icon'> <FontAwesomeIcon icon={faLayerGroup} /> </div>
       
           <p>Feed</p>
           </div>
         </li>
         <li className="nav-item">
-          <div className={`nav-item-div ${activeTab === 'explore' ? 'actived' : ''}`} onClick={() => handleTabClick('explore')}> 
-            <div className='nav-icon'> <FontAwesomeIcon icon={faFire}  style={{ color: "#FFFFFF" }} /></div>
+          <div className={`nav-item-div ${activeSection === 'explore' ? 'actived' : ''}`} onClick={() => sectionChange('explore')}> 
+            <div className='nav-icon'> <FontAwesomeIcon icon={faFire}   /></div>
           <p>Explorer</p>
           </div>
           
         </li>
         <li className="nav-item">
-        <div className={`nav-item-div ${activeTab === 'comment' ? 'actived' : ''}`} onClick={() => handleTabClick('comment')}>
-          <div className='nav-icon'> <FontAwesomeIcon icon={faComment} style={{ color: "#FFFFFF" }} /></div>
+        <div className={`nav-item-div ${activeSection === 'chats' ? 'actived' : ''}`} onClick={() => sectionChange('chats')}>
+          <div className='nav-icon'> <FontAwesomeIcon icon={faComment} /></div>
            
           <p>Chats</p>
           </div>
         </li>
         <li className="nav-item">
-        <div className={`nav-item-div ${activeTab === 'folder' ? 'active' : ''}`} onClick={() => handleTabClick('folder')}>
-        <div className='nav-icon'>  <FontAwesomeIcon icon={faFolderClosed}  style={{ color: "#FFFFFF" }} /></div>
+        <div className={`nav-item-div ${activeSection === 'cflow' ? 'actived' : ''}`} onClick={() => sectionChange('cflow')}>
+        <div className='nav-icon'>  <FontAwesomeIcon icon={faSplotch} /></div>
            
         
-          <p>Galeria</p>
+          <p>Fluxo Criativo</p>
           </div>
         </li>
         <li className="nav-item">
         <div className={`nav-item-div`} onClick={handleNewPostClick}>
-        <div className='nav-icon'> <FontAwesomeIcon icon={faSquarePlus}   style={{ color: "#FFFFFF" }} /></div>
+        <div className='nav-icon'> <FontAwesomeIcon icon={faSquarePlus}   /></div>
             
            <p>Novo Post</p>
           </div>
@@ -323,11 +341,9 @@ function Sidebar()  {
         </li>
       </div>
       <div className='dropdown-footer'>
-        <li>
-          <button className="dropdown-item" onClick={handleLogout}>
+          <button className="dropdown-item-btn" onClick={handleLogout}>
             <FontAwesomeIcon icon={faArrowRightFromBracket} className='dropdown-icon' />Sign out
           </button>
-        </li>
       </div>
     </ul>
   </div>

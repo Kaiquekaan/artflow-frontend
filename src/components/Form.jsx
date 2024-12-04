@@ -4,11 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotate } from '@fortawesome/free-solid-svg-icons';
-import { UserContext } from "../Context/UserContext";
-
-
-
-
+import VerificationCodeInput from "../screens/Login/VerificationCodeInput";
 
 
 
@@ -24,18 +20,16 @@ function Form({route, method}){
     const [currentStep, setCurrentStep] = useState('register');  // Estado da etapa
     const [userbirth, setUserbirth] = useState('');
     const [loading, setLoading ] = useState(false);
+    const [twoFactorRequired, setTwoFactorRequired] = useState(false);  // Verifica se 2FA é necessário
+    const [twoFactorCode, setTwoFactorCode] = useState(''); 
     
     
     const navigate = useNavigate();
     
 
-    const {token, setToken} = useContext(UserContext);
+    
 
-    useEffect(() => {
-      if(token){
-        setToken('');
-      }
-    }, [])
+
 
     const handleBack = () => {
         navigate('/');
@@ -89,9 +83,13 @@ function Form({route, method}){
 
 
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, code) => {
+        if (e) e.preventDefault();
         setLoading(true)
-        e.preventDefault();
+
+        const verificationCode = code || twoFactorCode; 
+
+        
         
    /*  if (method === 'login' || senha === consenha){
         try{
@@ -124,18 +122,24 @@ function Form({route, method}){
       } */
 
         if (method === 'login'){
+          if (step === 1) {
           try{
             const res = await api.post(route, {
               username: email,
               password: senha
             });
 
-            localStorage.setItem(ACCESS_TOKEN, res.data.access);
-            localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-            setToken(res.data.access)
-            
-           
-            navigate('/');
+            if (res.data.detail === "2FA necessário. Verifique o código enviado para seu e-mail.") {
+              // Caso 2FA seja necessário, mudar para a etapa de verificação de código
+              setTwoFactorRequired(true);
+              setStep(2);  // Muda para a etapa de verificação 2FA
+              alert("Código de 2FA enviado para seu e-mail.");
+          } else {
+              // Caso o login não exija 2FA, armazena tokens e navega normalmente
+              localStorage.setItem(ACCESS_TOKEN, res.data.access);
+              localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+              navigate("/");
+          }
           
           }catch(error){
             console.log('Erro no login' , error);
@@ -143,6 +147,29 @@ function Form({route, method}){
           }finally{
             setLoading(false)
           }
+        } else if (step === 2 && twoFactorRequired) {
+
+          try {
+            console.log('codigo enviado: ', verificationCode)
+            const res = await api.post(route, { username: email, code: verificationCode, password: senha });
+            console.log('resposta da api: ', res.data)
+            if (res.data.access) {
+                // Armazena os tokens de acesso e navega
+                localStorage.setItem(ACCESS_TOKEN, res.data.access);
+                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                navigate("/");
+            } else {
+                alert("Código de 2FA incorreto.");
+                setTwoFactorCode('');
+            }
+        } catch (error) {
+            console.error("Erro ao verificar o código de 2FA:", error);
+            alert("Erro ao verificar o código de 2FA.");
+        } finally {
+            setLoading(false);
+        }
+          
+        }
         } else if( method === 'register') {
           if(step === 1){
 
@@ -221,6 +248,14 @@ function Form({route, method}){
 
     } 
 
+
+    const handleVerificationComplete = (code) => {
+      console.log("Final verification code:", code);
+      setTwoFactorCode(code); 
+      console.log("Final verification two factor code:", twoFactorCode);
+      handleSubmit(null, code);
+  };
+
    
 
 
@@ -234,7 +269,7 @@ function Form({route, method}){
       <img src="https://github.com/TeamArtFlow/GabrielHirata-FATEC-PJI2-2024-6-ArtFlow/blob/feature-login/src/imagens/artflow_written.png?raw=true" alt="logo-name" loading="lazy" className="h1" />
       </div>
       {loading && <div className="spinner"></div>}
-        <form className={ styleMethod + "-form"} onSubmit={handleSubmit} onTransitionEnd={handleTransitionEnd}>
+        <form className={ styleMethod + `-form ${twoFactorRequired && 'verify-code'}` } onSubmit={handleSubmit} onTransitionEnd={handleTransitionEnd}>
         {styleMethod === 'register' ? (
          <div className="stap-bar-container"><div className="stap-bar"><div className="bar" style={{ width: `${progress}%`, transition: "width 0.5s ease", }}></div></div></div> 
         ): ''}
@@ -357,7 +392,7 @@ function Form({route, method}){
       )}
   
 
-      {method === "login" && (
+      {method === "login" && step === 1 && (
        <>
         <div className="input-container active">
               <label className="label-form" htmlFor="email">
@@ -401,6 +436,19 @@ function Form({route, method}){
             </>
        </>  
       )}
+
+      {method === "login" && step === 2 && twoFactorRequired && (
+            <>
+            <div className="input-container active verify-code">
+              <div className="form-verify-code-header">
+                <label className="label-form title-form" htmlFor="twoFactorCode">Código de Verificação</label>
+                <div className="text-form-verify-code">Enviamos um código de verificação para o <span>seu email.</span> Verifique sua caixa de entrada e <span>insira o código</span> para continuar.</div>
+                </div>
+                <VerificationCodeInput length={6} onComplete={handleVerificationComplete}/>
+                </div>
+            </>
+        )}
+
    </form>
     
   

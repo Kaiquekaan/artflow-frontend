@@ -20,6 +20,11 @@
     position: relative;
     width: 100%;
     height: 100%;
+    background-color: var(--preto-terceiro);
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .modal-left .video-element{
@@ -38,17 +43,47 @@
   
   .controls {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     position: absolute;
-    bottom: 1.5%;
+    flex-direction: column;
+    bottom: 0;
     width: 100%;
+    gap: .2rem;
+    background: linear-gradient(180deg,rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.5));
+    
   }
   
-  .progress-bar {
-    flex: 1;
-    margin: 0 8px;
+  .progress-container {
+    position: relative;
+    width: 98%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px; /* Altura fina como no YouTube */
+    background-color: rgba(255, 255, 255, 0.3); /* Fundo semitransparente */
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+  }
+
+  .progress-container:hover{
+    height: 6px;
+  }
   
+  /* Barra de Progresso */
+  .progress-bar {
+    height: 100%;
+    background-color: var(--azul); /* Cor da barra de progresso, estilo YouTube */
+    width: 0;
+    transition: width 0.1s linear;
+  }
+
+  .controls-btns-container{
+    display: flex;
+    padding-bottom: .2rem;
+    width: 98%;
+    justify-content: space-between;
   }
 
   .progress-bar:hover,  .volume-bar:hover{
@@ -56,17 +91,41 @@
   }
 
   .play-btn{
-    background-color: #1c1c1c1f;
+    background-color: transparent;
     margin: 0;
-    margin-left: .5rem;
     border-radius: .4rem;
   }
 
   .fullscreen-btn{
-    background-color: #1c1c1c1f;
+    background-color: transparent;
     border-radius: .4rem;
   }
 
+  .btns-left-area{
+    display: flex;
+    align-items: center;
+  }
+
+  .volume-container {
+    position: relative;
+    width: 100px; /* Largura da barra de volume */
+    height: 6px; /* Altura da barra de volume */
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Degradê de opaco a transparente */
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+
+
+  
+  /* Barra que indica o nível de volume */
+  .volume-bar {
+    height: 100%;
+    background-color: var(--text-primaria); /* Cor da barra de volume */
+    border-radius: 3px;
+    
+  }
 
   .volume-btn:hover + .volume-bar, .volume-bar:hover {
     opacity: 1; /* Fica visível quando o mouse está sobre o botão de volume ou a barra de volume */
@@ -74,20 +133,78 @@
   
 
   .volume-btn{
-    background-color: #1c1c1c1f;
+    background-color: transparent;
     border-radius: .4rem;
     position: relative;
+    margin-right: 0;
   }
 
-  .volume-bar {
-    position: absolute; /* Para posicionar a barra de volume sobre a barra de progresso */
-    bottom: 30px; /* Ajuste para o quanto você quer que fique acima da barra de progresso */
-    right: 2%; /* Ajuste conforme necessário */
-    width: 100px; /* Ajuste o tamanho da barra de volume conforme necessário */
-    z-index: 1; /* Para garantir que a barra de volume fique acima da barra de progresso */
-    opacity: 0; /* Começa invisível */
-    transition: opacity 0.5s; /* Para uma transição suave */
-  }
-  
 
   
+.media-placeholder{
+  background-color: var(--preto-terceiro);
+}
+  
+
+.post-view-container .media-gallery.one-image .custom-video-player{
+  max-height:max-content
+}
+
+.pause-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  color: white;
+  font-size: 3rem;
+  pointer-events: none; /* Permite clicar no vídeo sem interferir no ícone */
+}
+
+
+/* ----------CustomVideoPreview------------- */
+
+
+.video-preview-container {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+}
+
+.video-preview-container.highlighted-media{
+  aspect-ratio: 2/1;
+}
+
+.video-preview-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.video-preview-container:hover .video-preview-overlay {
+  opacity: 1;
+}
+
+.video-preview-icon {
+  color: white;
+  font-size: 3rem;
+}

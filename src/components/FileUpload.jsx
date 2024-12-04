@@ -22,6 +22,48 @@ const FileUpload = ({ files, setFiles }) => {
     }
   };
 
+  const getMediaUrl = (file) => {
+    if (file.file_url) {
+      return file.file_url; // Se for um arquivo remoto (edição)
+    } else if (file instanceof File) {
+      return URL.createObjectURL(file); // Se for um arquivo local (criação)
+    }
+    return null;
+  };
+
+  const isImage = (file) => {
+    if (file.type) {
+      // Verifica se o arquivo local é uma imagem
+      return file.type.startsWith('image/');
+    } else if (file.file_url) {
+      // Verifica se a URL tem uma extensão de imagem
+      const fileExtension = file.file_url.split('.').pop().toLowerCase();
+      return ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+    }else if (file.url) {
+      // Verifica se a URL tem uma extensão de imagem
+      const fileExtension = file.url.split('.').pop().toLowerCase();
+      return ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+    }
+    return false;
+  };
+
+  // Função para determinar se é um vídeo
+  const isVideo = (file) => {
+    if (file.type) {
+      // Verifica se o arquivo local é um vídeo
+      return file.type.startsWith('video/');
+    } else if (file.file_url) {
+      // Verifica se a URL tem uma extensão de vídeo
+      const fileExtension = file.file_url.split('.').pop().toLowerCase();
+      return ['mp4', 'webm', 'ogg'].includes(fileExtension);
+    }else if (file.url) {
+      // Verifica se a URL tem uma extensão de vídeo
+      const fileExtension = file.url.split('.').pop().toLowerCase();
+      return ['mp4', 'webm', 'ogg'].includes(fileExtension);
+    }
+    return false;
+  };
+
 
   const handleThumbnailClick = (index) => {
     setCurrentFileIndex(index); // Atualiza o índice do arquivo atualmente em exibição
@@ -103,26 +145,26 @@ const FileUpload = ({ files, setFiles }) => {
       <div className='preview-main' style={{ flex: 6  }}>
         {files.length > 0 && (
           <>
-            {files[currentFileIndex].type.startsWith('image/') ? (
+            {isImage(files[currentFileIndex]) ? (
               <img
-                src={URL.createObjectURL(files[currentFileIndex])}
+                src={getMediaUrl(files[currentFileIndex])}
                 alt="Preview"
                 className='preview-item'
-                style={{ 
+                style={{
                   maxWidth: '100%',
                   maxHeight: '100%',
-                  
                   objectFit: 'contain',
                   display: 'block',
                   margin: '0 auto',
                 }}
               />
             ) : (
+              isVideo(files[currentFileIndex]) && (
               <video
-                src={URL.createObjectURL(files[currentFileIndex])}
+                src={getMediaUrl(files[currentFileIndex])}
                 controls
                 className='preview-item'
-                style={{ 
+                style={{
                   maxWidth: '100%',
                   maxHeight: '100%',
                   objectFit: 'contain',
@@ -130,7 +172,9 @@ const FileUpload = ({ files, setFiles }) => {
                   margin: '0 auto',
                 }}
               />
+              )
             )}
+
              {/* Botões sobre a imagem/vídeo de preview */}
 
              <div className='div-btn-preview'>
@@ -193,7 +237,7 @@ const FileUpload = ({ files, setFiles }) => {
 
               {/* Botão para mostrar/esconder miniaturas */}
              
-            <p className='index-inticator'>{currentFileIndex + 1}/{files.length}</p>
+            <p className='index-indicator'>{currentFileIndex + 1}/{files.length}</p>
           </>
         )}
       </div>
