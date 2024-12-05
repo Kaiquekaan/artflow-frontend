@@ -89,7 +89,7 @@ function UserProvider({ children }) {
 
   useEffect(() => {
     if (token) {
-      let socket = new WebSocket(`ws://localhost:8000/ws/online_friends/?token=${token}`);
+      let socket = new WebSocket(`wss://artflow-production.up.railway.app:8000/ws/online_friends/?token=${token}`);
   
       socket.onopen = () => {
         console.log("WebSocket connected");
