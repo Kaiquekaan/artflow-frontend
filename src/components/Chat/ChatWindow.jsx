@@ -26,7 +26,7 @@ function ChatWindow({ friend }) {
     const [editedContent, setEditedContent] = useState(''); 
 
     const roomName = friend ? `${Math.min(friend.id, userData?.userdata.user_id)}_${Math.max(friend.id, userData?.userdata.user_id)}` : null;
-    const socketUrl = roomName ? `wss://artflow-production.up.railway.app:8000/ws/chat/${roomName}/` : null;
+    const socketUrl = roomName ? `ws://artflow-production.up.railway.app/ws/chat/${roomName}/` : null;
 
 
     useEffect(() => {

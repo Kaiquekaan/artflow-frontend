@@ -89,7 +89,7 @@ function UserProvider({ children }) {
 
   useEffect(() => {
     if (token) {
-      let socket = new WebSocket(`wss://artflow-production.up.railway.app:8000/ws/online_friends/?token=${token}`);
+      let socket = new WebSocket(`wss://artflow-production.up.railway.app/ws/online_friends/?token=${token}`);
   
       socket.onopen = () => {
         console.log("WebSocket connected");
@@ -107,7 +107,7 @@ function UserProvider({ children }) {
         setTimeout(() => {
             if (token) {
                 // Reconecta o WebSocket com o token atualizado
-                socket = new WebSocket(`ws://localhost:8000/ws/online_friends/?token=${token}`);
+                socket = new WebSocket(`wss://artflow-production.up.railway.app/ws/online_friends/?token=${token}`);
             }
         }, 3000);  // Tenta reconectar após 3 segundos
     };
